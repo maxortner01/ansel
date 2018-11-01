@@ -2,12 +2,14 @@
 
 #include "Def.h"
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <string>
 
 namespace Ansel
 {
-	class DECLSPECIFIER Window
+	class ANSEL_API Window
 	{
 		// Width and Height of the window
 		unsigned int width, height;
