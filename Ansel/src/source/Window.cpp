@@ -2,6 +2,8 @@
 
 namespace Ansel
 {
+	GLFWwindow* Window::window = NULL;
+
 	bool Window::initializeWindow() {
 		// Initialize GLFW library
 		if ( !glfwInit() )
@@ -35,6 +37,6 @@ namespace Ansel
 	unsigned int Window::getWidth()    const { return width;  }
 	unsigned int Window::getHeight()   const { return height; }
 	bool         Window::shouldClose() const { return glfwWindowShouldClose(window); }
-	GLFWwindow*  Window::getWindow()   const { return window; }
+	GLFWwindow*  Window::getWindow()		 { return window; }
 	
 }

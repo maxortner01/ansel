@@ -11,7 +11,7 @@ int main()
 	Game::MainScreen screen;
 	// Settings for engine
 	Ansel::Settings settings;
-	settings.normalizedCoords = true;
+	settings.normalizedCoords = false;
 
 	Ansel::Engine engine(&window, &screen, settings);
 	engine.run();

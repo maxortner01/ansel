@@ -24,11 +24,12 @@ namespace Ansel
 
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			glfwPollEvents();
+
 			render();
 
 			glfwSwapBuffers(window->getWindow());
 
-			glfwPollEvents();
 		}
 
 	}

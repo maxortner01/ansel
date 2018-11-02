@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Def.h"
+
 namespace Ansel
 {
 	// <------------------>
@@ -7,7 +9,7 @@ namespace Ansel
 	// <------------------>
 
 	template<typename T>
-	struct rect {
+	struct ANSEL_API rect {
 		T x, y, w, h;
 	};
 
@@ -19,12 +21,12 @@ namespace Ansel
 	// <---  VERTICES --->
 	// <----------------->
 	template<typename T>
-	struct vec2 {
+	struct ANSEL_API vec2 {
 		T x, y;
 	};
 
 	template<typename T>
-	struct vec3 {
+	struct ANSEL_API vec3 {
 		union
 		{
 			struct {
@@ -38,7 +40,7 @@ namespace Ansel
 	};
 
 	template<typename T>
-	struct vec4	{
+	struct ANSEL_API vec4	{
 		union
 		{
 			struct {
@@ -52,17 +54,20 @@ namespace Ansel
 	};
 
 	// 2D Vector Type Definitions
-	typedef vec2<float> vec2f;
-	typedef vec2<int>   vec2i;
+	typedef vec2<float>  vec2f;
+	typedef vec2<double> vec2d;
+	typedef vec2<int>    vec2i;
 	typedef vec2<unsigned int> vec2u;
 
 	// 2D Vector Type Definitions
-	typedef vec3<float> vec3f;
-	typedef vec3<int>   vec3i;
+	typedef vec3<float>  vec3f;
+	typedef vec3<double> vec3d;
+	typedef vec3<int>    vec3i;
 	typedef vec3<unsigned int> vec3u;
 
 	// 2D Vector Type Definitions
-	typedef vec4<float> vec4f;
-	typedef vec4<int>   vec4i;
+	typedef vec4<float>  vec4f;
+	typedef vec4<double> vec4d;
+	typedef vec4<int>    vec4i;
 	typedef vec4<unsigned int> vec4u;
 }

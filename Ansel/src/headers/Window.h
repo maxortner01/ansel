@@ -21,14 +21,14 @@ namespace Ansel
 		bool initializeWindow();
 
 		// GLFW window context
-		GLFWwindow* window;
+		static GLFWwindow* window;
 
 	public:
 		// Create window instance and initialize
 		Window(unsigned int nWidth, unsigned int nHeight, std::string title = "Engine");
 
 		// Close window
-		void close( );
+		static void close( );
 
 		// Get window width
 		unsigned int getWidth( )  const;
@@ -37,6 +37,6 @@ namespace Ansel
 		// Get the state of the window (opened/closed)
 		bool shouldClose( ) const;
 		// Get glfw window instance
-		GLFWwindow* getWindow( ) const;
+		static GLFWwindow* getWindow( );
 	};
 }

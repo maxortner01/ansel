@@ -141,12 +141,16 @@
     <ClInclude Include="src\Ansel.h" />
     <ClInclude Include="src\headers\Def.h" />
     <ClInclude Include="src\headers\Engine.h" />
+    <ClInclude Include="src\headers\Keyboard.h" />
+    <ClInclude Include="src\headers\Mouse.h" />
     <ClInclude Include="src\headers\Screen.h" />
     <ClInclude Include="src\headers\util.h" />
     <ClInclude Include="src\headers\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\Engine.cpp" />
+    <ClCompile Include="src\source\Keyboard.cpp" />
+    <ClCompile Include="src\source\Mouse.cpp" />
     <ClCompile Include="src\source\Screen.cpp" />
     <ClCompile Include="src\source\Window.cpp" />
   </ItemGroup>
