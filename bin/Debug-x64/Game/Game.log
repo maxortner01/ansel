@@ -1,4 +1,28 @@
-﻿  MainScreen.cpp
+﻿  main.cpp
 d:\dev\ansel\ansel\src\headers\window.h(18): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+d:\dev\ansel\ansel\src\headers\model.h(33): warning C4251: 'Ansel::VAO::VBOS': class 'std::vector<Ansel::Buffer,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of struct 'Ansel::VAO'
+          with
+          [
+              _Ty=Ansel::Buffer
+          ]
+  d:\dev\ansel\ansel\src\headers\model.h(33): note: see declaration of 'std::vector<Ansel::Buffer,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=Ansel::Buffer
+          ]
+  MainScreen.cpp
+d:\dev\ansel\ansel\src\headers\window.h(18): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+d:\dev\ansel\ansel\src\headers\model.h(33): warning C4251: 'Ansel::VAO::VBOS': class 'std::vector<Ansel::Buffer,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of struct 'Ansel::VAO'
+          with
+          [
+              _Ty=Ansel::Buffer
+          ]
+  d:\dev\ansel\ansel\src\headers\model.h(33): note: see declaration of 'std::vector<Ansel::Buffer,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=Ansel::Buffer
+          ]
+  Generating Code...
   Game.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Game\Game.exe

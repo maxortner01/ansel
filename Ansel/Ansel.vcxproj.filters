@@ -13,48 +13,81 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\event">
+      <UniqueIdentifier>{19826195-ce9f-4c76-b30e-871a6aeb0583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\event">
+      <UniqueIdentifier>{4ad1df25-9650-4759-b3e2-f1a849da7b1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\rendering">
+      <UniqueIdentifier>{4751624b-211e-4e14-8ff9-36adace812b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\processors">
+      <UniqueIdentifier>{6a343441-19c9-4ced-9cf0-4a3b80b6cb65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utility">
+      <UniqueIdentifier>{0257fdb9-095e-4a1a-8fc5-d5961182eb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\processors">
+      <UniqueIdentifier>{113aceec-5a78-4e58-b4a5-901d901d4827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rendering">
+      <UniqueIdentifier>{260d8bbd-521a-43e4-b4c6-7a103ea834f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\headers\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ansel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\Def.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\headers\Mouse.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\event</Filter>
     </ClInclude>
     <ClInclude Include="src\headers\Keyboard.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Screen.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Model.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Window.h">
+      <Filter>Header Files\processors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Engine.h">
+      <Filter>Header Files\processors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\util.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Def.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Renderer.h">
+      <Filter>Header Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\source\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Screen.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\source\Mouse.cpp">
+      <Filter>Source Files\event</Filter>
     </ClCompile>
     <ClCompile Include="src\source\Keyboard.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\event</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\Mouse.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\source\Engine.cpp">
+      <Filter>Source Files\processors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Window.cpp">
+      <Filter>Source Files\processors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Screen.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Model.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Renderer.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

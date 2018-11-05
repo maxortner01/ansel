@@ -11,18 +11,33 @@ namespace Ansel
 
 	void Engine::run() {
 
+		double previousTime = glfwGetTime();
+		int frame = 0;
+
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
 
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		while ( !window->shouldClose() ) {
+			// FPS Calculations
+			double currentTime = glfwGetTime();
+			frame++;
+
+			// If a second has passed
+			if ( currentTime - previousTime >= 1.0 ) {
+				screen->fps = frame;
+
+				frame = 0;
+				previousTime = currentTime;
+			}
+
 			// Check if the current screen's next screen is not NULL
 			// If not, that means its time to move on to that screen
 			Screen* nextScreen = screen->getNextScreen();
 			if ( nextScreen != NULL )
 				screen = nextScreen;
 
-			glClear(GL_COLOR_BUFFER_BIT);
+			//glClear(GL_COLOR_BUFFER_BIT);
 
 			glfwPollEvents();
 

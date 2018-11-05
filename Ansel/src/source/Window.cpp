@@ -21,6 +21,10 @@ namespace Ansel
 		// Make window current context
 		glfwMakeContextCurrent(window);
 
+		// Initialize GLEW library
+		if (!glewInit())
+			return false;
+
 		return true;
 	}
 

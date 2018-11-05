@@ -2,6 +2,23 @@
 
 namespace Ansel
 {
+	Screen::Screen(Window* w) { 
+		window = w;
+
+	}
+
+	void Screen::onCreate() {}
+	void Screen::onDestroy() {}
+
+	void Screen::setNextScreen(Screen* screen) {
+		nextScreen = screen;
+	}
+
+	Screen* Screen::getNextScreen() {
+		return nextScreen;
+	}
+	
+	// DRAWING
 	Screen::Draw::Draw() {}
 
 	void Screen::Draw::line(Ansel::vec2f startpoint, Ansel::vec2f endpoint, Ansel::vec4f color) const {
@@ -40,6 +57,25 @@ namespace Ansel
 			glColor4f(color.r, color.g, color.b, color.a);
 			// Set point location
 			glVertex2f(location.x, location.y);
+		}
+		glEnd();
+	}
+
+	void Screen::Draw::points(std::vector<Ansel::vec2f> locations, std::vector<Ansel::vec4f> colors, float size) const {
+		glPointSize(size);
+		
+		glBegin(GL_POINTS);
+		{
+			for (int i = 0; i < locations.size(); i++) {
+				Ansel::vec2f location = locations.at(i);
+				Ansel::vec4f color;
+
+				if (i > colors.size() - 1) color = colors.at(colors.size() - 1);
+				else                       color = colors.at(i);
+
+				glColor4f(color.r, color.g, color.b, color.a);
+				glVertex2f(location.x, location.y);
+			}		
 		}
 		glEnd();
 	}
@@ -120,16 +156,4 @@ namespace Ansel
 		}
 	}
 
-	Screen::Screen() {}
-
-	void Screen::onCreate( )  {}
-	void Screen::onDestroy( ) {}
-
-	void Screen::setNextScreen(Screen* screen) {
-		nextScreen = screen;
-	}
-
-	Screen* Screen::getNextScreen( ) {
-		return nextScreen;
-	}
 }

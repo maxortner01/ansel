@@ -8,3 +8,5 @@
 #include "headers/Engine.h"
 #include "headers/Window.h"
 #include "headers/Screen.h"
+#include "headers/Model.h"
+#include "headers/Renderer.h"

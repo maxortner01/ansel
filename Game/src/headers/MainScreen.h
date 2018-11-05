@@ -2,14 +2,19 @@
 
 #include <Ansel.h>
 
+using namespace Ansel;
+
 namespace Game {
 	class MainScreen : public Ansel::Screen
 	{
-		Ansel::vec2f location = { 0, 0 };
+		Model model;
+
+		Engine* engine;
 
 	public:
-		MainScreen();
+		MainScreen(Window* window);
 
-		void onUpdate();
+		void onDestroy() override;
+		void onUpdate() override;
 	};
 }

@@ -23,6 +23,10 @@ namespace Ansel
 	template<typename T>
 	struct ANSEL_API vec2 {
 		T x, y;
+
+		vec2 operator/(float k) {
+			return { x / k, y / k };
+		}
 	};
 
 	template<typename T>

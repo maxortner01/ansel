@@ -5,12 +5,13 @@
 
 namespace Ansel
 {
+
 	struct ANSEL_API Settings {
 		unsigned int multiSample = 0;
 		bool normalizedCoords = true;
 	};
 
-	class ANSEL_API Engine
+	class Engine
 	{
 		// Window pointer
 		Window* window;
@@ -24,9 +25,10 @@ namespace Ansel
 		// Window settings
 		Settings settings;
 
-	public:
-		Engine(Window* w, Screen* s, Settings set = {});
 
-		void run();
+	public:
+		ANSEL_API Engine(Window* w, Screen* s, Settings set = {});
+
+		void ANSEL_API run();
 	};
 }

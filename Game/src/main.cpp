@@ -8,10 +8,9 @@ int main()
 	// Window
 	Ansel::Window window(500, 500);
 	// Screen instance
-	Game::MainScreen screen;
+	Game::MainScreen screen(&window);
 	// Settings for engine
 	Ansel::Settings settings;
-	settings.normalizedCoords = false;
 
 	Ansel::Engine engine(&window, &screen, settings);
 	engine.run();
