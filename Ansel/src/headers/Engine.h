@@ -1,29 +1,31 @@
 #pragma once
 
+#include "Renderer.h"
 #include "Window.h"
 #include "Screen.h"
 
 namespace Ansel
 {
-
+	/*! 
+	 * Struct for the user to set OpenGL context settings.
+	 */
 	struct ANSEL_API Settings {
 		unsigned int multiSample = 0;
 		bool normalizedCoords = true;
 	};
 
+	/*!
+	 * All engine operations fall within this class. Runs all code.
+	 */
 	class Engine
 	{
-		// Window pointer
-		Window* window;
+		Window* window; /*!< Pointer to Window instance */
 
-		// Screen pointer
-		Screen* screen;
+		Screen* screen; /*!< Pointer to user-made screen instance */
 		
-		// Render the current screen
-		void render();
+		void render();  /*!< Runs the screen's render function */
 
-		// Window settings
-		Settings settings;
+		Settings settings; /*!< Instance of window's settings */
 
 
 	public:

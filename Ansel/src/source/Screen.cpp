@@ -127,7 +127,7 @@ namespace Ansel
 		float precision = 360.f / (float)nodes;
 
 		std::vector<Ansel::vec2f> points;
-		for (int i = 0; i < nodes; i++) {
+		for (unsigned int i = 0; i < nodes; i++) {
 			const Ansel::vec2f nodeA = {
 				radius * cosf(precision * i * (3.14159f / 180.f)) + location.x,
 				radius * sinf(precision * i * (3.14159f / 180.f)) + location.y

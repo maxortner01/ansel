@@ -2,26 +2,39 @@
 
 namespace Ansel
 {
+	/* <--------------------------------------->*/
+	/* <-------------- Raw Model -------------->*/
+	/* <--------------------------------------->*/
 	/*! \brief Initializer for list of VAO pointers in the loader class */
 	std::vector<VAO*> Loader::vaos;
 
+	/*! \brief Initializer for list of pointers to RawModel classes */
+	std::vector<RawModel*> Loader::rawModels;
+
+	unsigned int Loader::nextModelIndex = 0;
+
 	/*! \brief Initializer for the model class, empty so it can be uninitialized */
-	Model::Model() {}
+	RawModel::RawModel() {}
 
 	/*! \brief Official initializer for the model class 
 	 *  
 	 * Initialized class with a pointer to a VAO struct. These structs are stored
 	 * in the static vector in the Loader class.
 	 */
-	Model::Model(VAO *v, unsigned int s) {
-		vao = v; size = s;
+	RawModel::RawModel(VAO *v, unsigned int s, unsigned int i) {
+		vao = v; size = s; index = i;
 	}
-
 	
-	VAO *Model::getVAO() const { return vao; }
-	unsigned int Model::getVertexCount() const { return size; }
+	void RawModel::loadColor(std::vector<vec4f> colors) {
+		vao->genBuffer(Buffer::COLOR, Buffer::COLOR);
+		vao->bindBufferData(Buffer::COLOR, colors, Buffer::COLOR);
+	}
+	
+	VAO *RawModel::getVAO() const { return vao; }
+	unsigned int RawModel::getVertexCount() const { return size; }
+	unsigned int RawModel::getIndex() const { return index; }
 
-	Model Loader::makeModel(std::vector<vec2f> vertices) {
+	RawModel* Loader::makeModel(std::vector<vec2f> vertices) {
 		VAO *vao = new VAO;
 
 		vao->ID = createVAO();
@@ -30,18 +43,20 @@ namespace Ansel
 		vao->unbind();
 		vaos.push_back(vao);
 
-		return Model(vao, vertices.size());
+		RawModel* rawModel = new RawModel(vao, (unsigned int)vertices.size(), nextModelIndex++);
+		rawModels.push_back(rawModel);
+
+		return rawModel;
 	}
 
-	Model Loader::makeModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices) {
+	RawModel* Loader::makeModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices) {
 		VAO *vao = new VAO;
 
 		vao->ID = createVAO();
 		vao->unbind();
 
-		vao->genBuffer(16, Buffer::INDICES);
 		vao->genBuffer(0, Buffer::VERTEX);
-
+		vao->genBuffer(16, Buffer::INDICES);
 		vao->bind();
 
 		// Vertex data
@@ -53,9 +68,59 @@ namespace Ansel
 		vao->unbind();
 		vaos.push_back(vao);
 
-		return Model(vao, indices.size());
+		RawModel* rawModel = new RawModel(vao, (unsigned int)indices.size(), nextModelIndex++);
+		rawModels.push_back(rawModel);
+
+		return rawModel;
 	}
 
+	RawModel* Loader::getRawModel(const unsigned int index) {
+		if (index > rawModels.size())
+			throw std::invalid_argument("index not within range of created RawModels");
+
+		return rawModels.at(index);
+	}
+
+	void Loader::destroyRawModel(const unsigned int index) {
+		if (index > rawModels.size())
+			throw std::invalid_argument("index not within range of created RawModels");;
+
+		delete rawModels.at(index);
+	}
+
+	/* <------------------------------------>*/
+	/* <-------------- Model --------------->*/
+	/* <------------------------------------>*/
+
+	Model::Model() {}
+
+	Model::Model(RawModel* modelRef) {
+		_ref = modelRef;
+	}
+
+	void Model::setLocation(vec4f location) {
+		_location = location;
+	}
+
+	void Model::setScale(vec3f scale) {
+		_scale = scale;
+	}
+
+	vec4f Model::getLocation() const {
+		return _location;
+	}
+
+	vec3f Model::getScale() const {
+		return _scale;
+	}
+
+	RawModel* Model::getRawModel() const {
+		return _ref;
+	}
+
+	/* <-------------------------------------->*/
+	/* <--------------- LOADER --------------->*/
+	/* <-------------------------------------->*/
 	int Loader::createVAO() {
 		unsigned int ID;
 
@@ -77,7 +142,10 @@ namespace Ansel
 	void Buffer::unbind()	{ glBindBuffer(GL_ARRAY_BUFFER, 0);  }
 
 	VAO::VAO() {
-		VBOS.resize(17);
+		VBOS.resize(Buffer::INDICES + 1);
+
+		//for (int i = 0; i < VBOS.size(); i++)
+		//	glGenBuffers(1, &VBOS.at(i).ID);
 	}
 
 	GLenum VAO::getType(Buffer::BUFFER_TYPE type) {
@@ -91,6 +159,7 @@ namespace Ansel
 				break;
 
 			default:
+				return GL_ARRAY_BUFFER;
 				break;
 		}
 	}
@@ -100,7 +169,7 @@ namespace Ansel
 	}
 
 	bool VAO::bufferExists(Buffer::BUFFER_TYPE type) {
-		return (VBOS.at(type).ID != 0);
+		return (VBOS.at(type).count != 0);
 	}
 
 	void VAO::genBuffer(const unsigned int attribute, const Buffer::BUFFER_TYPE type) {
@@ -114,11 +183,28 @@ namespace Ansel
 		Buffer* buffer = &VBOS.at(attribute);
 		buffer->bind();
 
-		buffer->count = data.size();
+		buffer->count = (unsigned int)data.size();
 		buffer->data_size = 2;
 
 		glBufferData(getType(type), data.size() * sizeof(vec2f), &data.front(), GL_STATIC_DRAW);
 		glVertexAttribPointer(attribute, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glEnableVertexAttribArray(attribute);
+
+		buffer->unbind();
+	}
+
+	void VAO::bindBufferData(const unsigned int attribute, const std::vector<vec4f> data, Buffer::BUFFER_TYPE type) {
+		Buffer* buffer = &VBOS.at(attribute);
+		buffer->bind();
+
+		buffer->count = (unsigned int)data.size();
+		buffer->data_size = 4;
+
+		glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), GL_STATIC_DRAW);
+		glVertexAttribPointer(attribute, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glEnableVertexAttribArray(attribute);
 
 		buffer->unbind();
 	}
@@ -127,13 +213,15 @@ namespace Ansel
 		Buffer* buffer = &VBOS.at(attribute);
 		buffer->bind();
 
-		buffer->count = data.size();
+		buffer->count = (unsigned int)data.size();
 		buffer->data_size = size;
 
 		glBufferData(getType(type), data.size() * sizeof(int), &data.front(), GL_STATIC_DRAW);
 
 		if (type != Buffer::INDICES)
 			glVertexAttribPointer(attribute, buffer->data_size, GL_INT, GL_FALSE, 0, (void*)0);
+
+		glEnableVertexAttribArray(attribute);
 
 		buffer->unbind();
 	}
@@ -142,13 +230,15 @@ namespace Ansel
 		Buffer* buffer = &VBOS.at(attribute);
 		buffer->bind();
 
-		buffer->count = data.size();
+		buffer->count = (unsigned int)data.size();
 		buffer->data_size = size;
 
 		glBufferData(getType(type), data.size() * sizeof(unsigned int), &data.front(), GL_STATIC_DRAW);
 
 		if (type != Buffer::INDICES)
 			glVertexAttribPointer(attribute, buffer->data_size, GL_UNSIGNED_INT, GL_FALSE, 0, (void*)0);
+
+		glEnableVertexAttribArray(attribute);
 
 		buffer->unbind();
 	}

@@ -10,3 +10,4 @@
 #include "headers/Screen.h"
 #include "headers/Model.h"
 #include "headers/Renderer.h"
+#include "headers/Shader.h"

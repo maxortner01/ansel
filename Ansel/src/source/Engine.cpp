@@ -10,6 +10,7 @@ namespace Ansel
 	}
 
 	void Engine::run() {
+		Renderer::init();
 
 		double previousTime = glfwGetTime();
 		int frame = 0;
@@ -25,7 +26,7 @@ namespace Ansel
 
 			// If a second has passed
 			if ( currentTime - previousTime >= 1.0 ) {
-				screen->fps = frame;
+				screen->fps = (float)frame;
 
 				frame = 0;
 				previousTime = currentTime;
@@ -37,7 +38,7 @@ namespace Ansel
 			if ( nextScreen != NULL )
 				screen = nextScreen;
 
-			//glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT);
 
 			glfwPollEvents();
 

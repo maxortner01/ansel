@@ -1,13 +1,3 @@
-﻿  Renderer.cpp
-d:\dev\ansel\ansel\src\headers\model.h(33): warning C4251: 'Ansel::VAO::VBOS': class 'std::vector<Ansel::Buffer,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of struct 'Ansel::VAO'
-          with
-          [
-              _Ty=Ansel::Buffer
-          ]
-  d:\dev\ansel\ansel\src\headers\model.h(33): note: see declaration of 'std::vector<Ansel::Buffer,std::allocator<_Ty>>'
-          with
-          [
-              _Ty=Ansel::Buffer
-          ]
+﻿  Model.cpp
   Ansel.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.dll
           1 file(s) copied.

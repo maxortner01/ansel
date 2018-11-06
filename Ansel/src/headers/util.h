@@ -15,18 +15,14 @@ namespace Ansel
 
 	typedef rect<float> FloatRect;
 	typedef rect<int>   IntRect;
-	typedef rect<unsigned int> Dimensions;
+	typedef rect<unsigned int> uIntRect;
 
-	// <----------------->
-	// <---  VERTICES --->
-	// <----------------->
+	// <------------------>
+	// <---  VERTICES  --->
+	// <------------------>
 	template<typename T>
 	struct ANSEL_API vec2 {
 		T x, y;
-
-		vec2 operator/(float k) {
-			return { x / k, y / k };
-		}
 	};
 
 	template<typename T>
@@ -63,13 +59,13 @@ namespace Ansel
 	typedef vec2<int>    vec2i;
 	typedef vec2<unsigned int> vec2u;
 
-	// 2D Vector Type Definitions
+	// 3D Vector Type Definitions
 	typedef vec3<float>  vec3f;
 	typedef vec3<double> vec3d;
 	typedef vec3<int>    vec3i;
 	typedef vec3<unsigned int> vec3u;
 
-	// 2D Vector Type Definitions
+	// 4D Vector Type Definitions
 	typedef vec4<float>  vec4f;
 	typedef vec4<double> vec4d;
 	typedef vec4<int>    vec4i;

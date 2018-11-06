@@ -7,7 +7,8 @@ using namespace Ansel;
 namespace Game {
 	class MainScreen : public Ansel::Screen
 	{
-		Model model;
+		RawModel* rawModel;
+		Model     model;
 
 		Engine* engine;
 

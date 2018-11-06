@@ -10,12 +10,24 @@ namespace Game
 			{  1.f,  1.f },
 		};
 
+		std::vector<vec4f> colors = {
+			{ 0, 0, 1, 1 },
+			{ 0, 1, 0, 1 },
+			{ 1, 0, 0, 1 }
+		};
+
+		for (vec2f &v : locations)
+			v = { v.x / 2.f, v.y / 2.f };
+
 		std::vector<unsigned int> indices = {
 			0, 1, 2,
 			2, 3, 0
 		};
 
-		model = Loader::makeModel(locations, indices);
+		rawModel = Loader::makeModel(locations, indices);
+		//rawModel->loadColor(colors);
+
+		model    = Model(rawModel);
 	}
 
 	void MainScreen::onUpdate() {
@@ -24,7 +36,7 @@ namespace Game
 
 		Renderer::Render(model);
 
-		printf((std::to_string(fps) + "\n").c_str());
+		//printf((std::to_string(fps) + "\n").c_str());
 
 		uFrame++;
 	}
