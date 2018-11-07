@@ -2,6 +2,10 @@
 
 namespace Ansel
 {
+	Shader::Shader() {
+		program = glCreateProgram();
+	}
+
 	Shader::Shader(std::string vertex, std::string fragment) {
 		program = glCreateProgram();
 
@@ -20,6 +24,76 @@ namespace Ansel
 
 	void Shader::unbind() {
 		glUseProgram(0);
+	}
+
+	bool Shader::setUniform(float value, std::string name) {
+		GLint location = glGetUniformLocation(program, name.c_str());
+
+		if (location != -1)
+			glUniform1f(location, value); return true;
+
+		return false;
+	}
+
+	bool Shader::setUniform(vec2f value, std::string name) {
+		GLint location = glGetUniformLocation(program, name.c_str());
+
+		if (location != -1)
+			glUniform2f(location, value.x, value.y); return true;
+
+		return false;
+	}
+
+	bool Shader::setUniform(vec4f value, std::string name) {
+		GLint location = glGetUniformLocation(program, name.c_str());
+
+		if (location != -1)
+			glUniform4f(location, value.x, value.y, value.z, value.w); return true;
+
+		return false;
+	}
+
+	bool Shader::setUniform(mat4x4 value, std::string name) {
+		GLint location = glGetUniformLocation(program, name.c_str());
+
+		if (location != -1)
+			glUniformMatrix4fv(location, 1, GL_FALSE, *value.m); return true;
+
+		return false;
+	}
+
+	bool Shader::setUniform(std::vector<vec4f> value, std::string name, unsigned int size) {
+		const char* n = name.c_str();
+		int location = glGetUniformLocation(program, n);
+
+		std::vector<float> newvec;
+		for (vec4f v : value) {
+			newvec.push_back(v.x);
+			newvec.push_back(v.y);
+			newvec.push_back(v.z);
+			newvec.push_back(v.w);
+		}
+
+		if (location != -1)
+			glUniform4fv(location, size, newvec.data()); return true;
+
+		return false;
+	}
+
+	bool Shader::setUniform(std::vector<vec3f> value, std::string name) {
+		GLint location = glGetUniformLocation(program, name.c_str());
+
+		std::vector<float> newvec;
+		for (vec3f v : value) {
+			newvec.push_back(v.x);
+			newvec.push_back(v.y);
+			newvec.push_back(v.z);
+		}
+
+		if (location != -1)
+			glUniform3fv(location, INSTANCE_COUNT, newvec.data()); return true;
+
+		return false;
 	}
 
 	void Shader::makeShader(std::string filename, SHADER_TYPE type) {

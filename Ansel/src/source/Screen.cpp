@@ -14,6 +14,10 @@ namespace Ansel
 		nextScreen = screen;
 	}
 
+	float Screen::getFPS() const {
+		return fps;
+	}
+
 	Screen* Screen::getNextScreen() {
 		return nextScreen;
 	}

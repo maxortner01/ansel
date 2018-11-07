@@ -7,3 +7,5 @@
 #    define ANSEL_API __declspec(dllimport)
 #    define EXPIMP_TEMPLATE extern
 #endif
+
+#define INSTANCE_COUNT 1000

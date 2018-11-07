@@ -10,27 +10,24 @@ namespace Ansel
 	}
 
 	void Engine::run() {
-		Renderer::init();
+		// Initialize the Renderer
+		Renderer::init({ window->getWidth(), window->getHeight() });
 
+		// Initialize the fps clock
 		double previousTime = glfwGetTime();
-		int frame = 0;
 
+		// Enable Transparency
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
 
-		glClearColor(0.0, 0.0, 0.0, 0.0);
+		// Run the current screen's create function
+		screen->onCreate();
+
 		while ( !window->shouldClose() ) {
 			// FPS Calculations
 			double currentTime = glfwGetTime();
-			frame++;
-
-			// If a second has passed
-			if ( currentTime - previousTime >= 1.0 ) {
-				screen->fps = (float)frame;
-
-				frame = 0;
-				previousTime = currentTime;
-			}
+			screen->fps = 1.f / (currentTime - previousTime);
+			previousTime = currentTime;
 
 			// Check if the current screen's next screen is not NULL
 			// If not, that means its time to move on to that screen
@@ -38,15 +35,24 @@ namespace Ansel
 			if ( nextScreen != NULL )
 				screen = nextScreen;
 
-			glClear(GL_COLOR_BUFFER_BIT);
+			// Clear the color and depth buffer
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			// Poll window events
 			glfwPollEvents();
 
+			// Render the screen
 			render();
 
+			// Swap the buffers
 			glfwSwapBuffers(window->getWindow());
-
 		}
+
+		// Run the current screen's destroy function
+		screen->onDestroy();
+
+		// Destroy all VAO and VBO objects
+		Loader::destroy();
 
 	}
 

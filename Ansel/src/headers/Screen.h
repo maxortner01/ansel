@@ -13,12 +13,12 @@ namespace Ansel
 		// Engine shares all parts of this class
 		friend class Engine;
 
+		float fps;
 		Screen* nextScreen = NULL;
 
 	protected:
 
 		Window* window;
-		float fps;
 
 		struct ANSEL_API Draw {
 			Draw();
@@ -41,6 +41,7 @@ namespace Ansel
 		unsigned int uFrame = 0;
 
 		void setNextScreen(Screen* screen);
+		float getFPS() const;
 
 	public:
 

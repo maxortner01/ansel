@@ -38,16 +38,17 @@ namespace Ansel
 
 		static GLenum getType(Buffer::BUFFER_TYPE type);
 
-		void genBuffer(const unsigned int attribute, const Buffer::BUFFER_TYPE type);
-		void bindBufferData(const unsigned int attribute, const std::vector<vec2f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
-		void bindBufferData(const unsigned int attribute, const std::vector<vec4f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
-		void bindBufferData(const unsigned int attribute, const std::vector<int> data, 
+		void genBuffer(const Buffer::BUFFER_TYPE type);
+		void bindBufferData(const std::vector<vec2f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
+		void bindBufferData(const std::vector<vec3f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
+		void bindBufferData(const std::vector<vec4f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
+		void bindBufferData(const std::vector<int> data, 
 			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
-		void bindBufferData(const unsigned int attribute, const std::vector<unsigned int> data,
+		void bindBufferData(const std::vector<unsigned int> data,
 			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
 
 		Buffer getBuffer(Buffer::BUFFER_TYPE type);
-		bool   bufferExists(Buffer::BUFFER_TYPE type);
+		bool   bufferExists(int type);
 
 		void bind();
 		void unbind();
@@ -65,7 +66,7 @@ namespace Ansel
 		ANSEL_API RawModel();
 		ANSEL_API RawModel(VAO *v, unsigned int s, unsigned int i);
 
-		void ANSEL_API loadColor(std::vector<vec4f> colors);
+		void ANSEL_API loadColors(std::vector<vec4f> colors);
 
 		VAO ANSEL_API * getVAO() const;
 		unsigned int ANSEL_API getVertexCount() const;
@@ -84,8 +85,11 @@ namespace Ansel
 		ANSEL_API Model(RawModel* modelRef);
 
 		void ANSEL_API setLocation(vec4f location);
+		void ANSEL_API setLocation(float x, float y, float z, float w);
+		void ANSEL_API addLocation(float x, float y, float z, float w);
+		void ANSEL_API setLocation(vec2f location);
+		void ANSEL_API setLocation(float x, float y);
 		void ANSEL_API setScale(vec3f scale);
-
 
 		vec4f	  ANSEL_API getLocation( ) const;
 		vec3f	  ANSEL_API getScale( )    const;
@@ -103,8 +107,10 @@ namespace Ansel
 
 	public:
 
-		static RawModel ANSEL_API * makeModel(std::vector<vec2f> vertices);
-		static RawModel ANSEL_API * makeModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices);
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices);
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices);
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices);
+		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
 
 		static RawModel* getRawModel(const unsigned int index);

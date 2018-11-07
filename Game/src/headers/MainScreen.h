@@ -8,9 +8,11 @@ namespace Game {
 	class MainScreen : public Ansel::Screen
 	{
 		RawModel* rawModel;
-		Model     model;
+		
+		std::vector<Model*> models;
 
 		Engine* engine;
+		Camera camera;
 
 	public:
 		MainScreen(Window* window);

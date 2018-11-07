@@ -17,6 +17,27 @@ namespace Ansel
 	typedef rect<int>   IntRect;
 	typedef rect<unsigned int> uIntRect;
 
+
+	// <------------------>
+	// <---  MATRICES  --->
+	// <------------------>
+
+	struct ANSEL_API mat4x4 {
+		float m[4][4];
+
+		void setTranslation(float x, float y, float z)
+		{
+			m[0][0] = 1.f;
+			m[1][1] = 1.f;
+			m[2][2] = 1.f;
+			m[3][3] = 1.f;
+
+			m[0][3] = x;
+			m[1][3] = y;
+			m[2][3] = z;
+		}
+	};
+
 	// <------------------>
 	// <---  VERTICES  --->
 	// <------------------>

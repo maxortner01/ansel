@@ -20,6 +20,7 @@ namespace Ansel
 		S = GLFW_KEY_S,
 		D = GLFW_KEY_D,
 		ESCAPE = GLFW_KEY_ESCAPE,
+		L_SHIFT = GLFW_KEY_LEFT_SHIFT,
 		AMT = 127
 	} typedef KEY;
 

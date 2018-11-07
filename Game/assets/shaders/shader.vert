@@ -1,12 +1,43 @@
 #version 330 core
-layout (location = 0) in vec3 aPos; // the position variable has attribute position 0
+layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec4 color;
-  
-out vec4 vertexColor; // specify a color output to the fragment shader
 
-void main()
+uniform float frame;
+uniform mat4  projection;
+uniform mat4  view;
+uniform float  use3D;
+
+uniform vec4 location[1000];
+uniform vec4 scale[1000];
+
+out vec4 vertexColor; 
+
+void main(void)
 {
-    gl_Position = vec4(aPos / 2.0, 1.0); // see how we directly give a vec3 to vec4's constructor
-    vertexColor = vec4(0.5, 0.0, 0.0, 1.0); // set the output variable to a dark-red color
-	//vertexColor = color;
+	/*
+	vec3 fVertex = vec3(
+		vertex.x * scale[gl_InstanceID].x,
+		vertex.y * scale[gl_InstanceID].y,
+		vertex.z * scale[gl_InstanceID].z,
+	);
+	*/
+	
+	if (use3D == 0.0) {
+		gl_Position = vec4(
+			vertex.x + location[gl_InstanceID].x,
+			vertex.y + location[gl_InstanceID].y,
+			vertex.z + location[gl_InstanceID].z,
+			1.0
+		) * view * projection;
+	}
+	else {
+		gl_Position = vec4(
+			vertex.x + location[gl_InstanceID].x,
+			vertex.y + location[gl_InstanceID].y,
+			vertex.z + location[gl_InstanceID].z,
+			1.0
+		);
+	}
+	
+	vertexColor = color;
 }
