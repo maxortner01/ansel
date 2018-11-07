@@ -29,9 +29,22 @@ namespace Ansel
 		// Bind the VAO
 		vao->bind();
 		// Generate a buffer at the Color location
-		vao->genBuffer(Buffer::COLOR);
+		if (!vao->bufferExists(Buffer::COLOR))
+			vao->genBuffer(Buffer::COLOR);
 		// Bind the color information to the buffer
 		vao->bindBufferData(colors, Buffer::COLOR);
+		// Unbind VAO
+		vao->unbind();
+	}
+
+	void RawModel::loadTransformations(std::vector<vec4f> transformation) {
+		// Bind the VAO
+		vao->bind();
+		// Generate a buffer for transformations
+		if (!vao->bufferExists(Buffer::TRANSFORMATION))
+			vao->genBuffer(Buffer::TRANSFORMATION);
+		// Bind the transformation information to the buffer
+		vao->bindBufferData(transformation, Buffer::TRANSFORMATION);
 		// Unbind VAO
 		vao->unbind();
 	}
@@ -288,10 +301,20 @@ namespace Ansel
 		buffer->count = (unsigned int)data.size();
 		buffer->data_size = 4;
 
-		glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), GL_STATIC_DRAW);
-		glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		if (type == Buffer::TRANSFORMATION) {
+			glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), GL_DYNAMIC_DRAW);
+			glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-		glEnableVertexAttribArray(type);
+			glEnableVertexAttribArray(type);
+
+			glVertexAttribDivisor(type, 1);
+		}
+		else {
+			glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), GL_STATIC_DRAW);
+			glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+			glEnableVertexAttribArray(type);
+		}
 
 		buffer->unbind();
 	}

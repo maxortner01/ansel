@@ -15,6 +15,7 @@ namespace Ansel
 		enum TYPE {
 			VERTEX,
 			COLOR,
+			TRANSFORMATION,
 			INDICES = 16
 		} typedef BUFFER_TYPE;
 
@@ -67,6 +68,7 @@ namespace Ansel
 		ANSEL_API RawModel(VAO *v, unsigned int s, unsigned int i);
 
 		void ANSEL_API loadColors(std::vector<vec4f> colors);
+		void ANSEL_API loadTransformations(std::vector<vec4f> transformations);
 
 		VAO ANSEL_API * getVAO() const;
 		unsigned int ANSEL_API getVertexCount() const;
@@ -83,6 +85,8 @@ namespace Ansel
 	public:
 		ANSEL_API Model();
 		ANSEL_API Model(RawModel* modelRef);
+
+		virtual void update() {}
 
 		void ANSEL_API setLocation(vec4f location);
 		void ANSEL_API setLocation(float x, float y, float z, float w);

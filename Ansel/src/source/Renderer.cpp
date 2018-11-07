@@ -18,7 +18,7 @@ namespace Ansel
 
 	void Renderer::init(vec2u dimensions) {
 		loadShader(new Shader("assets/shaders/shader.vert", "assets/shaders/shader.frag"));
-		genProjection(.1f, 1000.f, 90.f, (float)dimensions.y / (float)dimensions.x);
+		genProjection(.1f, 1000.f, 65.f, (float)dimensions.y / (float)dimensions.x);
 
 		view.m[0][0] = 1.f;
 		view.m[1][1] = 1.f;
@@ -69,15 +69,11 @@ namespace Ansel
 	}
 
 	void Renderer::Render(std::vector<Model*> models, Camera camera) {
-		std::vector<vec4f> locations(INSTANCE_COUNT);
-		std::vector<vec4f> scales(INSTANCE_COUNT);
+		std::vector<vec4f> locations;
 
-		for (int i = 0; (i < models.size() && i < INSTANCE_COUNT); i++) {
+		for (int i = 0; i < models.size(); i++) {
 			vec4f v = models.at(i)->getLocation();
-			locations.at(i) = v;
-
-			vec3f s = models.at(i)->getScale();
-			scales.at(i) = { s.x, s.y, s.z, 1 };
+			locations.push_back(v);
 		}
 		
 		shader->setUniform((float)uFrame, "frame");
@@ -86,24 +82,18 @@ namespace Ansel
 		shader->setUniform(projection, "projection");
 		shader->setUniform(camera.getView(), "view");
 
-		shader->setUniform(locations, "location", INSTANCE_COUNT);
-		shader->setUniform(scales, "scale", INSTANCE_COUNT);
+		//shader->setUniform(locations, "location", INSTANCE_COUNT);
 
 		shader->bind();
 
-		RawModel rawModel = *models.at(0)->getRawModel();
-		VAO *vao = rawModel.getVAO();
+		RawModel* rawModel = models.at(0)->getRawModel();
+		VAO *vao = rawModel->getVAO();
+
+		rawModel->loadTransformations(locations);
+
 		vao->bind();
-
-		for (int i = 0; i < 16; i++)
-			if (rawModel.getVAO()->bufferExists(i))
-				glVertexAttribDivisor(i, 0);
 		
-		glDrawElementsInstanced(GL_TRIANGLES, rawModel.getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
-
-		for (int i = 0; i < 16; i++)
-			if (rawModel.getVAO()->bufferExists(i))
-				glVertexAttribDivisor(i, 0);
+		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
 
 		vao->unbind();
 
