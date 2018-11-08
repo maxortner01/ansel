@@ -15,7 +15,10 @@ namespace Ansel
 		enum TYPE {
 			VERTEX,
 			COLOR,
+			NORMAL,
 			TRANSFORMATION,
+			ROTATION,
+			SCALE,
 			INDICES = 16
 		} typedef BUFFER_TYPE;
 
@@ -68,7 +71,7 @@ namespace Ansel
 		ANSEL_API RawModel(VAO *v, unsigned int s, unsigned int i);
 
 		void ANSEL_API loadColors(std::vector<vec4f> colors);
-		void ANSEL_API loadTransformations(std::vector<vec4f> transformations);
+		void ANSEL_API loadTransformations(std::vector<vec4f> transformation, std::vector<vec4f> rotation, std::vector<vec4f> scale);
 
 		VAO ANSEL_API * getVAO() const;
 		unsigned int ANSEL_API getVertexCount() const;
@@ -79,6 +82,7 @@ namespace Ansel
 	{
 		vec4f _location;
 		vec3f _scale;
+		vec3f _rotation;
 
 		RawModel* _ref;
 
@@ -89,15 +93,21 @@ namespace Ansel
 		virtual void update() {}
 
 		void ANSEL_API setLocation(vec4f location);
-		void ANSEL_API setLocation(float x, float y, float z, float w);
-		void ANSEL_API addLocation(float x, float y, float z, float w);
 		void ANSEL_API setLocation(vec2f location);
 		void ANSEL_API setLocation(float x, float y);
+		void ANSEL_API setLocation(float x, float y, float z, float w);
+		void ANSEL_API addLocation(float x, float y, float z, float w);
+
+		void ANSEL_API setRotation(vec3f rotation);
+		void ANSEL_API setRotation(float x, float y, float z);
+		void ANSEL_API addRotation(float x, float y, float z);
+
 		void ANSEL_API setScale(vec3f scale);
 
-		vec4f	  ANSEL_API getLocation( ) const;
-		vec3f	  ANSEL_API getScale( )    const;
-		RawModel  ANSEL_API * getRawModel()  const;
+		vec4f	  ANSEL_API getLocation( )   const;
+		vec3f	  ANSEL_API getScale( )      const;
+		vec3f	  ANSEL_API getRotation( )   const;
+		RawModel  ANSEL_API * getRawModel( ) const;
 	};
 
 	class Loader

@@ -37,14 +37,26 @@ namespace Ansel
 		vao->unbind();
 	}
 
-	void RawModel::loadTransformations(std::vector<vec4f> transformation) {
+	void RawModel::loadTransformations(std::vector<vec4f> transformation, std::vector<vec4f> rotation, std::vector<vec4f> scale) {
 		// Bind the VAO
 		vao->bind();
+
+		Buffer::BUFFER_TYPE buffers[3] = {
+			Buffer::TRANSFORMATION,
+			Buffer::ROTATION,
+			Buffer::SCALE
+		};
+
 		// Generate a buffer for transformations
-		if (!vao->bufferExists(Buffer::TRANSFORMATION))
-			vao->genBuffer(Buffer::TRANSFORMATION);
+		for (int i = 0; i < 3; i++) 
+			if (!vao->bufferExists(buffers[i]))
+				vao->genBuffer(buffers[i]);
+
 		// Bind the transformation information to the buffer
 		vao->bindBufferData(transformation, Buffer::TRANSFORMATION);
+		vao->bindBufferData(rotation, Buffer::ROTATION);
+		vao->bindBufferData(scale, Buffer::SCALE);
+
 		// Unbind VAO
 		vao->unbind();
 	}
@@ -112,6 +124,12 @@ namespace Ansel
 	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices) {
 		VAO *vao = new VAO;
 
+		// Calculate the normals
+		std::vector<vec3f> normals;
+		for (vec3f v : vertices) {
+
+		}
+
 		// Create a VAO object and bind it
 		vao->ID = createVAO();
 
@@ -161,10 +179,18 @@ namespace Ansel
 	/* <-------------- Model --------------->*/
 	/* <------------------------------------>*/
 
-	Model::Model() {}
+	Model::Model() {
+		_location = { 0, 0, 0, 1 };
+		_rotation = { 0, 0, 0 };
+		_scale    = { 1, 1, 1 };
+	}
 
 	Model::Model(RawModel* modelRef) {
 		_ref = modelRef;
+
+		_location = { 0, 0, 0, 1 };
+		_rotation = { 0, 0, 0 };
+		_scale = { 1, 1, 1 };
 	}
 
 	void Model::setLocation(vec4f location) {
@@ -187,6 +213,18 @@ namespace Ansel
 		_location = { x, y, 1, 1 };
 	}
 
+	void Model::setRotation(vec3f rotation) {
+		_rotation = rotation;
+	}
+
+	void Model::setRotation(float x, float y, float z) {
+		setRotation({ x, y, z });
+	}
+
+	void Model::addRotation(float x, float y, float z) {
+		_rotation = { _rotation.x + x, _rotation.y + y, _rotation.z + z };
+	}
+
 	void Model::setScale(vec3f scale) {
 		_scale = scale;
 	}
@@ -197,6 +235,10 @@ namespace Ansel
 
 	vec3f Model::getScale() const {
 		return _scale;
+	}
+
+	vec3f Model::getRotation() const {
+		return _rotation;
 	}
 
 	RawModel* Model::getRawModel() const {
@@ -301,7 +343,7 @@ namespace Ansel
 		buffer->count = (unsigned int)data.size();
 		buffer->data_size = 4;
 
-		if (type == Buffer::TRANSFORMATION) {
+		if (type == Buffer::TRANSFORMATION || type == Buffer::ROTATION || type == Buffer::SCALE) {
 			glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), GL_DYNAMIC_DRAW);
 			glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
 

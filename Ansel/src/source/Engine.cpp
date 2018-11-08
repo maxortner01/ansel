@@ -24,6 +24,7 @@ namespace Ansel
 
 		// Run the current screen's create function
 		screen->onCreate();
+		screen->ScreenSize = { window->getWidth(), window->getHeight() };
 
 		while ( !window->shouldClose() ) {
 			// FPS Calculations

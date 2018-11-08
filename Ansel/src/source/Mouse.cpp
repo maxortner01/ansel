@@ -18,10 +18,18 @@ namespace Ansel
 
 			/**/ if (location.y < 0)
 				location.y = 0;
-			else if (location.y < dim.y)
+			else if (location.y > dim.y)
 				location.y = dim.y;
 		}
 
 		return location;
+	}
+
+	void Mouse::setPosition(vec2f position) {
+		glfwSetCursorPos(Window::getWindow(), position.x, position.y);
+	}
+
+	void Mouse::hideCursor() {
+		glfwSetInputMode(Window::getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 	}
 }

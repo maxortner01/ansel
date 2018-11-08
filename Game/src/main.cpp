@@ -6,7 +6,7 @@
 int main()
 {
 	// Window
-	Ansel::Window window(2560, 1440);
+	Ansel::Window window(1920, 1080);
 	// Screen instance
 	Game::MainScreen screen(&window);
 	// Settings for engine

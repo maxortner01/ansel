@@ -10,5 +10,8 @@ namespace Ansel
 	struct ANSEL_API Mouse
 	{
 		static vec2d getPostion(bool off_screen = false);
+		static void  setPosition(vec2f position);
+
+		static void  hideCursor();
 	};
 }

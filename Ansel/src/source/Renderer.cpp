@@ -69,11 +69,17 @@ namespace Ansel
 	}
 
 	void Renderer::Render(std::vector<Model*> models, Camera camera) {
-		std::vector<vec4f> locations;
+		std::vector<vec4f> locations, scales, rotations;
 
 		for (int i = 0; i < models.size(); i++) {
 			vec4f v = models.at(i)->getLocation();
 			locations.push_back(v);
+
+			vec3f s = models.at(i)->getScale();
+			scales.push_back({ s.x, s.y, s.z, 1 });
+
+			vec3f r = models.at(i)->getRotation();
+			rotations.push_back({ r.x, r.y, r.z, 1 });
 		}
 		
 		shader->setUniform((float)uFrame, "frame");
@@ -89,7 +95,7 @@ namespace Ansel
 		RawModel* rawModel = models.at(0)->getRawModel();
 		VAO *vao = rawModel->getVAO();
 
-		rawModel->loadTransformations(locations);
+		rawModel->loadTransformations(locations, rotations, scales);
 
 		vao->bind();
 		

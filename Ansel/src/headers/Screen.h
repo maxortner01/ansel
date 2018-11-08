@@ -39,6 +39,7 @@ namespace Ansel
 
 		Draw draw;
 		unsigned int uFrame = 0;
+		vec2u ScreenSize;
 
 		void setNextScreen(Screen* screen);
 		float getFPS() const;

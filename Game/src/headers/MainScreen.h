@@ -8,6 +8,8 @@ namespace Game {
 	
 	class Asteroid : public Ansel::Model
 	{
+		vec3f rotation_rates;
+
 		float angle = 0;
 		float radius = 0;
 

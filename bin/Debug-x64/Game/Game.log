@@ -1,5 +1,27 @@
-﻿  MainScreen.cpp
+﻿  main.cpp
 d:\dev\ansel\ansel\src\headers\window.h(18): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-d:\dev\ansel\game\src\source\mainscreen.cpp(14): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  MainScreen.cpp
+d:\dev\ansel\ansel\src\headers\window.h(18): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+d:\dev\ansel\game\src\source\mainscreen.cpp(23): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\dev\ansel\game\src\source\mainscreen.cpp(135): warning C4838: conversion from 'T' to 'T' requires a narrowing conversion
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              T=float
+          ]
+d:\dev\ansel\game\src\source\mainscreen.cpp(135): warning C4244: 'initializing': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              T=float
+          ]
+  Generating Code...
   Game.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Game\Game.exe

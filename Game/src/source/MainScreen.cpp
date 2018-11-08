@@ -6,13 +6,24 @@ namespace Game
 		const int   max  = 1000;
 		const float prec = (float)max / 100.f;
 
+		rotation_rates = { 
+			(rand() % 360000) / 100000.f * 3.14159f / 180.f,
+			(rand() % 360000) / 100000.f * 3.14159f / 180.f,
+			(rand() % 360000) / 100000.f * 3.14159f / 180.f
+		};
+
 		angle = (rand() % 360000) / 1000.f;
 		radius = 100.f + ((rand() % max) / prec - ((float)max / prec) / 2.f);
+		
+		float scale_factor = (rand() % 10) / 10.f;
+		setScale({ scale_factor, scale_factor, scale_factor });
 	}
 
 	void Asteroid::update() {
 		setLocation(radius * cosf(angle * 180.f / 3.14159 / radius), 0, radius * sinf(angle * 180.f / 3.14159 / radius), 1);
 		angle += .001f;
+
+		addRotation(rotation_rates.x, rotation_rates.y, rotation_rates.z);
 	}
 
 	MainScreen::MainScreen(Window* window) : Screen(window) {
@@ -21,13 +32,23 @@ namespace Game
 			{ -1.f, -1.f, 1.f },
 			{  1.f, -1.f, 1.f },
 			{  1.f,  1.f, 1.f },
+
+			{ -1.f,  1.f, -1.f },
+			{ -1.f, -1.f, -1.f },
+			{  1.f, -1.f, -1.f },
+			{  1.f,  1.f, -1.f },
 		};
 
 		std::vector<vec4f> colors = {
 			{ 0, 0, 1, 1 },
 			{ 1, 0, 0, 1 },
 			{ 0, 1, 0, 1 },
-			{ 1, 1, 1, 1 }
+			{ 1, 1, 1, 1 },
+
+			{ 0, 0, 1, 1 },
+			{ 1, 0, 0, 1 },
+			{ 0, 1, 0, 1 },
+			{ 1, 1, 1, 1 },
 		};
 
 		//for (vec3f &v : locations)
@@ -35,7 +56,22 @@ namespace Game
 
 		std::vector<unsigned int> indices = {
 			0, 1, 2,
-			2, 3, 0
+			2, 3, 0,
+
+			4, 5, 6,
+			6, 7, 4,
+
+			3, 2, 6,
+			6, 7, 3,
+
+			0, 1, 5,
+			5, 4, 0,
+
+			0, 4, 7,
+			7, 3, 0,
+
+			1, 5, 6,
+			6, 2, 1
 		};
 
 		rawModel = Loader::makeRawModel(locations, indices);
@@ -49,28 +85,31 @@ namespace Game
 				models.push_back(model);
 			}
 		}
+
+		Mouse::hideCursor();
 	}
 
 	void MainScreen::onUpdate() {
 		if (Keyboard::isKeyPressed(KEY::ESCAPE))
 			Window::close();
 
+		float rotation_speed = .1f * 3.14159f / 180.f;
 		float speed = .1f;
 
 		if (Keyboard::isKeyPressed(KEY::L_SHIFT))
 			speed *= 2;
 
 		if (Keyboard::isKeyPressed(KEY::W))
-			camera.translate(0, 0, speed);
+			camera.move(Camera::FORWARDS, speed);
 
 		if (Keyboard::isKeyPressed(KEY::S))
-			camera.translate(0, 0, -speed);
+			camera.move(Camera::BACKWARDS, speed);
 
 		if (Keyboard::isKeyPressed(KEY::D))
-			camera.translate(speed, 0, 0);
+			camera.move(Camera::RIGHT, speed);
 
 		if (Keyboard::isKeyPressed(KEY::A))
-			camera.translate(-speed, 0, 0);
+			camera.move(Camera::LEFT, speed);
 
 		if (Keyboard::isKeyPressed(KEY::SPACE))
 			camera.translate(0, speed, 0);
@@ -78,16 +117,25 @@ namespace Game
 		if (Keyboard::isKeyPressed(KEY::L_CTRL))
 			camera.translate(0, -speed, 0);
 
-		//models.at(0)->setLocation(sinf(uFrame / 100.f) / 2.f, cosf(uFrame / 100.f) / 2.f);
-		//models.at(0)->addLocation(0, 0, .01f, 0);
+		if (Keyboard::isKeyPressed(KEY::UP))
+			camera.rotate(-rotation_speed, 0, 0);
 
-		//for (int y = 0; y < 100; y++) {
-		//	for (int x = 0; x < 100; x++) {
-		//		Model* model = models.at(y * 100 + x);
+		if (Keyboard::isKeyPressed(KEY::DOWN))
+			camera.rotate(rotation_speed, 0, 0);
 
-		//		model->addLocation(0, sinf(x + (float)uFrame / 100.f) / 100.f, 0, 0);
-		//	}
-		//}
+		if (Keyboard::isKeyPressed(KEY::LEFT))
+			camera.rotate(0, rotation_speed, 0);
+
+		if (Keyboard::isKeyPressed(KEY::RIGHT))
+			camera.rotate(0, -rotation_speed, 0);
+
+		vec2d newMouse = Mouse::getPostion();
+		Mouse::setPosition({ ScreenSize.x / 2.f, ScreenSize.y / 2.f });
+
+		vec2f change = { newMouse.x - ScreenSize.x / 2.f, newMouse.y - ScreenSize.y / 2.f };
+		
+		camera.rotate(0, -rotation_speed * change.x, 0);
+		camera.rotate(rotation_speed * change.y, 0, 0);
 
 		for (int i = 0; i < models.size(); i++)
 			models.at(i)->update();
