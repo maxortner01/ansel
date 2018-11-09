@@ -2,9 +2,7 @@
 
 namespace Game
 {
-	Asteroid::Asteroid(RawModel* rawModel) : Model(rawModel) {
-		const int   max  = 1000;
-		const float prec = (float)max / 100.f;
+	Asteroid::Asteroid(RawModel* rawModel, const int max, const int min) : Model(rawModel) {
 
 		rotation_rates = { 
 			(rand() % 360000) / 100000.f * 3.14159f / 180.f,
@@ -13,7 +11,8 @@ namespace Game
 		};
 
 		angle = (rand() % 360000) / 1000.f;
-		radius = 100.f + ((rand() % max) / prec - ((float)max / prec) / 2.f);
+		//radius = 100.f + ((rand() % max) / prec - ((float)max / prec) / 2.f);
+		radius = (rand() % (max - min)) + min;
 		
 		float scale_factor = (rand() % 10) / 10.f;
 		setScale({ scale_factor, scale_factor, scale_factor });

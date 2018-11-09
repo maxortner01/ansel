@@ -12,6 +12,10 @@ uniform mat4  projection;
 uniform mat4  view;
 uniform float  use3D;
 
+uniform vec4 lights[8];
+uniform int  light_states[8];
+//uniform float intensities[16];
+
 out vec4 vertexColor;
 
 mat4 makeTransformMatrix(vec4 loc) {
@@ -62,10 +66,42 @@ mat4 makeModel(vec4 loc, vec4 rot, vec4 sc) {
 	return makeScaleMatrix(sc) * makeRotationMatrix(rot) * makeTransformMatrix(loc);
 }
 
+float getDotProduct(vec4 v1, vec4 v2) {
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+vec4 normalizeVector(vec4 vector) {
+	vec4 v = vector;
+	
+	float length = sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
+	v = vec4(
+		v.x / length,
+		v.y / length,
+		v.z / length,
+		1
+	);
+	return v;
+}
+
 void main(void)
 {
 	mat4 model = makeModel(location, rotation, scale);
-	vec4 norm  = normal * model * view * projection;
+	vec4 norm  = normalizeVector(normal * makeRotationMatrix(rotation));
+	
+	//float dp = getDotProduct(norm, lights[0]);
+	
+	vec4 c = color;
+	//c.w = 1;
+	
+	//if (dp <= 0) {
+	//	c.x = 0;
+	//	c.y = 0;
+	//	c.z = 0;
+	//} else {
+	//	c.x = color.x * dp;
+	//	c.y = color.y * dp;
+	//	c.z = color.z * dp;
+	//}
 	
 	if (use3D == 0.0) {
 		gl_Position = vec4(
@@ -76,5 +112,5 @@ void main(void)
 		) * model * view * projection;
 	}
 	
-	vertexColor = color;
+	vertexColor = c;
 }

@@ -9,3 +9,4 @@
 #endif
 
 #define INSTANCE_COUNT 1000
+#define LIGHT_COUNT 8

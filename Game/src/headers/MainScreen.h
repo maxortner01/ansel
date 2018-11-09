@@ -14,7 +14,7 @@ namespace Game {
 		float radius = 0;
 
 	public:
-		Asteroid(RawModel* rawModel);
+		Asteroid(RawModel* rawModel, const int max = 250, const int min = 50);
 
 		void update() override;
 	};

@@ -31,10 +31,12 @@ namespace Ansel
 		ANSEL_API  Shader(std::string vertex, std::string fragment);
 		ANSEL_API ~Shader();
 
+		bool ANSEL_API setUniform(int value, std::string name);
 		bool ANSEL_API setUniform(float value, std::string name);
 		bool ANSEL_API setUniform(vec2f value, std::string name);
 		bool ANSEL_API setUniform(vec4f value, std::string name);
 		bool ANSEL_API setUniform(mat4x4 value, std::string name);
+		bool ANSEL_API setUniform(std::vector<int> value, std::string name, unsigned int size);
 		bool ANSEL_API setUniform(std::vector<vec4f> value, std::string name, unsigned int size);
 		bool ANSEL_API setUniform(std::vector<vec3f> value, std::string name);
 

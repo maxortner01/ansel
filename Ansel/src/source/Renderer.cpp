@@ -69,7 +69,8 @@ namespace Ansel
 	}
 
 	void Renderer::Render(std::vector<Model*> models, Camera camera) {
-		std::vector<vec4f> locations, scales, rotations;
+		std::vector<vec4f> locations, scales, rotations, lights;
+		std::vector<int> light_states;
 
 		for (int i = 0; i < models.size(); i++) {
 			vec4f v = models.at(i)->getLocation();
@@ -81,12 +82,24 @@ namespace Ansel
 			vec3f r = models.at(i)->getRotation();
 			rotations.push_back({ r.x, r.y, r.z, 1 });
 		}
+
+		lights.push_back({ 0, 1, 0, 1 });
+		light_states.push_back(1);
+
+		//TEMPORARY
+		for (int i = 0; i < LIGHT_COUNT - 1; i++) {
+			lights.push_back({ 0, 0, 0, 1 });
+			light_states.push_back(0);
+		}
 		
 		shader->setUniform((float)uFrame, "frame");
 		shader->setUniform(settings._3D, "use3D");
 
 		shader->setUniform(projection, "projection");
 		shader->setUniform(camera.getView(), "view");
+
+		shader->setUniform(light_states, "light_states", LIGHT_COUNT);
+		shader->setUniform(lights, "lights", LIGHT_COUNT);
 
 		//shader->setUniform(locations, "location", INSTANCE_COUNT);
 

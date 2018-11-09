@@ -34,6 +34,12 @@
     <Filter Include="Source Files\rendering">
       <UniqueIdentifier>{260d8bbd-521a-43e4-b4c6-7a103ea834f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities">
+      <UniqueIdentifier>{d04e2d07-3bbb-45a1-8071-dd9a89eb273f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entities">
+      <UniqueIdentifier>{2ee82340-1044-439d-adb0-60fddbeae977}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ansel.h">
@@ -70,7 +76,7 @@
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\headers\camera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +105,13 @@
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\source\Camera.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Loader.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\RawModel.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

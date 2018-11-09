@@ -35,6 +35,15 @@ namespace Ansel
 		return false;
 	}
 
+	bool Shader::setUniform(int value, std::string name) {
+		GLint location = glGetUniformLocation(program, name.c_str());
+
+		if (location != -1)
+			glUniform1i(location, value); return true;
+
+		return false;
+	}
+
 	bool Shader::setUniform(vec2f value, std::string name) {
 		GLint location = glGetUniformLocation(program, name.c_str());
 
@@ -58,6 +67,15 @@ namespace Ansel
 
 		if (location != -1)
 			glUniformMatrix4fv(location, 1, GL_FALSE, *value.m); return true;
+
+		return false;
+	}
+
+	bool Shader::setUniform(std::vector<int> value, std::string name, unsigned int size) {
+		int location = glGetUniformLocation(program, name.c_str());
+
+		if (location != -1)
+			glUniform1iv(location, size, &value.front()); return true;
 
 		return false;
 	}
