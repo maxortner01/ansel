@@ -9,7 +9,9 @@
 
 namespace Ansel
 {
-	// VBO object, each contains raw data for rendering
+	/**
+	  * VBO object for wrapping OpenGL structure.
+	  */
 	struct Buffer
 	{
 		enum TYPE {
@@ -31,7 +33,10 @@ namespace Ansel
 		void unbind();
 	};
 
-	// Vertex Array Object, each one holds vertex data
+	/**
+	  * Contains any relevant VBO objects, runs all Vertex Array Object functions
+	  * and OpenGL calls.
+	  */
 	struct VAO
 	{
 		unsigned int nextAttribute = 0;
@@ -60,36 +65,86 @@ namespace Ansel
 		void destroy();
 	};
 
+	/**
+	  * Holds the VAO and is only to be instantiated for every loaded model.
+	  * Handles any low level buffer functions so the user doesn't need too.
+	  * Ideally, the Loader::makeRawModel will be used rather than using this
+	  * constructor.
+	  */
 	class RawModel
 	{
-		VAO *vao;
-		unsigned int size;
-		unsigned int index;
+		VAO *vao;		///< Pointer to the VAO object that defines this model
+		unsigned int size;	///< Amount of vertices/indices
+		unsigned int index;	///< Respective index inside the vector of RawModels
 
 	public:
+		/**
+		  * Empty constructor that initializes and empty class.
+		  */
 		ANSEL_API RawModel();
+		/**
+		  * Constructor initializes the class.
+		  * @param *v Pointer to a Vertex Array Object instance
+		  * @param s  Amount of vertices
+		  * @param i  Index within vector of RawModels (NULL if not using Loader)
+		  */
 		ANSEL_API RawModel(VAO *v, unsigned int s, unsigned int i);
 
+		/**
+		  * Loads specified colors into the corresponding color buffer.
+		  * @param colors List of colors to add
+		  */
 		void ANSEL_API loadColors(std::vector<vec4f> colors);
+		/**
+		  * Load transformation information for construction of the matrix in the shader.
+		  * @param transformation (x, y, z, w) transformation information
+		  * @param rotation Pitch, yaw, and roll rotation information
+		  * @param scale (x, y, z) scale dimensions
+		  */
 		void ANSEL_API loadTransformations(std::vector<vec4f> transformation, std::vector<vec4f> rotation, std::vector<vec4f> scale);
 
+		/**
+		  * Get pointer to the corresponding VAO.
+		  */
 		VAO ANSEL_API * getVAO() const;
+		/**
+		  * Get the amount of vertices within this model.
+		  */
 		unsigned int ANSEL_API getVertexCount() const;
+		/**
+		  * Get the index within RawModel vector.
+		  */
 		unsigned int ANSEL_API getIndex() const;
 	};
 
+	/**
+	  * Contains only a pointer to its corresponding RawModel and transformation data.
+	  * All models of a specific RawModel are grouped together and rendered at once
+	  * with all transformation data being uploaded to the VAO every frame.
+	  */
 	class Model
 	{
-		vec4f _location;
-		vec3f _scale;
-		vec3f _rotation;
+		vec4f _location;	///< (x, y, z, w) location.
+		vec3f _scale;		///< (x, y, z) scale factor.
+		vec3f _rotation;	///< Pitch, yaw, and roll.
 
-		RawModel* _ref;
+		RawModel* _ref;		///< Pointer to RawModel instance that holds all vertex information.
 
 	public:
+		/**
+		  * Constructs an empty model class, unusable.
+		  */
 		ANSEL_API Model();
+		/**
+		  * Constructs a model class with the corresponding vertex information
+		  * coming from the RawModel.
+		  * @param modelRef Pointer to the RawModel instance that defines all vertex information
+		  */
 		ANSEL_API Model(RawModel* modelRef);
-
+		
+		/**
+		  * Virtual function that can be used 
+		  */
 		virtual void update() {}
 
 		void ANSEL_API setLocation(vec4f location);
