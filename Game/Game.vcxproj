@@ -131,9 +131,11 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\source\MainScreen.cpp" />
+    <ClCompile Include="src\source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\headers\MainScreen.h" />
+    <ClInclude Include="src\headers\Terrain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

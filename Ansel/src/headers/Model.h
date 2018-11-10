@@ -178,6 +178,7 @@ namespace Ansel
 	public:
 
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices);
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals);

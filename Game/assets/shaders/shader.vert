@@ -12,15 +12,30 @@ uniform mat4  projection;
 uniform mat4  view;
 uniform float  use3D;
 
-uniform vec4 lights[8];
-uniform int  light_states[8];
+uniform vec4 light_position[8];
+uniform int  light_state[8];
 //uniform float intensities[16];
 
+out vData {
+	vec4 position;
+    vec4 vertexColor; // the input variable from the vertex shader (same name and same type)  
+
+    vec3 toLight;
+    vec3 outNormal;
+    
+    mat4 modelMatrix;
+} VertexIn;
+
+/*
 out vec4 vertexColor;
 
 // For lighting normal calculations in the fragment shader
 out vec3 toLight;
 out vec3 outNormal;
+
+out mat4 modelMatrix;
+out mat4 viewMatrix;
+out mat4 projectionMatrix; */
 
 mat4 makeTransformMatrix(vec4 loc) {
 	return mat4(	
@@ -92,8 +107,8 @@ void main(void)
 	mat4 model = makeModel(location, rotation, scale);
 	vec4 norm  = normalizeVector(vec4(normal, 1.0) * makeRotationMatrix(rotation));
 	
-	outNormal = vec3(norm.xyz);
-	toLight   = vec3(lights[0]);
+	//VertexIn.outNormal = vec3(norm.xyz);
+	VertexIn.toLight   = vec3(light_position[0]);
 	
 	//float dp = getDotProduct(norm, lights[0]);
 	
@@ -110,14 +125,25 @@ void main(void)
 	//	c.z = c.z * dp;
 	//} 
 	
-	if (use3D == 0.0) {
-		gl_Position = vec4(
+	VertexIn.position = vec4(
+		vertex.x,
+		vertex.y,
+		vertex.z,
+		1.0
+	);
+
+	gl_Position = vec4(
 			vertex.x,
 			vertex.y,
 			vertex.z,
 			1.0
-		) * model * view * projection;
-	}
+		);
+
+	VertexIn.modelMatrix = model;
 	
-	//vertexColor = c;
+	vec4 normVec = normalizeVector(vec4(vertex, 1.0));
+	float val = abs(normVec.y) * 1.5;
+	val = -val + .75;
+	val = pow(val, 2);
+	VertexIn.vertexColor = vec4(1.0 * val, 1.0 * val, 1.0 * val, 1.0);
 }

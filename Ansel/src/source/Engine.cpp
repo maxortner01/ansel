@@ -49,6 +49,8 @@ namespace Ansel
 
 			// Swap the buffers
 			glfwSwapBuffers(window->getWindow());
+
+			glFlush();
 		}
 
 		// Run the current screen's destroy function

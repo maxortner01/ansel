@@ -148,6 +148,7 @@
     <ClInclude Include="src\headers\Renderer.h" />
     <ClInclude Include="src\headers\Screen.h" />
     <ClInclude Include="src\headers\Shader.h" />
+    <ClInclude Include="src\headers\SimplexNoise.h" />
     <ClInclude Include="src\headers\util.h" />
     <ClInclude Include="src\headers\Window.h" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClCompile Include="src\source\Renderer.cpp" />
     <ClCompile Include="src\source\Screen.cpp" />
     <ClCompile Include="src\source\Shader.cpp" />
+    <ClCompile Include="src\source\SimplexNoise.cpp" />
     <ClCompile Include="src\source\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

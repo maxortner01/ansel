@@ -78,6 +78,9 @@
     <ClInclude Include="src\headers\camera.h">
       <Filter>Header Files\entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\headers\SimplexNoise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\Mouse.cpp">
@@ -112,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="src\source\RawModel.cpp">
       <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\SimplexNoise.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

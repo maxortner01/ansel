@@ -27,7 +27,7 @@ namespace Ansel
 
 	public:
 		ANSEL_API  Shader();
-		ANSEL_API  Shader(std::string vertex, std::string fragment);
+		ANSEL_API  Shader(std::string vertex, std::string fragment, bool l = true);
 		ANSEL_API ~Shader();
 
 		bool ANSEL_API setUniform(int value, std::string name);
@@ -40,7 +40,7 @@ namespace Ansel
 		bool ANSEL_API setUniform(std::vector<vec3f> value, std::string name);
 
 		void ANSEL_API makeShader(std::string filename, SHADER_TYPE type);
-		void link() const;
+		void ANSEL_API link() const;
 
 		void ANSEL_API bind();
 		void ANSEL_API unbind();

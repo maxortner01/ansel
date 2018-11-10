@@ -36,6 +36,13 @@ namespace Ansel
 		return rawModel;
 	}
 
+	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices) {
+		std::vector<unsigned int> indices;
+		for (unsigned int i = 0; i < vertices.size(); i++)
+			indices.push_back(i);
+		return makeRawModel(vertices, indices);
+	}
+
 	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices) {
 		VAO *vao = new VAO;
 

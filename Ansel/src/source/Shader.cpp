@@ -6,12 +6,13 @@ namespace Ansel
 		program = glCreateProgram();
 	}
 
-	Shader::Shader(std::string vertex, std::string fragment) {
+	Shader::Shader(std::string vertex, std::string fragment, bool l) {
 		program = glCreateProgram();
 
 		makeShader(vertex, VERTEX);
 		makeShader(fragment, FRAGMENT);
-		link();
+
+		if (l) link();
 	}
 
 	Shader::~Shader() {
