@@ -5,8 +5,6 @@
 #include "Shader.h"
 #include "camera.h"
 
-#include <GL/glew.h>
-
 namespace Ansel
 {
 	class Renderer

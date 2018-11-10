@@ -10,3 +10,8 @@
 
 #define INSTANCE_COUNT 1000
 #define LIGHT_COUNT 8
+
+#include <string>
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>

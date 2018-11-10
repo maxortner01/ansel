@@ -3,9 +3,10 @@
 #include "Def.h"
 #include "util.h"
 
+#include <fstream>
+
 #include <stdexcept>
 #include <vector>
-#include <GL/glew.h>
 
 namespace Ansel
 {
@@ -73,7 +74,7 @@ namespace Ansel
 	  */
 	class RawModel
 	{
-		VAO *vao;		///< Pointer to the VAO object that defines this model
+		VAO *vao;			///< Pointer to the VAO object that defines this model
 		unsigned int size;	///< Amount of vertices/indices
 		unsigned int index;	///< Respective index inside the vector of RawModels
 
@@ -179,6 +180,8 @@ namespace Ansel
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices);
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals);
+		static RawModel ANSEL_API * makeRawModel(const char* filename);
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
 

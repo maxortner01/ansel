@@ -22,8 +22,10 @@ namespace Game {
 	class MainScreen : public Ansel::Screen
 	{
 		RawModel* rawModel;
+		RawModel* rawPlanet;
 		
 		std::vector<Model*> models;
+		Model* planetModel;
 
 		Engine* engine;
 		Camera camera;

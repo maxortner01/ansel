@@ -18,7 +18,7 @@ namespace Ansel
 
 	void Renderer::init(vec2u dimensions) {
 		loadShader(new Shader("assets/shaders/shader.vert", "assets/shaders/shader.frag"));
-		genProjection(.1f, 1000.f, 65.f, (float)dimensions.y / (float)dimensions.x);
+		genProjection(.005f, 1000.f, 65.f, (float)dimensions.y / (float)dimensions.x);
 
 		view.m[0][0] = 1.f;
 		view.m[1][1] = 1.f;
@@ -83,7 +83,7 @@ namespace Ansel
 			rotations.push_back({ r.x, r.y, r.z, 1 });
 		}
 
-		lights.push_back({ 0, 1, 0, 1 });
+		lights.push_back({ 0, 1, 1, 1 });
 		light_states.push_back(1);
 
 		//TEMPORARY

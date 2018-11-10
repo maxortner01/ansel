@@ -1,7 +1,7 @@
 #version 330 core
 layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec4 color;
-layout (location = 2) in vec4 normal;
+layout (location = 2) in vec3 normal;
 
 layout (location = 3) in vec4 location;
 layout (location = 4) in vec4 rotation;
@@ -17,6 +17,10 @@ uniform int  light_states[8];
 //uniform float intensities[16];
 
 out vec4 vertexColor;
+
+// For lighting normal calculations in the fragment shader
+out vec3 toLight;
+out vec3 outNormal;
 
 mat4 makeTransformMatrix(vec4 loc) {
 	return mat4(	
@@ -86,22 +90,25 @@ vec4 normalizeVector(vec4 vector) {
 void main(void)
 {
 	mat4 model = makeModel(location, rotation, scale);
-	vec4 norm  = normalizeVector(normal * makeRotationMatrix(rotation));
+	vec4 norm  = normalizeVector(vec4(normal, 1.0) * makeRotationMatrix(rotation));
+	
+	outNormal = vec3(norm.xyz);
+	toLight   = vec3(lights[0]);
 	
 	//float dp = getDotProduct(norm, lights[0]);
 	
-	vec4 c = color;
-	//c.w = 1;
+	//vec4 c = color;
+	//vec4 c = vec4(1.0, 1.0, 1.0, 1.0);
 	
 	//if (dp <= 0) {
 	//	c.x = 0;
 	//	c.y = 0;
 	//	c.z = 0;
 	//} else {
-	//	c.x = color.x * dp;
-	//	c.y = color.y * dp;
-	//	c.z = color.z * dp;
-	//}
+	//	c.x = c.x * dp;
+	//	c.y = c.y * dp;
+	//	c.z = c.z * dp;
+	//} 
 	
 	if (use3D == 0.0) {
 		gl_Position = vec4(
@@ -112,5 +119,5 @@ void main(void)
 		) * model * view * projection;
 	}
 	
-	vertexColor = c;
+	//vertexColor = c;
 }

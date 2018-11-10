@@ -7,7 +7,6 @@
 #include <vector>
 #include <fstream>
 #include <string>
-#include <GL/glew.h>
 
 namespace Ansel
 {

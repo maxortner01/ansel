@@ -14,7 +14,7 @@ namespace Game
 		//radius = 100.f + ((rand() % max) / prec - ((float)max / prec) / 2.f);
 		radius = (rand() % (max - min)) + min;
 		
-		float scale_factor = (rand() % 10) / 10.f;
+		float scale_factor = (rand() % 10) / 200.f;
 		setScale({ scale_factor, scale_factor, scale_factor });
 	}
 
@@ -73,17 +73,24 @@ namespace Game
 			6, 2, 1
 		};
 
-		rawModel = Loader::makeRawModel(locations, indices);
-		rawModel->loadColors(colors);
+		//rawModel = Loader::makeRawModel(locations, indices);
+		rawModel = Loader::makeRawModel("assets/models/Asteroid.obj");
+		//rawPlanet = Loader::makeRawModel("assets/models/sphere.obj");
+		//rawModel->loadColors(colors);
 
 		int range = 50;
 		for (int y = 0; y < range; y++) {
 			for (int x = 0; x < range; x++) {
 				Model* model = new Asteroid(rawModel);
-
+		
 				models.push_back(model);
 			}
 		}
+
+		Model* model = new Asteroid(rawModel);
+		models.push_back(model);
+
+		//planetModel = new Model(rawPlanet);
 
 		Mouse::hideCursor();
 	}
@@ -140,6 +147,7 @@ namespace Game
 			models.at(i)->update();
 
 		Renderer::Render(models, camera);
+		//Renderer::Render({ planetModel }, camera);
 
 		printf((std::to_string(getFPS()) + "\n").c_str());
 
