@@ -62,4 +62,12 @@ namespace Ansel
 
 		return view;
 	}
+
+	vec3f Camera::getLocation() { 
+		return { location.x, location.y, location.z }; 
+	}
+
+	void Camera::setLocation(vec3f loc) {
+		location = loc;
+	}
 }

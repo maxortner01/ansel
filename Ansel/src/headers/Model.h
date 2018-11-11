@@ -116,6 +116,8 @@ namespace Ansel
 		  * Get the index within RawModel vector.
 		  */
 		unsigned int ANSEL_API getIndex() const;
+
+		ANSEL_API ~RawModel();
 	};
 
 	/**

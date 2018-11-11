@@ -27,6 +27,7 @@ namespace Ansel
 		DOWN  = GLFW_KEY_DOWN,
 		LEFT  = GLFW_KEY_LEFT,
 		RIGHT = GLFW_KEY_RIGHT,
+		TAB   = GLFW_KEY_TAB,
 		AMT = 127
 	} typedef KEY;
 

@@ -9,9 +9,12 @@ namespace Ansel
 {
 	class Renderer
 	{
+		friend class Engine;
+
 		struct RenderSettings
 		{
 			float _3D = 0.f;
+			bool wireframe = false;
 		};
 
 		struct Light
@@ -43,5 +46,7 @@ namespace Ansel
 
 		static void ANSEL_API genProjection(float zNear, float zFar, float FOV, float aspectRatio);
 		static void ANSEL_API set3D(bool isOn);
+		static void ANSEL_API setWireFrame(bool isOn);
+		static void ANSEL_API toggleWireFrame();
 	};
 }

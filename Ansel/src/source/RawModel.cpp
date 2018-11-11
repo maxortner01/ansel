@@ -53,4 +53,8 @@ namespace Ansel
 	VAO *RawModel::getVAO() const { return vao; }
 	unsigned int RawModel::getVertexCount() const { return size; }
 	unsigned int RawModel::getIndex() const { return index; }
+
+	RawModel::~RawModel() {
+		vao->destroy();
+	}
 }

@@ -95,7 +95,9 @@ namespace Ansel
 	}
 
 	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		if (settings.wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 		std::vector<vec4f> locations, scales, rotations, lights;
 		std::vector<int> light_states;
 
@@ -120,6 +122,8 @@ namespace Ansel
 			lights.push_back({ 0, 0, 0, 1 });
 			light_states.push_back(0);
 		}
+
+		current_shader->bind();
 		
 		current_shader->setUniform((float)uFrame, "frame");
 		current_shader->setUniform(settings._3D, "use3D");
@@ -132,7 +136,6 @@ namespace Ansel
 
 		//shader->setUniform(locations, "location", INSTANCE_COUNT);
 
-		current_shader->bind();
 
 		RawModel* rawModel = models.at(0)->getRawModel();
 		VAO *vao = rawModel->getVAO();
@@ -148,5 +151,18 @@ namespace Ansel
 	
 	void Renderer::set3D(bool isOn) {
 		settings._3D = isOn;
+	}
+
+	void Renderer::setWireFrame(bool isOn) {
+		settings.wireframe = isOn;
+	}
+
+	void Renderer::toggleWireFrame() {
+		if (settings.wireframe == true) {
+			settings.wireframe = false;
+		}
+		else {
+			settings.wireframe = true;
+		}
 	}
 }

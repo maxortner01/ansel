@@ -37,7 +37,7 @@ void main(void)
     vecs[1] = vecs[1] - vecs[0];
     vecs[2] = vecs[2] - vecs[0];
 
-    if (vecs[0].y / 12.0 > -.75) {
+    if (vecs[0].y / 75.0 > -.75) {
         c = vec4(0.0, 1.0, 0.0, 1.0);
     } else {
         c = vec4(0.9294, 0.7882, 0.6863, 1.0);
@@ -51,7 +51,7 @@ void main(void)
     {
         frag.vertexColor = c;
         frag.toLight = VertexIn[i].toLight;
-        frag.outNormal = calcNormal;
+        frag.outNormal = normalize(calcNormal);
         frag.modelMatrix = VertexIn[i].modelMatrix;
 
         gl_Position = gl_in[i].gl_Position * VertexIn[i].modelMatrix * view * projection;

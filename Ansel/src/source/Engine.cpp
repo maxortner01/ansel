@@ -23,8 +23,8 @@ namespace Ansel
 		glEnable(GL_DEPTH_TEST);
 
 		// Run the current screen's create function
-		screen->onCreate();
 		screen->ScreenSize = { window->getWidth(), window->getHeight() };
+		screen->onCreate();
 
 		while ( !window->shouldClose() ) {
 			// FPS Calculations
@@ -51,6 +51,7 @@ namespace Ansel
 			glfwSwapBuffers(window->getWindow());
 
 			glFlush();
+			Renderer::uFrame++;
 		}
 
 		// Run the current screen's destroy function

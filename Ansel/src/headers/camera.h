@@ -29,5 +29,8 @@ namespace Ansel
 		void ANSEL_API move(DIRECTION direction, float speed);
 
 		mat4x4 ANSEL_API getView();
+		vec3f  ANSEL_API getLocation();
+
+		void  ANSEL_API setLocation(vec3f loc);
 	};
 }
