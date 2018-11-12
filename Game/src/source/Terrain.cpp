@@ -26,7 +26,7 @@ namespace Game
 	}
 
 	Terrain::Terrain(Window* w) : Screen(w) {
-		
+		genCylinder();
 	}
 
 	void Terrain::onCreate() {
@@ -37,7 +37,8 @@ namespace Game
 
 		shader->link();
 
-		camera.setLocation({ -89.67f, 0.f, 384.11f });
+		//camera.setLocation({ -89.67f, 0.f, 384.11f });
+		Mouse::hideCursor();
 	}
 
 	Chunk* Terrain::generateChunk(int locx, int locy) {
@@ -79,7 +80,26 @@ namespace Game
 		land  = Loader::makeRawModel(vertices, indices);
 		water = Loader::makeRawModel(waterv, indices);
 
-		return new Chunk(land, water, final_x, final_y);
+		Chunk* chunk = new Chunk(land, water, final_x, final_y);
+		
+		for (int i = 0; i < 4000; i++) {
+			vec2f loc = { (rand() % 1000) / 1000.f + final_x, (rand() % 1000) / 1000.f + final_y };
+			loc.x *= size * CHUNK_DIMENSION;
+			loc.y *= size * CHUNK_DIMENSION;
+
+			if (getNoise(loc.x, loc.y) < -.74f * terrainHeight)
+				continue;
+
+			Model* model = new Model(cylinder);
+			model->setLocation({ loc.x, getNoise(loc.x, loc.y) - .25f, loc.y });
+			chunk->trees.push_back(model);
+
+			chunk->locations.push_back({ loc.x, getNoise(loc.x, loc.y) - .25f, loc.y, 1 });
+			chunk->rotations.push_back({ 0, 0, 0, 1 });
+			chunk->scales.push_back({ 1, 1, 1, 1 });
+		}
+
+		return chunk;
 	}
 
 	float Terrain::getNoise(const float x, const float y) {
@@ -106,6 +126,7 @@ namespace Game
 
 		float rotation_speed = .1f * 3.14159f / 180.f;
 		float speed = .1f;
+		//float speed = .5f;
 
 		if (Keyboard::isKeyPressed(KEY::L_SHIFT))
 			speed *= 2;
@@ -154,11 +175,11 @@ namespace Game
 		float chunk_size = (int)CHUNK_DIMENSION * size;
 		vec2i camera_chunk_location = { (int)floor(camera.getLocation().x / chunk_size), (int)floor(camera.getLocation().z / chunk_size) };
 
-		camera.setLocation({
-			camera.getLocation().x,
-			getNoise(camera.getLocation().x, camera.getLocation().z) + 4.f,
-			camera.getLocation().z
-		});
+		//camera.setLocation({
+		//	camera.getLocation().x,
+		//	getNoise(camera.getLocation().x, camera.getLocation().z) + 4.f,
+		//	camera.getLocation().z
+		//});
 
 		for (int y = -1; y < 2; y++) {
 			for (int x = -1; x < 2; x++) {
@@ -186,11 +207,21 @@ namespace Game
 			}
 		}
 
+		std::vector<Model*> tree_models;
+		std::vector<vec4f> locations, rotations, scales;
+
 		for (int i = 0; i < chunks.size(); i++) {
 			Chunk* chunk = chunks.at(i);
 
 			Renderer::Render(chunk->getLandModel(), camera);
+			tree_models.insert(tree_models.begin(), chunk->trees.begin(), chunk->trees.end());
+
+			locations.insert(locations.begin(), chunk->locations.begin(), chunk->locations.end());
+			rotations.insert(rotations.begin(), chunk->rotations.begin(), chunk->rotations.end());
+			scales.insert(scales.begin(), chunk->scales.begin(), chunk->scales.end());
 		}
+
+		Renderer::Render(tree_models, locations, scales, rotations, camera);
 
 		for (int i = 0; i < chunks.size(); i++) {
 			Chunk* chunk = chunks.at(i);
@@ -200,5 +231,100 @@ namespace Game
 
 		printf((std::to_string(getFPS()) + "\n").c_str());
 		uFrame++;
+	}
+
+	void Terrain::genCylinder() {
+		std::vector<vec3f> vertices;
+		std::vector<unsigned int> indices;
+		
+		const float height = 8.f;
+		const float radius = .5f;
+
+		const int precision = 10;
+		const float increment = 360.f / (float)precision;
+		
+		for (int i = 0; i < (precision * 2) + 1; i++) {
+			//VERTEX 1: (0, 0, 0) Center
+			vec3f p;
+
+			p.x = 0;
+			p.z = 0;
+
+			if (i > precision)
+				p.y = height;
+			else
+				p.y = 0;
+
+			vertices.push_back(p);
+
+			//VERTEX 2: increment * i
+			const float x1 = radius * sinf(increment * i * 3.14159f / 180.f);
+			const float z1 = radius * cosf(increment * i * 3.14159f / 180.f);
+
+			p.x = x1;
+			p.z = z1;
+
+			vertices.push_back(p);
+
+			const float x2 = radius * sinf(increment * (i + 1) * 3.14159f / 180.f);
+			const float z2 = radius * cosf(increment * (i + 1) * 3.14159f / 180.f);
+
+			//VERTEX 3: increment * (i + 1)
+			p.x = x2;
+			p.z = z2;
+
+			vertices.push_back(p);
+
+			if (i < precision) {
+				/* <---------- Create Walls ----------> */
+				//TRIANGLE 1
+				{
+					//VERTEX 2: increment * i
+					p.x = x1;
+					p.y = 0;
+					p.z = z1;
+					vertices.push_back(p);
+
+					//VERTEX 3: increment * (i + 1)
+					p.x = x2;
+					p.y = 0;
+					p.z = z2;
+					vertices.push_back(p);
+
+					//VERTEX 2: (increment * i) + height
+					p.x = x1;
+					p.y = height;
+					p.z = z1;
+					vertices.push_back(p);
+				}
+				//TRIANGLE 2
+				{
+					//VERTEX 3: increment * (i + 1)
+					p.x = x2;
+					p.y = height;
+					p.z = z2;
+					vertices.push_back(p);
+
+					//VERTEX 2: increment * i
+					p.x = x1;
+					p.y = height;
+					p.z = z1;
+					vertices.push_back(p);
+
+					//VERTEX 3: increment * (i + 1)
+					p.x = x2;
+					p.y = 0;
+					p.z = z2;
+					vertices.push_back(p);
+				}
+			}
+		}
+
+		std::vector<vec4f> colors;
+		for (int i = 0; i < vertices.size(); i++)
+			colors.push_back({ .3255f, .19216f, .09411f, 1 });
+
+		cylinder = Loader::makeRawModel(vertices);
+		cylinder->loadColors(colors);
 	}
 }

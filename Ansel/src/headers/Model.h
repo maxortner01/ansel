@@ -77,6 +77,7 @@ namespace Ansel
 		VAO *vao;			///< Pointer to the VAO object that defines this model
 		unsigned int size;	///< Amount of vertices/indices
 		unsigned int index;	///< Respective index inside the vector of RawModels
+		bool use_colors = false;
 
 	public:
 		/**
@@ -116,6 +117,8 @@ namespace Ansel
 		  * Get the index within RawModel vector.
 		  */
 		unsigned int ANSEL_API getIndex() const;
+
+		int colorsOn() const;
 
 		ANSEL_API ~RawModel();
 	};

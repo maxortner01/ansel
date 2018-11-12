@@ -94,14 +94,54 @@ namespace Ansel
 		Render(models, camera, s);
 	}
 
-	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
+	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, 
+			Camera camera, Shader* s) {
+
 		if (settings.wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		std::vector<vec4f> locations, scales, rotations, lights;
 		std::vector<int> light_states;
+		std::vector<vec4f> lights;
+
+		lights.push_back({ -1, .5f, 0, 1 });
+		light_states.push_back(1);
+
+		//TEMPORARY
+		for (int i = 0; i < LIGHT_COUNT - 1; i++) {
+			lights.push_back({ 0, 0, 0, 1 });
+			light_states.push_back(0);
+		}
 
 		Shader* current_shader = (s == NULL) ? shader : s;
+
+		RawModel* rawModel = models.at(0)->getRawModel();
+		VAO *vao = rawModel->getVAO();
+
+		current_shader->bind();
+
+		current_shader->setUniform((float)uFrame, "frame");
+		current_shader->setUniform(settings._3D, "use3D");
+		current_shader->setUniform((int)rawModel->colorsOn(), "use_colors");
+
+		current_shader->setUniform(projection, "projection");
+		current_shader->setUniform(camera.getView(), "view");
+
+		current_shader->setUniform(light_states, "light_state", LIGHT_COUNT);
+		current_shader->setUniform(lights, "light_position", LIGHT_COUNT);
+
+		//shader->setUniform(locations, "location", INSTANCE_COUNT);
+
+		rawModel->loadTransformations(locations, rotations, scales);
+
+		vao->bind();
+
+		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
+
+		vao->unbind();
+	}
+
+	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
+		std::vector<vec4f> locations, scales, rotations;
 
 		for (int i = 0; i < models.size(); i++) {
 			vec4f v = models.at(i)->getLocation();
@@ -114,39 +154,7 @@ namespace Ansel
 			rotations.push_back({ r.x, r.y, r.z, 1 });
 		}
 
-		lights.push_back({ -1, .5f, 0, 1 });
-		light_states.push_back(1);
-
-		//TEMPORARY
-		for (int i = 0; i < LIGHT_COUNT - 1; i++) {
-			lights.push_back({ 0, 0, 0, 1 });
-			light_states.push_back(0);
-		}
-
-		current_shader->bind();
-		
-		current_shader->setUniform((float)uFrame, "frame");
-		current_shader->setUniform(settings._3D, "use3D");
-
-		current_shader->setUniform(projection, "projection");
-		current_shader->setUniform(camera.getView(), "view");
-
-		current_shader->setUniform(light_states, "light_state", LIGHT_COUNT);
-		current_shader->setUniform(lights, "light_position", LIGHT_COUNT);
-
-		//shader->setUniform(locations, "location", INSTANCE_COUNT);
-
-
-		RawModel* rawModel = models.at(0)->getRawModel();
-		VAO *vao = rawModel->getVAO();
-
-		rawModel->loadTransformations(locations, rotations, scales);
-
-		vao->bind();
-		
-		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
-
-		vao->unbind();
+		Renderer::Render(models, locations, scales, rotations, camera, s);
 	}
 	
 	void Renderer::set3D(bool isOn) {

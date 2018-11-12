@@ -43,6 +43,7 @@ namespace Ansel
 		static void ANSEL_API Render(RawModel* rawModel, Camera camera, Shader* s = NULL);
 		static void ANSEL_API Render(Model* model, Camera camera, Shader* s = NULL);
 		static void ANSEL_API Render(std::vector<Model*> models, Camera camera = Camera(), Shader* s = NULL);
+		static void ANSEL_API Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, Camera camera = Camera(), Shader* s = NULL);
 
 		static void ANSEL_API genProjection(float zNear, float zFar, float FOV, float aspectRatio);
 		static void ANSEL_API set3D(bool isOn);

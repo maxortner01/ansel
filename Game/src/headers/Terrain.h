@@ -14,6 +14,12 @@ namespace Game
 		vec2f location;
 
 	public:
+		std::vector<Model*> trees;
+
+		std::vector<vec4f> locations;
+		std::vector<vec4f> rotations;
+		std::vector<vec4f> scales;
+
 		 Chunk(RawModel* l, RawModel* w, int x, int y);
 		~Chunk();
 
@@ -34,6 +40,9 @@ namespace Game
 		std::vector<Chunk*> chunks;
 		
 		Shader* shader;
+
+		RawModel* cylinder;
+		void genCylinder();
 
 	public:
 		Terrain(Window* w);

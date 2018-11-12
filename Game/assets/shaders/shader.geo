@@ -26,6 +26,8 @@ out fData {
 uniform mat4 projection;
 uniform mat4 view;
 
+uniform int use_colors;
+
 void main(void)
 {
     vec4 vecs[3], c;
@@ -49,6 +51,10 @@ void main(void)
 
     for (int i = 0; i < gl_in.length(); i++)
     {
+        if (use_colors == 1) {
+            c = VertexIn[i].vertexColor;
+        }
+
         frag.vertexColor = c;
         frag.toLight = VertexIn[i].toLight;
         frag.outNormal = normalize(calcNormal);

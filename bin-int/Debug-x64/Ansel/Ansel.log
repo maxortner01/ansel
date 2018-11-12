@@ -1,14 +1,4 @@
-﻿  Camera.cpp
-  Engine.cpp
-d:\dev\ansel\ansel\src\headers\window.h(16): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-d:\dev\ansel\ansel\src\source\engine.cpp(32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Renderer.cpp
-d:\dev\ansel\ansel\src\source\renderer.cpp(147): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Generating Code...
-     Creating library D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.lib and object D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.exp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\dev\Ansel\bin\Debug-x64\Ansel\vc120.pdb'; linking object as if no debug info
+﻿  Renderer.cpp
+d:\dev\ansel\ansel\src\source\renderer.cpp(138): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Ansel.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.dll
           1 file(s) copied.

@@ -145,5 +145,6 @@ void main(void)
 	float val = abs(normVec.y) * 1.5;
 	val = -val + .75;
 	val = pow(val, 2);
-	VertexIn.vertexColor = vec4(1.0 * val, 1.0 * val, 1.0 * val, 1.0);
+	//VertexIn.vertexColor = vec4(1.0 * val, 1.0 * val, 1.0 * val, 1.0);
+	VertexIn.vertexColor = color;
 }
