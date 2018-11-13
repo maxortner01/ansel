@@ -7,35 +7,20 @@ layout (location = 3) in vec4 location;
 layout (location = 4) in vec4 rotation;
 layout (location = 5) in vec4 scale;
 
-uniform float frame;
-uniform mat4  projection;
-uniform mat4  view;
-uniform float  use3D;
-
 uniform vec4 light_position[8];
 uniform int  light_state[8];
-//uniform float intensities[16];
 
 out vData {
 	vec4 position;
-    vec4 vertexColor; // the input variable from the vertex shader (same name and same type)  
+    vec4 vertexColor; 
 
     vec3 toLight;
     vec3 outNormal;
     
     mat4 modelMatrix;
+	mat4 rotationMatrix;
 } VertexIn;
 
-/*
-out vec4 vertexColor;
-
-// For lighting normal calculations in the fragment shader
-out vec3 toLight;
-out vec3 outNormal;
-
-out mat4 modelMatrix;
-out mat4 viewMatrix;
-out mat4 projectionMatrix; */
 
 mat4 makeTransformMatrix(vec4 loc) {
 	return mat4(	
@@ -104,27 +89,15 @@ vec4 normalizeVector(vec4 vector) {
 
 void main(void)
 {
-	mat4 model = makeModel(location, rotation, scale);
-	vec4 norm  = normalizeVector(vec4(normal, 1.0) * makeRotationMatrix(rotation));
-	
-	//VertexIn.outNormal = vec3(norm.xyz);
+	// Make the toLight vector
 	VertexIn.toLight   = vec3(light_position[0]);
-	
-	//float dp = getDotProduct(norm, lights[0]);
-	
-	//vec4 c = color;
-	//vec4 c = vec4(1.0, 1.0, 1.0, 1.0);
-	
-	//if (dp <= 0) {
-	//	c.x = 0;
-	//	c.y = 0;
-	//	c.z = 0;
-	//} else {
-	//	c.x = c.x * dp;
-	//	c.y = c.y * dp;
-	//	c.z = c.z * dp;
-	//} 
-	
+	// Create the rotation matrix for rotating the normals
+	VertexIn.rotationMatrix = makeRotationMatrix(rotation);
+
+	// Create the model matrix
+	mat4 model = makeModel(location, rotation, scale);	
+
+	// Set the position for the geometry shader
 	VertexIn.position = vec4(
 		vertex.x,
 		vertex.y,
@@ -132,19 +105,10 @@ void main(void)
 		1.0
 	);
 
-	gl_Position = vec4(
-			vertex.x,
-			vertex.y,
-			vertex.z,
-			1.0
-		);
-
+	// Pass the position to the vertex shader
+	gl_Position = VertexIn.position;
+	// Pass the model matrix
 	VertexIn.modelMatrix = model;
-	
-	vec4 normVec = normalizeVector(vec4(vertex, 1.0));
-	float val = abs(normVec.y) * 1.5;
-	val = -val + .75;
-	val = pow(val, 2);
-	//VertexIn.vertexColor = vec4(1.0 * val, 1.0 * val, 1.0 * val, 1.0);
+	// Pass the color
 	VertexIn.vertexColor = color;
 }

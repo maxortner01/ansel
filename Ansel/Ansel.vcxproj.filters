@@ -40,6 +40,9 @@
     <Filter Include="Header Files\entities">
       <UniqueIdentifier>{2ee82340-1044-439d-adb0-60fddbeae977}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\utility">
+      <UniqueIdentifier>{821455ee-b397-42fb-b097-c24a559adf76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ansel.h">
@@ -79,7 +82,10 @@
       <Filter>Header Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\headers\SimplexNoise.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\ModelArray.h">
+      <Filter>Header Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +123,10 @@
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\source\SimplexNoise.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\ModelArray.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

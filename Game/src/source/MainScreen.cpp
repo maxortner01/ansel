@@ -11,7 +11,6 @@ namespace Game
 		};
 
 		angle = (rand() % 360000) / 1000.f;
-		//radius = 100.f + ((rand() % max) / prec - ((float)max / prec) / 2.f);
 		radius = (rand() % (max - min)) + min;
 		
 		float scale_factor = (rand() % 10) / 200.f;
@@ -50,9 +49,6 @@ namespace Game
 			{ 1, 1, 1, 1 },
 		};
 
-		//for (vec3f &v : locations)
-		//	v = { v.x / 10.f, v.y / 10.f, v.z / 10.f };
-
 		std::vector<unsigned int> indices = {
 			0, 1, 2,
 			2, 3, 0,
@@ -73,10 +69,14 @@ namespace Game
 			6, 2, 1
 		};
 
-		//rawModel = Loader::makeRawModel(locations, indices);
+
 		rawModel = Loader::makeRawModel("assets/models/Asteroid.obj");
-		//rawPlanet = Loader::makeRawModel("assets/models/sphere.obj");
-		//rawModel->loadColors(colors);
+
+		colors.resize(rawModel->getVertexCount());
+		for (int i = 0; i < rawModel->getVertexCount(); i++)
+			colors.at(i) = { 1, 1, 1, 1 };
+
+		rawModel->loadColors(colors);
 
 		int range = 50;
 		for (int y = 0; y < range; y++) {
@@ -89,8 +89,6 @@ namespace Game
 
 		Model* model = new Asteroid(rawModel);
 		models.push_back(model);
-
-		//planetModel = new Model(rawPlanet);
 
 		Mouse::hideCursor();
 	}

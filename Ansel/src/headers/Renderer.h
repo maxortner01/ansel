@@ -17,7 +17,7 @@ namespace Ansel
 		  */
 		struct RenderSettings
 		{
-			int _3D = 0;		///< Render with 3D? does nothing right now
+			int _3D = 0;			///< Render with 3D? does nothing right now
 			bool wireframe = false; ///< Render with wireframe if true.
 		};
 
@@ -31,32 +31,23 @@ namespace Ansel
 			bool  on;
 		};
 
-		static mat4x4 projection;		///< Projection matrix for projecting 3D objects
+		static mat4x4 projection;			///< Projection matrix for projecting 3D objects
 
 		static RenderSettings settings;		///< Instance of the RenderSettings for different options.
 		static std::vector<Light> lights;	///< List of lights to render with.
 
-		static Shader* shader;			///< Default shader.
-		static void prepare();			///< Mostly unused function to clear the screen. <- UNUSED ->
-		static unsigned int uFrame;		///< Ticker that counts frames. <- UNUSED ->
-		
-
-	public:
-		static mat4x4 ANSEL_API view;		///< View matrix that represents the camera in 3D space.
+		static Shader* shader;				///< Default shader.
+		static unsigned int uFrame;			///< Ticker that counts frames.
 
 		static void loadShader(Shader* shader);
-		
+
+	public:				
 		/**
 		  * Initialize the renderer. (maybe make this private)
 		  * @params dimensions (w, h) dimensions of the screen
 		  */
 		static void ANSEL_API init(vec2u dimensions);
 
-		/**
-		  * Render to the screen. <- UNUSED ->
-		  * @param model Model object to render.
-		  */
-		static void ANSEL_API Render(Model* model);
 		/**
 		  * Render to the screen.
 		  * @param rawModel RawModel object to render

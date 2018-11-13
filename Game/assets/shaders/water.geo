@@ -11,6 +11,7 @@ in vData {
     vec3 outNormal;
 
     mat4 modelMatrix;
+	mat4 rotationMatrix;
 } VertexIn[3];
 
 out fData {
@@ -21,6 +22,7 @@ out fData {
     vec3 outNormal;
     
     mat4 modelMatrix;
+	mat4 rotationMatrix;
 } frag;
 
 uniform mat4 projection;
@@ -30,10 +32,13 @@ uniform float frame;
 void main(void)
 {
     // Retrieve the three vertices that make up the triangle
-    vec4 vecs[3], c;
+    vec4 vecs[3], fvecs[3], c;
     vec3 calcNormal;
     for (int i = 0; i < gl_in.length(); i++) {
         vecs[i] = gl_in[i].gl_Position;
+        vecs[i].y = vecs[i].y + ( ( sin(frame / 50.0 + vecs[i].x) + cos(frame / 50.0 + vecs[i].z) ) / 5.0 );
+
+        fvecs[i] = vecs[i];
     }
 
     // Relativize the two other points to the first
@@ -41,7 +46,7 @@ void main(void)
     vecs[2] = vecs[2] - vecs[0];
 
     // Set out water color
-    c = vec4(0.0, 0.0, 1.0, .75);
+    c = vec4(0.0, 0.0, 1.0, .85);
 
     // Calculate the normal
     calcNormal.x = vecs[1].y * vecs[2].z - vecs[1].z * vecs[2].y;
@@ -56,10 +61,7 @@ void main(void)
         frag.outNormal = normalize(calcNormal);
         frag.modelMatrix = VertexIn[i].modelMatrix;
 
-        vec4 position = gl_in[i].gl_Position;
-
-        //position.y = position.y + sin(3.14159 * frame / 150.0 + position.x + position.z) / 5.0;
-        position.y = position.y + ( ( sin(frame / 50.0 + position.x) + cos(frame / 50.0 + position.z) ) / 5.0 );
+        vec4 position = fvecs[i];
 
         gl_Position = position * VertexIn[i].modelMatrix * view * projection;
 

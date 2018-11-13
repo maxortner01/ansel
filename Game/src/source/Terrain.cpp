@@ -32,7 +32,7 @@ namespace Game
 	void Terrain::onCreate() {
 		chunks.push_back(generateChunk(0, 0));
 
-		shader = new Shader("assets/shaders/shader.vert", "assets/shaders/shader.frag", false);
+		shader = new Shader("assets/shaders/shader.vert", "assets/shaders/water.frag", false);
 		shader->makeShader("assets/shaders/water.geo", GEOMETRY);
 
 		shader->link();

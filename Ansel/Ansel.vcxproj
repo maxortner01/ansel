@@ -144,6 +144,7 @@
     <ClInclude Include="src\headers\Engine.h" />
     <ClInclude Include="src\headers\Model.h" />
     <ClInclude Include="src\headers\Keyboard.h" />
+    <ClInclude Include="src\headers\ModelArray.h" />
     <ClInclude Include="src\headers\Mouse.h" />
     <ClInclude Include="src\headers\Renderer.h" />
     <ClInclude Include="src\headers\Screen.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="src\source\Keyboard.cpp" />
     <ClCompile Include="src\source\Loader.cpp" />
     <ClCompile Include="src\source\Model.cpp" />
+    <ClCompile Include="src\source\ModelArray.cpp" />
     <ClCompile Include="src\source\Mouse.cpp" />
     <ClCompile Include="src\source\RawModel.cpp" />
     <ClCompile Include="src\source\Renderer.cpp" />

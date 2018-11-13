@@ -1,4 +1,4 @@
 ﻿  Renderer.cpp
-d:\dev\ansel\ansel\src\source\renderer.cpp(138): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+d:\dev\ansel\ansel\src\source\renderer.cpp(97): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Ansel.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.dll
           1 file(s) copied.
