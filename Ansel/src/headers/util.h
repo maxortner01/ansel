@@ -14,10 +14,13 @@ namespace Ansel
 	struct ANSEL_API rect {
 		T x, y, w, h;
 	};
-
-	typedef rect<float> FloatRect;
-	typedef rect<int>   IntRect;
-	typedef rect<unsigned int> uIntRect;
+	
+	/*! Rectangle with floats. */
+	ANSEL_API typedef rect<float> FloatRect;
+	/*! Rectangle with integers. */
+	ANSEL_API typedef rect<int>   IntRect;
+	/*! Rectangle with unsigned integers. */
+	ANSEL_API typedef rect<unsigned int> uIntRect;
 
 
 	// <------------------>
@@ -27,6 +30,10 @@ namespace Ansel
 	struct ANSEL_API mat4x4 {
 		float m[4][4] = { 0 };
 
+		/**
+		  * Sets matrix to an identity matrix. (modifies only center
+		  * four.
+		  */
 		void setIdentity() {
 			m[0][0] = 1.f;
 			m[1][1] = 1.f;
@@ -34,6 +41,12 @@ namespace Ansel
 			m[3][3] = 1.f;
 		}
 
+		/**
+		  * Makes the matrix into a translation matrix for (x, y, z)
+		  * @param x x-coordinate of the translation
+		  * @param y y-coordinate of the translation
+		  * @param z z-coordinate of the translation
+		  */
 		static mat4x4 makeTranslation(float x, float y, float z)
 		{
 			mat4x4 mat;
@@ -46,7 +59,13 @@ namespace Ansel
 
 			return mat;
 		}
-
+		
+		/**
+		  * Make the matrix into a rotation matrix.
+		  * @param x Rotation relative to the x-axis (radians)
+		  * @param y Rotation relative to the y-axis (radians)
+		  * @param z Rotation relative to the z-axis (radians)
+		  */
 		static mat4x4 makeRotation(float x, float y, float z)
 		{
 			mat4x4 rot_x, rot_y, rot_z;
@@ -67,7 +86,11 @@ namespace Ansel
 
 			return rot_x * rot_y;
 		}
-
+		
+		/**
+		  * Multiply two matrices together.
+		  * @param mat Independant matrix
+		  */
 		mat4x4 operator*(mat4x4 mat) {
 			mat4x4 nmat;
 
@@ -202,11 +225,21 @@ namespace Ansel
 	ANSEL_API typedef vec4<int>    vec4i;
 	ANSEL_API typedef vec4<unsigned int> vec4u;
 
+	/**
+	  * Get the dot product of two vectors with varying types.
+	  * @param vec_a First vector
+	  * @param vec_b Second vector
+	  */
 	template<typename T>
 	inline float dotProduct(vec3<T> vec_a, vec3<T> vec_b) {
 		return vec_a.x * vec_b.x + vec_a.y * vec_b.y + vec_a.z * vec_b.z;
 	}
 
+	/**
+	  * Get the cross product of two vectors with varying types.
+	  * @param vec_a First vector
+	  * @param vec_b Second vector
+	  */
 	template<typename T>
 	inline vec3<T> cross(vec3<T> vec_a, vec3<T> vec_b) {
 		vec3<T> normal;
@@ -218,11 +251,19 @@ namespace Ansel
 		return normal;
 	}
 
+	/**
+	  * Get the length of a vector.
+	  * @param vec Vector to get length of
+	  */
 	template<typename T>
 	inline float length(vec3<T> vec) {
 		return sqrtf(dotProduct(vec, vec));
 	}
 
+	/**
+	  * Normalize given vector.
+	  * @param vec Vector to be normalized 
+	  */
 	template<typename T>
 	inline vec3<T> normalize(vec3<T> vec) {
 		return vec / length(vec);
