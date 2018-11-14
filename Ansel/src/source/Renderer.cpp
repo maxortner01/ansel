@@ -64,7 +64,7 @@ namespace Ansel
 		std::vector<int> light_states;
 		std::vector<vec4f> lights;
 
-		lights.push_back({ 0, 1, 1, 1 });
+		lights.push_back({ -1, 1, 0, 1 });
 		light_states.push_back(1);
 
 		//TEMPORARY
@@ -83,6 +83,7 @@ namespace Ansel
 		current_shader->setUniform((float)uFrame, "frame");
 		current_shader->setUniform(settings._3D, "use3D");
 		current_shader->setUniform((int)rawModel->colorsOn(), "use_colors");
+		current_shader->setUniform((int)rawModel->normalsOn(), "use_normals");
 
 		current_shader->setUniform(projection, "projection");
 		current_shader->setUniform(camera.getView(), "view");

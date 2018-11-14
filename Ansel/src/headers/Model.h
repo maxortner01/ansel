@@ -78,6 +78,7 @@ namespace Ansel
 		unsigned int size;	///< Amount of vertices/indices
 		unsigned int index;	///< Respective index inside the vector of RawModels
 		bool use_colors = false;
+		bool use_normals = false;
 
 	public:
 		/**
@@ -97,6 +98,12 @@ namespace Ansel
 		  * @param colors List of colors to add
 		  */
 		void ANSEL_API loadColors(std::vector<vec4f> colors);
+
+		/*
+		 * Loads specified normals into the corresponding normals buffer.
+		 * @param normals List of (x, y, z) normals
+		 */
+		void ANSEL_API loadNormals(std::vector<vec3f> normals);
 		/**
 		  * Load transformation information for construction of the matrix in the shader.
 		  * @param transformation (x, y, z, w) transformation information
@@ -119,6 +126,7 @@ namespace Ansel
 		unsigned int ANSEL_API getIndex() const;
 
 		int colorsOn() const;
+		int normalsOn() const;
 
 		ANSEL_API ~RawModel();
 	};

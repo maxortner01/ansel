@@ -111,4 +111,6 @@ void main(void)
 	VertexIn.modelMatrix = model;
 	// Pass the color
 	VertexIn.vertexColor = color;
+	// Pass the normal, even if it isn't used
+	VertexIn.outNormal = normal;
 }

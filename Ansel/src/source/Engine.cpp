@@ -29,7 +29,7 @@ namespace Ansel
 		while ( !window->shouldClose() ) {
 			// FPS Calculations
 			double currentTime = glfwGetTime();
-			screen->fps = 1.f / (currentTime - previousTime);
+			screen->fps = 1.f / (float)(currentTime - previousTime);
 			previousTime = currentTime;
 
 			// Check if the current screen's next screen is not NULL

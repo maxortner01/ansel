@@ -85,6 +85,10 @@ namespace Ansel
 	template<typename T>
 	struct ANSEL_API vec2 {
 		T x, y;
+
+		// Casting Operator
+		template<typename B>
+		operator vec2<B>() const { return { (B)x, (B)y }; }
 	};
 
 	template<typename T>
@@ -99,6 +103,65 @@ namespace Ansel
 				T r, g, b;
 			};
 		};
+
+		// Division Operator
+		template<typename B>
+		vec3<T> operator/(const vec3<B> &v1) const {
+			vec3<T> v;
+
+			v.x = x / v1.x;
+			v.y = y / v1.y;
+			v.z = z / v1.z;
+
+			return v;
+		}
+
+		template<typename B>
+		vec3<T> operator/(const B &f) const {
+			vec3<T> v;
+
+			v.x = x / f;
+			v.y = y / f;
+			v.z = z / f;
+
+			return v;
+		}
+
+		// Subtraction Operator
+		template<typename B>
+		vec3<T> operator-(const vec3<B> &v1) const {
+			vec3<T> v;
+
+			v.x = x - v1.x;
+			v.y = y - v1.y;
+			v.z = z - v1.z;
+
+			return v;
+		}
+
+		// Addition Operator
+		template<typename B>
+		vec3<T> operator+(const vec3<B> &v1) const {
+			vec3<T> v;
+
+			v.x = x + v1.x;
+			v.y = y + v1.y;
+			v.z = z + v1.z;
+
+			return v;
+		}
+
+		// Plus Equals Operator
+		template<typename B>
+		void operator+=(const vec3<B> &v) {
+			x += v.x;
+			y += v.y;
+			z += v.z;
+		}
+
+		// Casting Operator
+		template<typename B>
+		operator vec3<B>() const { return { (B)x, (B)y, (B)z }; }
 	};
 
 	template<typename T>
@@ -113,23 +176,55 @@ namespace Ansel
 				T r, g, b, a;
 			};
 		};
+
+		// Addition Operator
+
+		// Casting Operator
+		template<typename B>
+		operator vec4<B>() const { return { (B)x, (B)y, (B)z, (B)w }; }
 	};
 
 	// 2D Vector Type Definitions
-	typedef vec2<float>  vec2f;
-	typedef vec2<double> vec2d;
-	typedef vec2<int>    vec2i;
-	typedef vec2<unsigned int> vec2u;
+	ANSEL_API typedef vec2<float>  vec2f;
+	ANSEL_API typedef vec2<double> vec2d;
+	ANSEL_API typedef vec2<int>    vec2i;
+	ANSEL_API typedef vec2<unsigned int> vec2u;
 
 	// 3D Vector Type Definitions
-	typedef vec3<float>  vec3f;
-	typedef vec3<double> vec3d;
-	typedef vec3<int>    vec3i;
-	typedef vec3<unsigned int> vec3u;
+	ANSEL_API typedef vec3<float>  vec3f;
+	ANSEL_API typedef vec3<double> vec3d;
+	ANSEL_API typedef vec3<int>    vec3i;
+	ANSEL_API typedef vec3<unsigned int> vec3u;
 
 	// 4D Vector Type Definitions
-	typedef vec4<float>  vec4f;
-	typedef vec4<double> vec4d;
-	typedef vec4<int>    vec4i;
-	typedef vec4<unsigned int> vec4u;
+	ANSEL_API typedef vec4<float>  vec4f;
+	ANSEL_API typedef vec4<double> vec4d;
+	ANSEL_API typedef vec4<int>    vec4i;
+	ANSEL_API typedef vec4<unsigned int> vec4u;
+
+	template<typename T>
+	inline float dotProduct(vec3<T> vec_a, vec3<T> vec_b) {
+		return vec_a.x * vec_b.x + vec_a.y * vec_b.y + vec_a.z * vec_b.z;
+	}
+
+	template<typename T>
+	inline vec3<T> cross(vec3<T> vec_a, vec3<T> vec_b) {
+		vec3<T> normal;
+
+		normal.x = vec_a.y * vec_b.z - vec_a.z * vec_b.y;
+		normal.y = vec_a.z * vec_b.x - vec_a.x * vec_b.z;
+		normal.z = vec_a.x * vec_b.y - vec_a.y * vec_b.x;
+
+		return normal;
+	}
+
+	template<typename T>
+	inline float length(vec3<T> vec) {
+		return sqrtf(dotProduct(vec, vec));
+	}
+
+	template<typename T>
+	inline vec3<T> normalize(vec3<T> vec) {
+		return vec / length(vec);
+	}
 }

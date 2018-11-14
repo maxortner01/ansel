@@ -28,6 +28,18 @@ namespace Ansel
 		use_colors = true;
 	}
 
+	void RawModel::loadNormals(std::vector<vec3f> normals) {
+		vao->bind();
+
+		if (!vao->bufferExists(Buffer::NORMAL))
+			vao->genBuffer(Buffer::NORMAL);
+
+		vao->bindBufferData(normals, Buffer::NORMAL);
+		vao->unbind();
+
+		use_normals = true;
+	}
+
 	void RawModel::loadTransformations(std::vector<vec4f> transformation, std::vector<vec4f> rotation, std::vector<vec4f> scale) {
 		// Bind the VAO
 		vao->bind();
@@ -56,6 +68,7 @@ namespace Ansel
 	unsigned int RawModel::getVertexCount() const { return size; }
 	unsigned int RawModel::getIndex() const { return index; }
 	int RawModel::colorsOn() const { return use_colors; }
+	int RawModel::normalsOn() const { return use_normals; }
 
 	RawModel::~RawModel() {
 		vao->destroy();

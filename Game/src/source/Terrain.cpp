@@ -42,7 +42,7 @@ namespace Game
 	}
 
 	Chunk* Terrain::generateChunk(int locx, int locy) {
-		std::vector<vec3f> vertices, waterv;
+		std::vector<vec3f> vertices, waterv, normals;
 		std::vector<unsigned int> indices;
 
 		const int final_x = locx;
@@ -75,9 +75,30 @@ namespace Game
 			}
 		}
 
+		normals.resize(vertices.size());
+		for (int i = 0; i < indices.size(); i += 3) {
+			vec3f normal;
+			vec3f v1 = vertices.at(indices.at(i));
+			vec3f v2 = vertices.at(indices.at(i + 1));
+			vec3f v3 = vertices.at(indices.at(i + 2));
+
+			vec3f e1 = v2 - v1;
+			vec3f e2 = v3 - v1;
+
+			normal = cross(e1, e2);
+			normals.at(indices.at(i    )) += normal; 
+			normals.at(indices.at(i + 1)) += normal;
+			normals.at(indices.at(i + 2)) += normal;
+		}
+
+		for (int i = 0; i < normals.size(); i++)
+			normals.at(i) = normalize(normals.at(i));
+
 		RawModel* water;
 		RawModel* land;
 		land  = Loader::makeRawModel(vertices, indices);
+		land->loadNormals(normals);
+
 		water = Loader::makeRawModel(waterv, indices);
 
 		Chunk* chunk = new Chunk(land, water, final_x, final_y);

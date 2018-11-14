@@ -3,7 +3,6 @@
 #include "Def.h"
 #include "util.h"
 #include "Window.h"
-#include "ModelArray.h"
 
 #include <vector>
 
@@ -44,8 +43,6 @@ namespace Ansel
 
 		void setNextScreen(Screen* screen);
 		float getFPS() const;
-
-		ModelArray modelArray;
 
 	public:
 

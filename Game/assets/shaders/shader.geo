@@ -31,6 +31,7 @@ uniform mat4 view;
 
 // Whether or not to generate colors or use the buffered color values
 uniform int use_colors;
+uniform int use_normals;
 
 void main(void)
 {
@@ -42,7 +43,7 @@ void main(void)
     for (int i = 0; i < gl_in.length(); i++) {
         vecs[i] = gl_in[i].gl_Position;
     }
-
+    
     // Relativize the other two points to the first
     vecs[1] = vecs[1] - vecs[0];
     vecs[2] = vecs[2] - vecs[0];
@@ -67,10 +68,16 @@ void main(void)
             c = VertexIn[i].vertexColor;
         }
 
+        if (use_normals == 1) {
+            calcNormal = vec3(vec4(normalize(VertexIn[i].outNormal), 1.0) * VertexIn[i].rotationMatrix);
+        } else {
+            calcNormal = vec3(vec4(normalize(calcNormal), 1.0) * VertexIn[i].rotationMatrix);
+        }
+
         // Pass all useful information to the fragment shader
         frag.vertexColor = c;
         frag.toLight = VertexIn[i].toLight;
-        frag.outNormal = vec3(vec4(normalize(calcNormal), 1.0) * VertexIn[i].rotationMatrix);
+        frag.outNormal = calcNormal;
         frag.modelMatrix = VertexIn[i].modelMatrix;
 
         // Transform the vertex once and for all in 3D space
