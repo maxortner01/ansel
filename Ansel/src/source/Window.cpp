@@ -9,6 +9,8 @@ namespace Ansel
 		if ( !glfwInit() )
 			return false;
 
+		glfwWindowHint(GLFW_SAMPLES, 8);
+
 		// Create windowed window with dimensions of (width, height)
 		window = glfwCreateWindow(width, height, sTitle.c_str(), NULL, NULL);
 		
@@ -20,6 +22,7 @@ namespace Ansel
 
 		// Make window current context
 		glfwMakeContextCurrent(window);
+		glfwSwapInterval(0);
 
 		// Initialize GLEW library
 		if (!glewInit())

@@ -7,6 +7,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <algorithm>
 
 namespace Ansel
 {
@@ -183,6 +184,7 @@ namespace Ansel
 	{
 		static std::vector<VAO*> vaos;
 		static std::vector<RawModel*> rawModels;
+		static std::vector<std::string> splitString(const char delimiter, std::string str);
 
 		static int createVAO();
 

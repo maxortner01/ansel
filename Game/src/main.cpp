@@ -7,9 +7,9 @@
 int main()
 {
 	// Window
-	Ansel::Window window(1920, 1080);
+	Ansel::Window window(2560, 1440);
 	// Screen instance
-	Game::Terrain screen(&window);
+	Game::MainScreen screen(&window);
 	// Settings for engine
 	Ansel::Settings settings;
 

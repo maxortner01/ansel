@@ -38,15 +38,22 @@ void main(void)
     // Array of vectors for storing three points; and the color
     vec4 vecs[3], c;
     // The final normal vector
-    vec3 calcNormal;
+    vec3 calcNormal = vec3(0, 0, 0);
     // Loop through the points and push them to vecs
     for (int i = 0; i < gl_in.length(); i++) {
         vecs[i] = gl_in[i].gl_Position;
     }
     
-    // Relativize the other two points to the first
-    vecs[1] = vecs[1] - vecs[0];
-    vecs[2] = vecs[2] - vecs[0];
+    if (use_normals == 0) {
+        // Relativize the other two points to the first
+        vecs[1] = vecs[1] - vecs[0];
+        vecs[2] = vecs[2] - vecs[0];
+
+        // Calculate the normal
+        calcNormal.x = vecs[1].y * vecs[2].z - vecs[1].z * vecs[2].y;
+        calcNormal.y = vecs[1].z * vecs[2].x - vecs[1].x * vecs[2].z;
+        calcNormal.z = vecs[1].x * vecs[2].y - vecs[1].y * vecs[2].x;
+    }
 
     // Color calculations
     if (vecs[0].y / 75.0 > -.75) {
@@ -55,10 +62,6 @@ void main(void)
         c = vec4(0.9294, 0.7882, 0.6863, 1.0);
     }
 
-    // Calculate the normal
-    calcNormal.x = vecs[1].y * vecs[2].z - vecs[1].z * vecs[2].y;
-    calcNormal.y = vecs[1].z * vecs[2].x - vecs[1].x * vecs[2].z;
-    calcNormal.z = vecs[1].x * vecs[2].y - vecs[1].y * vecs[2].x;
 
     for (int i = 0; i < gl_in.length(); i++)
     {

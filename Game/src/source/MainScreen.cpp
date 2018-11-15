@@ -71,12 +71,19 @@ namespace Game
 
 
 		rawModel = Loader::makeRawModel("assets/models/Asteroid.obj");
+		rawPlanet = Loader::makeRawModel("assets/models/sphere.obj");
 
 		colors.resize(rawModel->getVertexCount());
 		for (int i = 0; i < rawModel->getVertexCount(); i++)
 			colors.at(i) = { 1, 1, 1, 1 };
 
 		rawModel->loadColors(colors);
+
+		colors.resize(rawPlanet->getVertexCount());
+		for (int i = 0; i < rawPlanet->getVertexCount(); i++)
+			colors.at(i) = { 1, 1, 1, 1 };
+
+		rawPlanet->loadColors(colors);
 
 		int range = 50;
 		for (int y = 0; y < range; y++) {
@@ -89,6 +96,9 @@ namespace Game
 
 		Model* model = new Asteroid(rawModel);
 		models.push_back(model);
+
+		planetModel = new Model(rawPlanet);
+		planetModel->setScale({ 5, 5, 5 });
 
 		Mouse::hideCursor();
 	}
@@ -133,6 +143,9 @@ namespace Game
 		if (Keyboard::isKeyPressed(KEY::RIGHT))
 			camera.rotate(0, -rotation_speed, 0);
 
+		if (Keyboard::isKeyPressed(KEY::TAB))
+			Renderer::toggleWireFrame();
+
 		vec2d newMouse = Mouse::getPostion();
 		Mouse::setPosition({ ScreenSize.x / 2.f, ScreenSize.y / 2.f });
 
@@ -145,9 +158,11 @@ namespace Game
 			models.at(i)->update();
 
 		Renderer::Render(models, camera);
-		//Renderer::Render({ planetModel }, camera);
+		Renderer::Render(planetModel, camera);
 
-		printf((std::to_string(getFPS()) + "\n").c_str());
+		system("CLS");
+		std::cout << getFPS() << std::endl;
+		//printf((std::to_string(getFPS()) + "\n").c_str());
 
 		uFrame++;
 	}

@@ -112,16 +112,12 @@ namespace Ansel
 		// Generate both the Vertex and Index Buffer Objects
 		vao->genBuffer(Buffer::VERTEX);
 		vao->genBuffer(Buffer::INDICES);
-		vao->genBuffer(Buffer::NORMAL);
 
 		// Bind the vertex data
 		vao->bindBufferData(vertices);
 
 		// Bind the index data
 		vao->bindBufferData(indices, NULL, Buffer::INDICES);
-
-		// Bind the normal data
-		vao->bindBufferData(normals, Buffer::NORMAL);
 
 		// Unbind the vao
 		vao->unbind();
@@ -131,6 +127,8 @@ namespace Ansel
 
 		// Create final RawModel object with the VAO
 		RawModel* rawModel = new RawModel(vao, (unsigned int)indices.size(), nextModelIndex++);
+		rawModel->loadNormals(normals);
+
 		rawModels.push_back(rawModel);
 
 		// Return RawModel
@@ -148,7 +146,7 @@ namespace Ansel
 			return NULL;
 
 		std::vector<vec3f> vertices, normals, realnormals;
-		std::vector<unsigned int> indicies;
+		std::vector<unsigned int> indices;
 
 		// Read through the file
 		unsigned int index = 0;
@@ -177,6 +175,7 @@ namespace Ansel
 				loc.z = std::stof(strWord);
 
 				vertices.push_back(loc);
+				reader >> word;
 			}
 			else if (strWord == "vn") {
 				vec3f norm;
@@ -197,62 +196,113 @@ namespace Ansel
 				norm.z = std::stof(strWord);
 
 				normals.push_back(norm);
+				reader >> word;
 			}
 			else if (strWord == "f") {
-				std::vector<unsigned int> face;
-				std::vector<vec3f> face_normals;
+				// If all the normals and vertices are finished loading
+				// make the size of the real normal list the same as the vertices
+				if (realnormals.size() == 0)
+					realnormals.resize(vertices.size());
 
-				for (int i = 0; i < 4; i++) {
+				// Data struct for storing each face info
+				typedef struct {
+					unsigned int v, n, t;
+				} Vertex;
+
+				std::vector<Vertex> face;
+				std::string line;
+
+				while (1) {
 					reader >> word;
-					strWord = word;
+					std::string faceValue(word);
 
-					// Process the first two values of the face
-					int id = 0;
-					size_t pos = 0;
-					std::string token, sIndex;
-					while ((pos = strWord.find('/')) != std::string::npos) {
-						token = strWord.substr(0, pos);
-
-						if (id == 0) {
-							sIndex = token;
-						}
-
-						strWord.erase(0, pos + 1);
-						id++;
+					if (faceValue.length() <= 2) {
+						break;
 					}
 
-					// What's left of strWord is the last value (the normal index)
-					face_normals.push_back(normals.at(std::stoi(strWord) - 1));
+					line += faceValue + " ";
 
-					// Push the index to the indicies vector
-					unsigned int index = std::stoi(sIndex) - 1;
-					face.push_back(index);
+					
 				}
 
-				indicies.push_back(face.at(0));
-				realnormals.push_back(face_normals.at(0));
-				indicies.push_back(face.at(1));
-				realnormals.push_back(face_normals.at(1));
-				indicies.push_back(face.at(2));
-				realnormals.push_back(face_normals.at(2));
+				auto faceStrings = splitString(' ', line);
+				for (std::string f : faceStrings) {
+					if (f.length() < 1)
+						break;
 
-				indicies.push_back(face.at(2));
-				realnormals.push_back(face_normals.at(2));
-				indicies.push_back(face.at(3));
-				realnormals.push_back(face_normals.at(3));
-				indicies.push_back(face.at(0));
-				realnormals.push_back(face_normals.at(0));
+					auto faces = splitString('/', f);
+
+					Vertex vertex;
+					int id = 0;
+					for (std::string v : faces) {
+						if (v == "")
+							v = "0";
+
+						/**/ if (id == 0) {
+							vertex.v = std::stoi(v) - 1;
+						} 
+						else if (id == 1) {
+							vertex.t = std::stoi(v) - 1;
+						}
+						else if (id == 2) {
+							vertex.n = std::stoi(v) - 1;
+						}
+
+						id++;
+					}
+					face.push_back(vertex);
+				}
+
+				std::vector<Vertex> newFaces;
+
+				/**/ if (face.size() == 3) {
+					newFaces = face;
+				}
+				else if (face.size() == 4) {
+					newFaces = {
+						face.at(0),
+						face.at(1),
+						face.at(2),
+
+						face.at(2),
+						face.at(3),
+						face.at(0)
+					};
+				}
+
+				for (Vertex v : newFaces) {
+					realnormals.at(v.v) += normals.at(v.n);
+					indices.push_back(v.v);
+				}
+			}
+			else {
+				reader >> word;
 			}
 
-			reader >> word;
 		}
 
-		normals.clear();
-		normals.resize(vertices.size());
-		for (int i = 0; i < indicies.size(); i++)
-			normals.at(indicies.at(i)) = realnormals.at(i);
+		for (vec3f &normal : realnormals) {
+			normal = normalize(normal);
+		}
 
-		return makeRawModel(vertices, indicies, normals);
+		return makeRawModel(vertices, indices, realnormals);
+	}
+
+	std::vector<std::string> Loader::splitString(const char delimiter, std::string str) {
+		std::vector<std::string> f;
+		str += delimiter;
+
+		size_t pos = 0;
+		std::string token;
+		while ((pos = str.find(delimiter)) != std::string::npos) {
+			token = str.substr(0, pos);
+
+			f.push_back(token);
+
+			str.erase(0, pos + 1);
+		}
+
+		return f;
 	}
 
 	RawModel* Loader::getRawModel(const unsigned int index) {
