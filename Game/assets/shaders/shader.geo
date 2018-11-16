@@ -56,7 +56,7 @@ void main(void)
     }
 
     // Color calculations
-    if (vecs[0].y / 75.0 > -.75) {
+    if (vecs[0].y / (75.0 * 3.0) > -.75) {
         c = vec4(0.0, 0.75, 0.0, 1.0);
     } else {
         c = vec4(0.9294, 0.7882, 0.6863, 1.0);

@@ -32,8 +32,8 @@ namespace Game
 	{
 		const int radius = 3;
 		const unsigned int CHUNK_DIMENSION = 100;
-		const float size = 9.f;
-		const float terrainHeight = 75.f;
+		const float size = 30.f;
+		const float terrainHeight = 75.f * 3.f;
 
 		Camera camera;
 		

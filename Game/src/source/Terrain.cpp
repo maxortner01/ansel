@@ -103,19 +103,21 @@ namespace Game
 
 		Chunk* chunk = new Chunk(land, water, final_x, final_y);
 		
-		for (int i = 0; i < 4000; i++) {
+		for (int i = 0; i < 4000 * 2; i++) {
 			vec2f loc = { (rand() % 1000) / 1000.f + final_x, (rand() % 1000) / 1000.f + final_y };
 			loc.x *= size * CHUNK_DIMENSION;
 			loc.y *= size * CHUNK_DIMENSION;
 
-			if (getNoise(loc.x, loc.y) < -.74f * terrainHeight)
+			float n = getNoise(loc.x, loc.y);
+
+			if (n < -.74f * terrainHeight)
 				continue;
 
 			Model* model = new Model(cylinder);
-			model->setLocation({ loc.x, getNoise(loc.x, loc.y) - .25f, loc.y });
+			model->setLocation({ loc.x, n - .25f, loc.y });
 			chunk->trees.push_back(model);
 
-			chunk->locations.push_back({ loc.x, getNoise(loc.x, loc.y) - .25f, loc.y, 1 });
+			chunk->locations.push_back({ loc.x, n - .25f, loc.y, 1 });
 			chunk->rotations.push_back({ 0, 0, 0, 1 });
 			chunk->scales.push_back({ 1, 1, 1, 1 });
 		}
@@ -126,8 +128,8 @@ namespace Game
 	float Terrain::getNoise(const float x, const float y) {
 		std::unique_ptr<SimplexNoise> n = std::make_unique<SimplexNoise>();
 
-		float v = n->fractal(4, x / (4000.f), y / (4000.f));
-		float v2 = n->fractal(6, x / (400.f), y / (400.f)) / 2.f;
+		float v = n->fractal(4, x / (9000.f), y / (9000.f));
+		float v2 = n->fractal(6, x / (900.f), y / (900.f)) / 2.f;
 
 		v  = 1 - abs(v);
 		v -= 1; v *= 2;
