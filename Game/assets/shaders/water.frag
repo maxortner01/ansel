@@ -3,13 +3,15 @@ out vec4 FragColor;
   
 in fData {
 	vec4 position;
-    vec4 vertexColor;
+    vec4 vertexColor; 
 
     vec3 toLight;
     vec3 outNormal;
-
+    
     mat4 modelMatrix;
 	mat4 rotationMatrix;
+    
+	vec2 tex;
 } frag;
 
 void main()

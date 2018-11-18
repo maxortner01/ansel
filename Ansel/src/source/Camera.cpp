@@ -70,4 +70,12 @@ namespace Ansel
 	void Camera::setLocation(vec3f loc) {
 		location = loc;
 	}
+
+	void Camera::addLocation(vec3f loc) {
+		location += loc;
+	}
+
+	void Camera::addLocation(float x, float y, float z) {
+		addLocation({ x, y, z });
+	}
 }

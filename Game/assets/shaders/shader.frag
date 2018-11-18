@@ -3,14 +3,19 @@ out vec4 FragColor;
   
 in fData {
 	vec4 position;
-    vec4 vertexColor;
+    vec4 vertexColor; 
 
     vec3 toLight;
     vec3 outNormal;
-
+    
     mat4 modelMatrix;
 	mat4 rotationMatrix;
+    
+	vec2 tex;
 } frag;
+
+uniform int use_textures;
+uniform sampler2D sample;
 
 void main()
 {
@@ -27,4 +32,14 @@ void main()
 	
 	// Multiply the color light by the original color
     FragColor = vec4(diffuse, 1.0) * color;
+	//FragColor = color;
+	
+	if (use_textures == 1) {
+		vec4 texColor = texture2D(sample, frag.tex);
+
+		//texColor.z = frag.tex.x;
+		//texColor.w = 1;
+
+		FragColor = texColor;
+	}
 } 

@@ -7,6 +7,8 @@ layout (location = 3) in vec4 location;
 layout (location = 4) in vec4 rotation;
 layout (location = 5) in vec4 scale;
 
+layout (location = 6) in vec2 tex_coords0;
+
 uniform vec4 light_position[8];
 uniform int  light_state[8];
 
@@ -19,6 +21,8 @@ out vData {
     
     mat4 modelMatrix;
 	mat4 rotationMatrix;
+
+	vec2 tex;
 } VertexIn;
 
 
@@ -113,4 +117,6 @@ void main(void)
 	VertexIn.vertexColor = color;
 	// Pass the normal, even if it isn't used
 	VertexIn.outNormal = normal;
+	
+	VertexIn.tex = tex_coords0;
 }

@@ -5,13 +5,15 @@ layout (triangle_strip, max_vertices=3) out;
 
 in vData {
 	vec4 position;
-    vec4 vertexColor;
+    vec4 vertexColor; 
 
     vec3 toLight;
     vec3 outNormal;
-
+    
     mat4 modelMatrix;
 	mat4 rotationMatrix;
+
+	vec2 tex;
 } VertexIn[3];
 
 out fData {
@@ -23,6 +25,8 @@ out fData {
     
     mat4 modelMatrix;
 	mat4 rotationMatrix;
+    
+	vec2 tex;
 } frag;
 
 uniform mat4 projection;

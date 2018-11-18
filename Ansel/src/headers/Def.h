@@ -12,6 +12,3 @@
 #define LIGHT_COUNT 8
 
 #include <string>
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>

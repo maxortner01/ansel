@@ -2,12 +2,9 @@
 
 #include "Def.h"
 #include "util.h"
+#include "Texture.h"
 
-#include <fstream>
-
-#include <stdexcept>
 #include <vector>
-#include <algorithm>
 
 namespace Ansel
 {
@@ -23,10 +20,11 @@ namespace Ansel
 			TRANSFORMATION,
 			ROTATION,
 			SCALE,
+			TEX_COORDS0,
 			INDICES = 16
 		} typedef BUFFER_TYPE;
 
-		GLuint ID = 0;
+		unsigned int ID = 0;
 		unsigned int data_size = 0;
 		unsigned int count = 0;
 		BUFFER_TYPE type;
@@ -47,7 +45,7 @@ namespace Ansel
 
 		VAO();
 
-		static GLenum getType(Buffer::BUFFER_TYPE type);
+		static int getType(Buffer::BUFFER_TYPE type);
 
 		void genBuffer(const Buffer::BUFFER_TYPE type);
 		void bindBufferData(const std::vector<vec2f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
@@ -78,8 +76,11 @@ namespace Ansel
 		VAO *vao;			///< Pointer to the VAO object that defines this model
 		unsigned int size;	///< Amount of vertices/indices
 		unsigned int index;	///< Respective index inside the vector of RawModels
+		bool use_textures = false;
 		bool use_colors = false;
 		bool use_normals = false;
+
+		std::vector<Texture*> textures;
 
 	public:
 		/**
@@ -99,6 +100,31 @@ namespace Ansel
 		  * @param colors List of colors to add
 		  */
 		void ANSEL_API loadColors(std::vector<vec4f> colors);
+
+		/**
+		  * Loads texture coordinates into the buffer.
+		  */
+		void ANSEL_API loadTextureCoordinates(std::vector<vec2f> coords, unsigned int texture = 0);
+
+		/**
+		  * Creates texture.
+		  */
+		void ANSEL_API loadTexture(std::string filename);
+
+		/**
+		  * Creates texture.
+		  */
+		void ANSEL_API loadTexture(Texture* texture);
+
+		/**
+		  * Binds textures.
+		  */
+		void ANSEL_API bindTexures();
+
+		/**
+		  * Unbinds textures.
+		  */
+		void ANSEL_API unbindTexures();
 
 		/*
 		 * Loads specified normals into the corresponding normals buffer.
@@ -128,6 +154,9 @@ namespace Ansel
 
 		int colorsOn() const;
 		int normalsOn() const;
+		int texturesOn() const;
+
+		int ANSEL_API getTextureSize() const;
 
 		ANSEL_API ~RawModel();
 	};

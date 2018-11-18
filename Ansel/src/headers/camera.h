@@ -31,6 +31,9 @@ namespace Ansel
 		mat4x4 ANSEL_API getView();
 		vec3f  ANSEL_API getLocation();
 
+		void  ANSEL_API addLocation(vec3f loc);
+		void  ANSEL_API addLocation(float x, float y, float z);
+
 		void  ANSEL_API setLocation(vec3f loc);
 	};
 }

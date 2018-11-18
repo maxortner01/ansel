@@ -2,8 +2,7 @@
 
 #include "Def.h"
 
-
-#include <string>
+class GLFWwindow;
 
 namespace Ansel
 {

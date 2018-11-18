@@ -3,10 +3,7 @@
 #include "Def.h"
 #include "util.h"
 
-#include <iostream>
 #include <vector>
-#include <fstream>
-#include <string>
 
 namespace Ansel
 {
@@ -23,7 +20,7 @@ namespace Ansel
 		unsigned int program;
 
 		std::string readFile(const char *filename);
-		GLenum getType(SHADER_TYPE shader);
+		int getType(SHADER_TYPE shader);
 
 	public:
 		ANSEL_API  Shader();

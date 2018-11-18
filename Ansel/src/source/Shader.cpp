@@ -1,5 +1,9 @@
 #include "../headers/Shader.h"
 
+#include <iostream>
+#include <fstream>
+#include <GL/glew.h>
+
 namespace Ansel
 {
 	Shader::Shader() {
@@ -159,7 +163,7 @@ namespace Ansel
 		std::cout << "done" << std::endl;
 	}
 
-	GLenum Shader::getType(SHADER_TYPE shader) {
+	int Shader::getType(SHADER_TYPE shader) {
 		switch (shader)
 		{
 		case Ansel::VERTEX:

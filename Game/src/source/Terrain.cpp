@@ -39,17 +39,29 @@ namespace Game
 
 		//camera.setLocation({ -89.67f, 0.f, 384.11f });
 		Mouse::hideCursor();
+
+		texture = Texture("assets/textures/grass.png");
 	}
 
 	Chunk* Terrain::generateChunk(int locx, int locy) {
 		std::vector<vec3f> vertices, waterv, normals;
 		std::vector<unsigned int> indices;
+		std::vector<vec2f> tex;
 
 		const int final_x = locx;
 		const int final_y = locy;
 
 		locx = locx * CHUNK_DIMENSION;
 		locy = locy * CHUNK_DIMENSION;
+
+		std::vector<vec2f> tex_samples = {
+			{ 0, 0 },
+			{ 1, 1 },
+			{ 1, 0 },
+			{ 0, 1 },
+			{ 1, 1 },
+			{ 0, 0 }
+		};
 
 		for (int y = 0; y <= CHUNK_DIMENSION; y++) {
 			for (int x = 0; x <= CHUNK_DIMENSION; x++) {
@@ -72,6 +84,7 @@ namespace Game
 
 				vertices.push_back({ (float)X * size, n, (float)Y * size });
 				waterv.push_back({ (float)X * size, -.8f * terrainHeight, (float)Y * size });
+				tex.push_back(tex_samples.at((y * CHUNK_DIMENSION + x) % tex_samples.size()));
 			}
 		}
 
@@ -98,6 +111,8 @@ namespace Game
 		RawModel* land;
 		land  = Loader::makeRawModel(vertices, indices);
 		land->loadNormals(normals);
+		//land->loadTexture(&texture);
+		//land->loadTextureCoordinates(tex);
 
 		water = Loader::makeRawModel(waterv, indices);
 
@@ -148,7 +163,7 @@ namespace Game
 			Window::close();
 
 		float rotation_speed = .1f * 3.14159f / 180.f;
-		float speed = .1f;
+		float speed = .4f;
 		//float speed = .5f;
 
 		if (Keyboard::isKeyPressed(KEY::L_SHIFT))
@@ -186,6 +201,9 @@ namespace Game
 
 		if (Keyboard::isKeyPressed(KEY::TAB))
 			Renderer::toggleWireFrame();
+
+		if (Keyboard::isKeyPressed(KEY::SPACE))
+			camera.velocity = -2.f;
 
 		vec2d newMouse = Mouse::getPostion();
 		Mouse::setPosition({ ScreenSize.x / 2.f, ScreenSize.y / 2.f });

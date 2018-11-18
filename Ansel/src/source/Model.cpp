@@ -1,5 +1,12 @@
 #include "../headers/Model.h"
 
+#include <fstream>
+
+#include <stdexcept>
+#include <algorithm>
+
+#include <GL/glew.h>
+
 namespace Ansel
 {
 	/* <------------------------------------>*/
@@ -92,7 +99,7 @@ namespace Ansel
 		VBOS.resize(Buffer::INDICES + 1);
 	}
 
-	GLenum VAO::getType(Buffer::BUFFER_TYPE type) {
+	int VAO::getType(Buffer::BUFFER_TYPE type) {
 		switch (type) {
 			case Buffer::VERTEX:
 				return GL_ARRAY_BUFFER;

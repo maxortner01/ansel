@@ -1,5 +1,8 @@
 #include "../headers/Engine.h"
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 namespace Ansel
 {
 	Engine::Engine(Window* w, Screen *s, Settings set) {
@@ -21,6 +24,8 @@ namespace Ansel
 
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
+
+		//glClearColor(0.0, 0.0, 0.75, 1.0);
 
 		// Run the current screen's create function
 		screen->ScreenSize = { window->getWidth(), window->getHeight() };

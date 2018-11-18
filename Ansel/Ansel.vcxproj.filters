@@ -81,8 +81,14 @@
     <ClInclude Include="src\headers\camera.h">
       <Filter>Header Files\entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\SimplexNoise.h">
+    <ClInclude Include="src\vendor\SimplexNoise.h">
       <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\stb_image.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Texture.h">
+      <Filter>Header Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,8 +125,14 @@
     <ClCompile Include="src\source\RawModel.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\SimplexNoise.cpp">
+    <ClCompile Include="src\vendor\SimplexNoise.cpp">
       <Filter>Source Files\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\stb_image.cpp">
+      <Filter>Source Files\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Texture.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -28,6 +28,39 @@ namespace Ansel
 		use_colors = true;
 	}
 
+	void RawModel::loadTextureCoordinates(std::vector<vec2f> coords, unsigned int texture) {
+		vao->bind();
+
+		Buffer::BUFFER_TYPE buffer = static_cast<Buffer::BUFFER_TYPE>(Buffer::TEX_COORDS0 + texture);
+
+		if (!vao->bufferExists(Buffer::TEX_COORDS0 + texture))
+			vao->genBuffer(buffer);
+
+		vao->bindBufferData(coords, buffer);
+
+		vao->unbind();
+
+		use_textures = true;
+	}
+	
+	void RawModel::loadTexture(std::string filename) {
+		loadTexture( new Texture(filename) );
+	}
+
+	void RawModel::loadTexture(Texture* texture) {
+		textures.push_back(texture);
+	}
+
+	void RawModel::bindTexures() {
+		for (int i = 0; i < textures.size(); i++)
+			textures.at(i)->bind(i);
+	}
+
+	void RawModel::unbindTexures() {
+		for (Texture* tex : textures)
+			tex->unBind();
+	}
+
 	void RawModel::loadNormals(std::vector<vec3f> normals) {
 		vao->bind();
 
@@ -64,11 +97,14 @@ namespace Ansel
 		vao->unbind();
 	}
 
+	int RawModel::getTextureSize() const { return textures.size(); }
+
 	VAO *RawModel::getVAO() const { return vao; }
 	unsigned int RawModel::getVertexCount() const { return size; }
 	unsigned int RawModel::getIndex() const { return index; }
 	int RawModel::colorsOn() const { return use_colors; }
 	int RawModel::normalsOn() const { return use_normals; }
+	int RawModel::texturesOn() const { return use_textures; }
 
 	RawModel::~RawModel() {
 		vao->destroy();

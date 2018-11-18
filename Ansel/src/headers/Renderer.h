@@ -54,14 +54,14 @@ namespace Ansel
 		  * @param camera   Camera to render the RawModel with
 		  * @param s        Shader to render the RawModel with (uses Renderer's by default)
 		  */
-		static void ANSEL_API Render(RawModel* rawModel, Camera camera, Shader* s = NULL);
+		static void ANSEL_API Render(RawModel* rawModel, Camera camera = Camera() , Shader* s = NULL);
 		/**
 		  * Render to the screen.
 		  * @param model  Model object to render
 		  * @param camera Camera to render the Model with
 		  * @param s      shader to render the Model with (uses Renderer's by default)
 		  */
-		static void ANSEL_API Render(Model* model, Camera camera, Shader* s = NULL);
+		static void ANSEL_API Render(Model* model, Camera camera = Camera(), Shader* s = NULL);
 		/**
 		  * Render to the screen. Precalculates translations, rotations, and scales from
 		  * the list of models. This can be cumbersome if the size of models gets very large.

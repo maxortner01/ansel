@@ -1,5 +1,7 @@
 #include "../headers/Screen.h"
 
+#include <GL/glew.h>
+
 namespace Ansel
 {
 	Screen::Screen(Window* w) { 

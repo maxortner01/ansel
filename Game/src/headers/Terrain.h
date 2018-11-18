@@ -28,6 +28,12 @@ namespace Game
 		vec2f getLocation() const;
 	};
 
+	class Player : public Camera
+	{
+	public:
+		float velocity = 0.f;
+	};
+
 	class Terrain : public Screen
 	{
 		const int radius = 3;
@@ -35,8 +41,11 @@ namespace Game
 		const float size = 30.f;
 		const float terrainHeight = 75.f * 3.f;
 
-		Camera camera;
+		const float gravity = .25f;
+
+		Player camera;
 		
+		Texture texture;
 		std::vector<Chunk*> chunks;
 		
 		Shader* shader;

@@ -1,5 +1,12 @@
 #include "../headers/Model.h"
 
+#include <fstream>
+
+#include <stdexcept>
+#include <algorithm>
+
+#include <GL/glew.h>
+
 namespace Ansel
 {
 	/*! \brief Initializer for list of VAO pointers in the loader class */

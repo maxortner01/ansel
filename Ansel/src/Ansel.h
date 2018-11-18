@@ -12,4 +12,4 @@
 #include "headers/Renderer.h"
 #include "headers/Shader.h"
 #include "headers/camera.h"
-#include "headers/SimplexNoise.h"
+#include "vendor/SimplexNoise.h"

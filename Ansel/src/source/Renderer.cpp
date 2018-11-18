@@ -1,5 +1,7 @@
 #include "../headers/Renderer.h"
 
+#include <GL/glew.h>
+
 namespace Ansel
 {
 	Shader* Renderer::shader;
@@ -77,13 +79,14 @@ namespace Ansel
 
 		RawModel* rawModel = models.at(0)->getRawModel();
 		VAO *vao = rawModel->getVAO();
-
+		
 		current_shader->bind();
 
 		current_shader->setUniform((float)uFrame, "frame");
 		current_shader->setUniform(settings._3D, "use3D");
 		current_shader->setUniform((int)rawModel->colorsOn(), "use_colors");
 		current_shader->setUniform((int)rawModel->normalsOn(), "use_normals");
+		current_shader->setUniform((int)rawModel->texturesOn(), "use_textures");
 
 		current_shader->setUniform(projection, "projection");
 		current_shader->setUniform(camera.getView(), "view");
@@ -93,11 +96,22 @@ namespace Ansel
 
 		rawModel->loadTransformations(locations, rotations, scales);
 
+		rawModel->bindTexures();
+		current_shader->setUniform(0, "sample");
+
+		//rawModel->bindTexures();
+
+		//for (int i = 0; i < rawModel->getTextureSize(); i++) {
+		//	current_shader->setUniform(i, "texture" + std::to_string(i));
+		//}
+
 		vao->bind();
 
 		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
 
 		vao->unbind();
+
+		rawModel->unbindTexures();
 	}
 
 	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {

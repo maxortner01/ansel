@@ -1,20 +1,7 @@
-﻿  Camera.cpp
-  Engine.cpp
-d:\dev\ansel\ansel\src\headers\window.h(16): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+﻿  Engine.cpp
+d:\dev\ansel\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-  Loader.cpp
-  Model.cpp
-  Mouse.cpp
-d:\dev\ansel\ansel\src\headers\window.h(16): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-  RawModel.cpp
-  Renderer.cpp
-d:\dev\ansel\ansel\src\source\renderer.cpp(98): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Screen.cpp
-d:\dev\ansel\ansel\src\headers\window.h(16): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-  Shader.cpp
-  Generating Code...
-d:\dev\ansel\ansel\src\source\shader.cpp(176): warning C4715: 'Ansel::Shader::getType': not all control paths return a value
+d:\dev\ansel\extern\glfw-3.2.1\include\glfw\glfw3.h(789): warning C4099: 'GLFWwindow': type name first seen using 'class' now seen using 'struct'
+  d:\dev\ansel\ansel\src\headers\window.h(5): note: see declaration of 'GLFWwindow'
   Ansel.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.dll
           1 file(s) copied.
