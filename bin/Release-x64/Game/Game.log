@@ -1,10 +1,60 @@
 ﻿  main.cpp
-d:\dev\ansel\ansel\src\headers\window.h(18): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
   MainScreen.cpp
-d:\dev\ansel\ansel\src\headers\window.h(18): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+c:\users\maxo_\desktop\ansel-master\game\src\source\mainscreen.cpp(14): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\maxo_\desktop\ansel-master\game\src\source\mainscreen.cpp(21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\maxo_\desktop\ansel-master\game\src\source\mainscreen.cpp(77): warning C4018: '<': signed/unsigned mismatch
+c:\users\maxo_\desktop\ansel-master\game\src\source\mainscreen.cpp(83): warning C4018: '<': signed/unsigned mismatch
+c:\users\maxo_\desktop\ansel-master\game\src\source\mainscreen.cpp(152): warning C4838: conversion from 'T' to 'T' requires a narrowing conversion
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\maxo_\desktop\ansel-master\game\src\source\mainscreen.cpp(152): warning C4244: 'initializing': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              T=float
+          ]
+  Terrain.cpp
+c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+c:\users\maxo_\desktop\ansel-master\game\src\source\terrain.cpp(69): warning C4018: '<=': signed/unsigned mismatch
+c:\users\maxo_\desktop\ansel-master\game\src\source\terrain.cpp(70): warning C4018: '<=': signed/unsigned mismatch
+c:\users\maxo_\desktop\ansel-master\game\src\source\terrain.cpp(217): warning C4838: conversion from 'T' to 'T' requires a narrowing conversion
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\maxo_\desktop\ansel-master\game\src\source\terrain.cpp(217): warning C4244: 'initializing': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              T=float
+          ]
+  Textures.cpp
+c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
   Generating code
-  All 58 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  0 of 706 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Game.vcxproj -> D:\dev\Ansel\bin\Release-x64\Game\Game.exe
+  Game.vcxproj -> C:\Users\maxo_\Desktop\ansel-master\bin\Release-x64\Game\Game.exe

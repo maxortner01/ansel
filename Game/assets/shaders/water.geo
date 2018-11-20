@@ -66,6 +66,7 @@ void main(void)
         frag.modelMatrix = VertexIn[i].modelMatrix;
 
         vec4 position = fvecs[i];
+		frag.position = position;
 
         gl_Position = position * VertexIn[i].modelMatrix * view * projection;
 

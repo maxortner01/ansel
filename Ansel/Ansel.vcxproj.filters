@@ -90,6 +90,9 @@
     <ClInclude Include="src\headers\Texture.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\headers\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\Mouse.cpp">
@@ -133,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="src\source\Texture.cpp">
       <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

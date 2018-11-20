@@ -1,5 +1,7 @@
 #include "../headers/Terrain.h"
 
+#include <fstream>
+
 namespace Game
 {
 	Chunk::Chunk(RawModel* l, RawModel* w, int x, int y) {
@@ -30,6 +32,9 @@ namespace Game
 	}
 
 	void Terrain::onCreate() {
+		texture = new Texture("assets/textures/grass.png");
+		sand = new Texture("assets/textures/beach_sand.png");
+
 		chunks.push_back(generateChunk(0, 0));
 
 		shader = new Shader("assets/shaders/shader.vert", "assets/shaders/water.frag", false);
@@ -39,8 +44,6 @@ namespace Game
 
 		//camera.setLocation({ -89.67f, 0.f, 384.11f });
 		Mouse::hideCursor();
-
-		texture = Texture("assets/textures/grass.png");
 	}
 
 	Chunk* Terrain::generateChunk(int locx, int locy) {
@@ -58,9 +61,9 @@ namespace Game
 			{ 0, 0 },
 			{ 1, 1 },
 			{ 1, 0 },
+			{ 0, 0 },
 			{ 0, 1 },
-			{ 1, 1 },
-			{ 0, 0 }
+			{ 1, 0 }
 		};
 
 		for (int y = 0; y <= CHUNK_DIMENSION; y++) {
@@ -111,10 +114,15 @@ namespace Game
 		RawModel* land;
 		land  = Loader::makeRawModel(vertices, indices);
 		land->loadNormals(normals);
-		//land->loadTexture(&texture);
-		//land->loadTextureCoordinates(tex);
+
+		land->loadTexture(texture);
+		land->loadTexture(sand);
+
+		land->loadTextureCoordinates(tex);
 
 		water = Loader::makeRawModel(waterv, indices);
+		water->loadTexture(Renderer::getFrameBuffer()->getColorTexture());
+		water->loadTexture(Renderer::getFrameBuffer()->getDepthTexture());
 
 		Chunk* chunk = new Chunk(land, water, final_x, final_y);
 		
@@ -250,13 +258,13 @@ namespace Game
 
 		std::vector<Model*> tree_models;
 		std::vector<vec4f> locations, rotations, scales;
-
+		
 		for (int i = 0; i < chunks.size(); i++) {
 			Chunk* chunk = chunks.at(i);
-
+		
 			Renderer::Render(chunk->getLandModel(), camera);
 			tree_models.insert(tree_models.begin(), chunk->trees.begin(), chunk->trees.end());
-
+		
 			locations.insert(locations.begin(), chunk->locations.begin(), chunk->locations.end());
 			rotations.insert(rotations.begin(), chunk->rotations.begin(), chunk->rotations.end());
 			scales.insert(scales.begin(), chunk->scales.begin(), chunk->scales.end());
@@ -267,10 +275,21 @@ namespace Game
 		for (int i = 0; i < chunks.size(); i++) {
 			Chunk* chunk = chunks.at(i);
 
+			Renderer::Render(chunk->getLandModel(), camera);
 			Renderer::Render(chunk->getWaterModel(), camera, shader);
 		}
 
 		printf((std::to_string(getFPS()) + "\n").c_str());
+
+		if (uFrame % 5 == 0) {
+			std::ofstream file;
+			file.open("assets/timelog.txt", std::ios::app);
+			file << Engine::getTime() << "," << getFPS() << "\n";
+			file.close();
+		}
+
+		draw.rectangle({ -.01f, -.01f, .01f, .01f });
+
 		uFrame++;
 	}
 

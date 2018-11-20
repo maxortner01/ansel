@@ -27,6 +27,8 @@ out fData {
 	mat4 rotationMatrix;
     
 	vec2 tex;
+	
+	flat int type;
 } frag;
 
 // Pull in the projection and view matrix for transformations
@@ -59,11 +61,15 @@ void main(void)
         calcNormal.z = vecs[1].x * vecs[2].y - vecs[1].y * vecs[2].x;
     }
 
+	int type = 0;
+	
     // Color calculations
     if (vecs[0].y / (75.0 * 3.0) > -.75) {
         c = vec4(0.0, 0.75, 0.0, 1.0);
+		type = 0;
     } else {
         c = vec4(0.9294, 0.7882, 0.6863, 1.0);
+		type = 1;
     }
 
 
@@ -87,6 +93,7 @@ void main(void)
         frag.outNormal = calcNormal;
         frag.modelMatrix = VertexIn[i].modelMatrix;
         frag.tex = VertexIn[i].tex;
+		frag.type = type;
 
         // Transform the vertex once and for all in 3D space
         gl_Position = gl_in[i].gl_Position * VertexIn[i].modelMatrix * view * projection;

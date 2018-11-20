@@ -27,10 +27,11 @@ namespace Ansel
 
 		Settings settings; /*!< Instance of window's settings */
 
-
 	public:
 		ANSEL_API Engine(Window* w, Screen* s, Settings set = {});
 
 		void ANSEL_API run();
+
+		static ANSEL_API float getTime();
 	};
 }

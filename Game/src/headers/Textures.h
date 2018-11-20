@@ -8,8 +8,12 @@ namespace Game
 {
 	class Textures : public Screen 
 	{
-		Texture   texture;
+		Texture*  texture;
 		RawModel* square;
+		Model* squareModel;
+
+		RawModel* background;
+		Model* bgmodel;
 
 	public:
 		Textures(Window* w);

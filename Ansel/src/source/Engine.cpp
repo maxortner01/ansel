@@ -14,10 +14,11 @@ namespace Ansel
 
 	void Engine::run() {
 		// Initialize the Renderer
-		Renderer::init({ window->getWidth(), window->getHeight() });
+		Renderer::init(window);
 
 		// Initialize the fps clock
 		double previousTime = glfwGetTime();
+
 
 		// Enable Transparency
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -25,17 +26,19 @@ namespace Ansel
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 
-		//glClearColor(0.0, 0.0, 0.75, 1.0);
-
-		// Run the current screen's create function
+		// Run the current screen's create function and set the window dimensions
+		// within the screen
 		screen->ScreenSize = { window->getWidth(), window->getHeight() };
 		screen->onCreate();
 
 		while ( !window->shouldClose() ) {
-			// FPS Calculations
+			// First calculate FPS
+
 			double currentTime = glfwGetTime();
 			screen->fps = 1.f / (float)(currentTime - previousTime);
 			previousTime = currentTime;
+
+			// Next check next screen
 
 			// Check if the current screen's next screen is not NULL
 			// If not, that means its time to move on to that screen
@@ -43,14 +46,26 @@ namespace Ansel
 			if ( nextScreen != NULL )
 				screen = nextScreen;
 
-			// Clear the color and depth buffer
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			// Poll window events
 			glfwPollEvents();
 
+			// Then start rendering
+
+			// Clear the window
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Bind the framebuffer and clear it
+			Renderer::frame->bind();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glEnable(GL_DEPTH_TEST);
+			Renderer::frame->unbind();
+
 			// Render the screen
 			render();
+
+			// Finally, when everything is rendered, render the frame to the window
+			Renderer::renderFrame();
 
 			// Swap the buffers
 			glfwSwapBuffers(window->getWindow());
@@ -69,6 +84,10 @@ namespace Ansel
 
 	void Engine::render() {
 		screen->onUpdate();
+	}
+
+	float Engine::getTime() {
+		return glfwGetTime();
 	}
 
 }

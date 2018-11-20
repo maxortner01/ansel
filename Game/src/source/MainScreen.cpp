@@ -85,7 +85,7 @@ namespace Game
 
 		rawPlanet->loadColors(colors);
 
-		int range = 50;
+		int range = 1;
 		for (int y = 0; y < range; y++) {
 			for (int x = 0; x < range; x++) {
 				Model* model = new Asteroid(rawModel);

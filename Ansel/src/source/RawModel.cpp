@@ -43,12 +43,18 @@ namespace Ansel
 		use_textures = true;
 	}
 	
-	void RawModel::loadTexture(std::string filename) {
-		loadTexture( new Texture(filename) );
+	int RawModel::loadTexture(std::string filename) {
+		return loadTexture( new Texture(filename) );
 	}
 
-	void RawModel::loadTexture(Texture* texture) {
+	int RawModel::loadTexture(Texture* texture) {
 		textures.push_back(texture);
+		return getTextureSize() - 1;
+	}
+
+	void RawModel::updateTexture(Texture* texture, const unsigned int index) {
+		delete textures.at(index);
+		textures.at(index) = texture;
 	}
 
 	void RawModel::bindTexures() {
@@ -98,6 +104,10 @@ namespace Ansel
 	}
 
 	int RawModel::getTextureSize() const { return textures.size(); }
+
+	Texture* RawModel::getTexture(int index) const {
+		return textures.at(index);
+	}
 
 	VAO *RawModel::getVAO() const { return vao; }
 	unsigned int RawModel::getVertexCount() const { return size; }

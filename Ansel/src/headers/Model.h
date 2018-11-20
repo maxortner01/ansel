@@ -109,12 +109,14 @@ namespace Ansel
 		/**
 		  * Creates texture.
 		  */
-		void ANSEL_API loadTexture(std::string filename);
+		int ANSEL_API loadTexture(std::string filename);
 
 		/**
 		  * Creates texture.
 		  */
-		void ANSEL_API loadTexture(Texture* texture);
+		int ANSEL_API loadTexture(Texture* texture);
+
+		void ANSEL_API updateTexture(Texture* texture, const unsigned int index);
 
 		/**
 		  * Binds textures.
@@ -157,6 +159,8 @@ namespace Ansel
 		int texturesOn() const;
 
 		int ANSEL_API getTextureSize() const;
+
+		Texture ANSEL_API * getTexture(int index) const;
 
 		ANSEL_API ~RawModel();
 	};

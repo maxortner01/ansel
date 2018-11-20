@@ -4,31 +4,249 @@
 
 namespace Ansel
 {
-	Shader* Renderer::shader;
+	/* <----------  PRIVATE  ---------->*/
+
 	mat4x4 Renderer::projection;
+
 	Renderer::RenderSettings Renderer::settings;
 	std::vector<Renderer::Light> Renderer::lights;
 
+	FrameBuffer* Renderer::frame;
+	RawModel*    Renderer::frameModel;
+
+	Shader* Renderer::shader;
+	Shader* Renderer::frameShader;
+
 	unsigned int Renderer::uFrame = 0;
 
-	void Renderer::init(vec2u dimensions) {
-		Shader* shader = new Shader();
+	void Renderer::renderFrame() {
+		// Always draw the quad as filled, the rendered scene, however
+		// will still be wireframed
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		shader->makeShader("assets/shaders/shader.vert", VERTEX);
-		shader->makeShader("assets/shaders/shader.frag", FRAGMENT);
-		shader->makeShader("assets/shaders/shader.geo", GEOMETRY);
+		// Bind the frameShader for rendering the quad
+		frameShader->bind();
 
+		// Now, there are only two textures in the frame buffer:
+		// the depth and color textures.
+		
+		// The textures are already bound to this model and will
+		// get updated along with the frame buffer.
+		for (int i = 0; i < frameModel->getTextureSize(); i++) {
+			// Get texture i from the RawModel
+			unsigned int texID = frameModel->getTexture(i)->getID();
+
+			// Make the active texture i and bind
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, texID);
+
+			// Set the uniform variable of texturei equal to the texture location
+			frameShader->setUniform(i, "texture" + std::to_string(i));
+		}
+
+		// Once everything's set up, bind the VAO
+		frameModel->getVAO()->bind();
+
+		// Draw the RawModel
+		glDrawElements(GL_TRIANGLES, frameModel->getVertexCount(), GL_UNSIGNED_INT, 0);
+
+		// Finally, unbind everything
+		frameModel->getVAO()->unbind();
+		frameShader->unbind();
+	}
+	
+	/* <-----------  PUBLIC  ---------->*/
+
+	void Renderer::init(Window* w) {
+		/* Shaders */
+
+		// Manually go through the steps of creating the default shader
+		shader = new Shader();
+
+		// First make and compile the three shaders
+		shader->makeShader("ansel/shaders/shader.vert", VERTEX);
+		shader->makeShader("ansel/shaders/shader.frag", FRAGMENT);
+		shader->makeShader("ansel/shaders/shader.geo", GEOMETRY);
+
+		// Then link them to the program
 		shader->link();
+		shader->unbind();
 
-		loadShader(shader);
+		// Repeat the same process for the frameShader
+		frameShader = new Shader();
 
-		genProjection(.005f, 1000.f, 65.f, (float)dimensions.y / (float)dimensions.x);
+		frameShader->makeShader("ansel/shaders/frame.vert", VERTEX);
+		frameShader->makeShader("ansel/shaders/frame.frag", FRAGMENT);
 
+		frameShader->link();
+		frameShader->unbind();
+
+		/* Framebuffer */
+
+		// Generate FrameBuffer object
+		frame = new FrameBuffer(w);
+
+		// Create vertices for the quad
+		std::vector<vec3f> screenVertices = {
+			{ -1.f, -1.f, 0.f },
+			{  1.f,  1.f, 0.f },
+			{  1.f, -1.f, 0.f },
+			{ -1.f,  1.f, 0.f }
+		};
+
+		// Create the indices for rendering the quad
+		std::vector<unsigned int> screenIndices = {
+			0, 2, 1,
+			1, 3, 0
+		};
+
+		// Create the texture coordinates for the textures
+		// from the framebuffer
+		std::vector<vec2f> screenTex = {
+			{ 0, 0 },
+			{ 1, 1 },
+			{ 1, 0 },
+			{ 0, 1 }
+		};
+
+		// Finally use the loader to make a raw model with the vertices and
+		// the indices. Then load the texture and its respective coordinates
+		frameModel = Loader::makeRawModel(screenVertices, screenIndices);
+		frameModel->loadTextureCoordinates(screenTex);
+		frameModel->loadTexture(frame->getColorTexture());
+
+		// Generate projection matrix
+		genProjection(.005f, 1000.f, 65.f, (float)w->getHeight() / (float)w->getWidth());
+
+		// Allocate the memory for all the lights
 		lights.resize(LIGHT_COUNT);
 	}
 
+	/* Rendering */
+
+	void Renderer::Render(RawModel* rawModel, Camera camera, Shader* s) {
+		// Make a temporary model from the RawModel
+		Model* model = new Model(rawModel);
+
+		// Render the model
+		Render(model, camera, s);
+
+		// Delete the model
+		delete model;
+	}
+
+	void Renderer::Render(Model* model, Camera camera, Shader* s) {
+		// Push the model to a vector of models
+		std::vector<Model*> models;
+		models.push_back(model);
+
+		// Render the vector of models
+		Render(models, camera, s);
+	}
+
+	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
+		// Make vectors of the models lcoations, scales, and rotations
+		std::vector<vec4f> locations, scales, rotations;
+
+		// Loop through the models to accumulate their information
+		for (int i = 0; i < models.size(); i++) {
+			vec4f v = models.at(i)->getLocation();
+			locations.push_back(v);
+
+			vec3f s = models.at(i)->getScale();
+			scales.push_back({ s.x, s.y, s.z, 1 });
+
+			vec3f r = models.at(i)->getRotation();
+			rotations.push_back({ r.x, r.y, r.z, 1 });
+		}
+
+		// Render the list of models with their respective transformation information
+		Renderer::Render(models, locations, scales, rotations, camera, s);
+	}
+
+	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations,
+		Camera camera, Shader* s) {
+
+		// If wireframe mode is on, tell OpenGL to render lines, 
+		// otherwise fill in the polygons
+		if (settings.wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		// Crappy temporary light stuff isn't going to be here much longer
+		std::vector<int> light_states;
+		std::vector<vec4f> lights;
+
+		lights.push_back({ 0, 0, 1, 1 });
+		light_states.push_back(1);
+
+		//TEMPORARY
+		for (int i = 0; i < LIGHT_COUNT - 1; i++) {
+			lights.push_back({ 0, 0, 0, 1 });
+			light_states.push_back(0);
+		}
+
+		// If the shader passed to this function is null, use the 
+		// default shader, otherwise use s
+		Shader* current_shader = (s == NULL) ? shader : s;
+
+		// For my convienice make a pointer from the model's RawModel
+		RawModel* rawModel = models.at(0)->getRawModel();
+		// Do the same for the VAO
+		VAO *vao = rawModel->getVAO();
+
+		// Bind the shader
+		current_shader->bind();
+
+		// Set all the uniforms that can be used in the shader
+		current_shader->setUniform((float)uFrame    , "frame"   );
+		current_shader->setUniform(settings.lighting, "lighting");
+
+		current_shader->setUniform((int)rawModel->colorsOn( )  , "use_colors"  );
+		current_shader->setUniform((int)rawModel->normalsOn( ) , "use_normals" );
+		current_shader->setUniform((int)rawModel->texturesOn( ), "use_textures");
+
+		current_shader->setUniform(projection      , "projection");
+		current_shader->setUniform(camera.getView(), "view"      );
+
+		// For passing arrays to the shader, you need to specify the length
+		current_shader->setUniform(light_states, "light_state"   , LIGHT_COUNT);
+		current_shader->setUniform(lights      , "light_position", LIGHT_COUNT);
+
+		// Loop through the rawModel's textures and bind them to the shader 
+		for (int i = 0; i < rawModel->getTextureSize(); i++) {
+			glActiveTexture(GL_TEXTURE0 + i);
+
+			unsigned int texID = rawModel->getTexture(i)->getID();
+			glBindTexture(GL_TEXTURE_2D, texID);
+			current_shader->setUniform(i, "texture" + std::to_string(i));
+		}
+
+		// Finally, load the transformation information to the shader
+		rawModel->loadTransformations(locations, rotations, scales);
+
+		// Bind the VAO
+		vao->bind();
+
+		// Bind the Framebuffer so the rendering goes to that rather than
+		// the window
+		frame->bind();
+		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
+		frame->unbind();
+
+		// Unbind everything once and for all
+		vao->unbind();
+		rawModel->unbindTexures();
+		current_shader->unbind();
+	}
+
+	/* Setting Defaults */
+
 	void Renderer::loadShader(Shader* s) {
 		shader = s;
+	}
+
+	void Renderer::loadFrameShader(Shader* s) {
+		frameShader = s;
 	}
 
 	void Renderer::genProjection(float zNear, float zFar, float FOV, float aspectRatio) {
@@ -41,102 +259,15 @@ namespace Ansel
 		projection.m[3][2] = 1.f;
 		projection.m[3][3] = 1.f;
 	}
-	
-	void Renderer::Render(RawModel* rawModel, Camera camera, Shader* s) {
-		Model* model = new Model(rawModel);
 
-		Render(model, camera, s);
-
-		delete model;
-	}
-
-	void Renderer::Render(Model* model, Camera camera, Shader* s) {
-		std::vector<Model*> models;
-		models.push_back(model);
-
-		Render(models, camera, s);
-	}
-
-	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, 
-			Camera camera, Shader* s) {
-
-		if (settings.wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		else					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		std::vector<int> light_states;
-		std::vector<vec4f> lights;
-
-		lights.push_back({ -1, 1, 0, 1 });
-		light_states.push_back(1);
-
-		//TEMPORARY
-		for (int i = 0; i < LIGHT_COUNT - 1; i++) {
-			lights.push_back({ 0, 0, 0, 1 });
-			light_states.push_back(0);
-		}
-
-		Shader* current_shader = (s == NULL) ? shader : s;
-
-		RawModel* rawModel = models.at(0)->getRawModel();
-		VAO *vao = rawModel->getVAO();
-		
-		current_shader->bind();
-
-		current_shader->setUniform((float)uFrame, "frame");
-		current_shader->setUniform(settings._3D, "use3D");
-		current_shader->setUniform((int)rawModel->colorsOn(), "use_colors");
-		current_shader->setUniform((int)rawModel->normalsOn(), "use_normals");
-		current_shader->setUniform((int)rawModel->texturesOn(), "use_textures");
-
-		current_shader->setUniform(projection, "projection");
-		current_shader->setUniform(camera.getView(), "view");
-
-		current_shader->setUniform(light_states, "light_state", LIGHT_COUNT);
-		current_shader->setUniform(lights, "light_position", LIGHT_COUNT);
-
-		rawModel->loadTransformations(locations, rotations, scales);
-
-		rawModel->bindTexures();
-		current_shader->setUniform(0, "sample");
-
-		//rawModel->bindTexures();
-
-		//for (int i = 0; i < rawModel->getTextureSize(); i++) {
-		//	current_shader->setUniform(i, "texture" + std::to_string(i));
-		//}
-
-		vao->bind();
-
-		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
-
-		vao->unbind();
-
-		rawModel->unbindTexures();
-	}
-
-	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
-		std::vector<vec4f> locations, scales, rotations;
-
-		for (int i = 0; i < models.size(); i++) {
-			vec4f v = models.at(i)->getLocation();
-			locations.push_back(v); 
-
-			vec3f s = models.at(i)->getScale();
-			scales.push_back({ s.x, s.y, s.z, 1 });
-
-			vec3f r = models.at(i)->getRotation();
-			rotations.push_back({ r.x, r.y, r.z, 1 });
-		}
-
-		Renderer::Render(models, locations, scales, rotations, camera, s);
-	}
-	
-	void Renderer::set3D(bool isOn) {
-		settings._3D = isOn;
-	}
+	/* Setters */
 
 	void Renderer::setWireFrame(bool isOn) {
 		settings.wireframe = isOn;
+	}
+
+	void Renderer::setLighting(bool isOn) {
+		settings.lighting = isOn;
 	}
 
 	void Renderer::toggleWireFrame() {
@@ -147,4 +278,11 @@ namespace Ansel
 			settings.wireframe = true;
 		}
 	}
+	
+	/* Getters */
+
+	FrameBuffer* Renderer::getFrameBuffer() {
+		return frame;
+	}
+
 }

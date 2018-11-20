@@ -142,6 +142,7 @@
     <ClInclude Include="src\headers\camera.h" />
     <ClInclude Include="src\headers\Def.h" />
     <ClInclude Include="src\headers\Engine.h" />
+    <ClInclude Include="src\headers\FrameBuffer.h" />
     <ClInclude Include="src\headers\Model.h" />
     <ClInclude Include="src\headers\Keyboard.h" />
     <ClInclude Include="src\headers\Mouse.h" />
@@ -157,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="src\source\Camera.cpp" />
     <ClCompile Include="src\source\Engine.cpp" />
+    <ClCompile Include="src\source\FrameBuffer.cpp" />
     <ClCompile Include="src\source\Keyboard.cpp" />
     <ClCompile Include="src\source\Loader.cpp" />
     <ClCompile Include="src\source\Model.cpp" />

@@ -1,10 +1,40 @@
 #include "../headers/camera.h"
 
+#include "../headers/Keyboard.h"
+
 namespace Ansel
 {
 	Camera::Camera() {
 		location = { 0, 0, 0 };
 		rotation = { 0, 0, 0 };
+	}
+
+	void Camera::pollEvents() {
+
+		if (Keyboard::isKeyPressed(KEY::L_SHIFT))
+			speed *= 2;
+
+		if (Keyboard::isKeyPressed(KEY::W))
+			move(Camera::FORWARDS, speed);
+
+		if (Keyboard::isKeyPressed(KEY::S))
+			move(Camera::BACKWARDS, speed);
+
+		if (Keyboard::isKeyPressed(KEY::D))
+			move(Camera::RIGHT, speed);
+
+		if (Keyboard::isKeyPressed(KEY::A))
+			move(Camera::LEFT, speed);
+
+		if (Keyboard::isKeyPressed(KEY::SPACE))
+			translate(0, speed, 0);
+
+		if (Keyboard::isKeyPressed(KEY::L_CTRL))
+			translate(0, -speed, 0);
+	}
+
+	void Camera::setSpeed(float s) {
+		speed = s;
 	}
 
 	void Camera::move(DIRECTION direction, float speed) {

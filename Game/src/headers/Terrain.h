@@ -45,7 +45,9 @@ namespace Game
 
 		Player camera;
 		
-		Texture texture;
+		Texture* texture;
+		Texture* sand;
+
 		std::vector<Chunk*> chunks;
 		
 		Shader* shader;

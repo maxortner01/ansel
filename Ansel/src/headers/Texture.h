@@ -4,6 +4,13 @@
 
 namespace Ansel
 {
+	enum FrameBufferType {
+		COLOR,
+		STENCIL,
+		DEPTH,
+		NONE
+	} typedef FrameBufferType;
+
 	class Texture
 	{
 		unsigned int	ID;
@@ -14,6 +21,7 @@ namespace Ansel
 
 	public:
 		ANSEL_API Texture();
+		ANSEL_API Texture(const int w, const int h, FrameBufferType type = NONE);
 		ANSEL_API Texture(const std::string &path);
 		ANSEL_API ~Texture();
 
@@ -22,5 +30,7 @@ namespace Ansel
 
 		inline int getWidth()  const { return width;  }
 		inline int getHeight() const { return height; }
+
+		inline unsigned int getID() const { return ID; }
 	};
 }

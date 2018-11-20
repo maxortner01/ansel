@@ -4,9 +4,18 @@
 #include "Model.h"
 #include "Shader.h"
 #include "camera.h"
+#include "FrameBuffer.h"
 
 namespace Ansel
 {
+	/**
+	  * \brief Controller for all things rendering. 
+	  *
+	  * Anything that gets rendered to the screen goes through this class
+	  * first. All of its members are static and thus does not need to be
+	  * instanciated by the user or engine.
+	  *
+	  */
 	class Renderer
 	{
 		friend class Engine;
@@ -17,8 +26,8 @@ namespace Ansel
 		  */
 		struct RenderSettings
 		{
-			int _3D = 0;			///< Render with 3D? does nothing right now
 			bool wireframe = false; ///< Render with wireframe if true.
+			bool lighting  = true;	///< Controls whether or not the normals effect the fragment color.
 		};
 
 		/**
@@ -36,17 +45,31 @@ namespace Ansel
 		static RenderSettings settings;		///< Instance of the RenderSettings for different options.
 		static std::vector<Light> lights;	///< List of lights to render with.
 
+		static FrameBuffer* frame;			///< Framebuffer object that contains depth and color textures.
+		static RawModel*    frameModel;		///< Simple square model for drawing frame to the screen.
+
 		static Shader* shader;				///< Default shader.
+		static Shader* frameShader;			///< Shader for drawing frame.
+
 		static unsigned int uFrame;			///< Ticker that counts frames.
 
-		static void loadShader(Shader* shader);
+		/**
+		  * \brief Renders the framebuffer to the screen.
+		  *
+		  * After all has been rendered through the screen, the framebuffer is passed
+		  * through the framShader and finally rendered to the screen. Any UI drawing
+		  * occurs after this in the engine. 
+		  *
+		  * The frameShader contains any post-processing effects.
+		  */
+		static void renderFrame();	
 
 	public:				
 		/**
 		  * Initialize the renderer. (maybe make this private)
 		  * @params dimensions (w, h) dimensions of the screen
 		  */
-		static void ANSEL_API init(vec2u dimensions);
+		static void ANSEL_API init(Window* w);
 
 		/**
 		  * Render to the screen.
@@ -80,9 +103,15 @@ namespace Ansel
 		  */
 		static void ANSEL_API Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, Camera camera = Camera(), Shader* s = NULL);
 
+		static void ANSEL_API loadShader(Shader* shader);
+		static void ANSEL_API loadFrameShader(Shader* shader);
+
 		static void ANSEL_API genProjection(float zNear, float zFar, float FOV, float aspectRatio);
-		static void ANSEL_API set3D(bool isOn);
+
 		static void ANSEL_API setWireFrame(bool isOn);
+		static void ANSEL_API setLighting(bool isOn);
 		static void ANSEL_API toggleWireFrame();
+
+		static FrameBuffer ANSEL_API * getFrameBuffer();
 	};
 }
