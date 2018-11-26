@@ -91,7 +91,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)extern\glew-2.1.0\include\;$(SolutionDir)extern\glfw-3.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)extern\glew-2.1.0\include\;$(SolutionDir)extern\glfw-3.2.1\include\;$(SolutionDir)AnselECS\src;$(SolutionDir)AnselAlloc\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_EXPORTING;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
@@ -124,7 +124,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)extern\glew-2.1.0\include\;$(SolutionDir)extern\glfw-3.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)extern\glew-2.1.0\include\;$(SolutionDir)extern\glfw-3.2.1\include\;$(SolutionDir)AnselECS\src;$(SolutionDir)AnselAlloc\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_EXPORTING;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -143,12 +143,15 @@
     <ClInclude Include="src\headers\Def.h" />
     <ClInclude Include="src\headers\Engine.h" />
     <ClInclude Include="src\headers\FrameBuffer.h" />
+    <ClInclude Include="src\headers\Material.h" />
     <ClInclude Include="src\headers\Model.h" />
     <ClInclude Include="src\headers\Keyboard.h" />
     <ClInclude Include="src\headers\Mouse.h" />
+    <ClInclude Include="src\headers\ParticleSystem.h" />
     <ClInclude Include="src\headers\Renderer.h" />
     <ClInclude Include="src\headers\Screen.h" />
     <ClInclude Include="src\headers\Shader.h" />
+    <ClInclude Include="src\headers\StaticModelArray.h" />
     <ClInclude Include="src\headers\Texture.h" />
     <ClInclude Include="src\vendor\SimplexNoise.h" />
     <ClInclude Include="src\vendor\stb_image.h" />
@@ -161,16 +164,27 @@
     <ClCompile Include="src\source\FrameBuffer.cpp" />
     <ClCompile Include="src\source\Keyboard.cpp" />
     <ClCompile Include="src\source\Loader.cpp" />
+    <ClCompile Include="src\source\Material.cpp" />
     <ClCompile Include="src\source\Model.cpp" />
     <ClCompile Include="src\source\Mouse.cpp" />
+    <ClCompile Include="src\source\ParticleSystem.cpp" />
     <ClCompile Include="src\source\RawModel.cpp" />
     <ClCompile Include="src\source\Renderer.cpp" />
     <ClCompile Include="src\source\Screen.cpp" />
     <ClCompile Include="src\source\Shader.cpp" />
+    <ClCompile Include="src\source\StaticModelArray.cpp" />
     <ClCompile Include="src\source\Texture.cpp" />
     <ClCompile Include="src\vendor\SimplexNoise.cpp" />
     <ClCompile Include="src\vendor\stb_image.cpp" />
     <ClCompile Include="src\source\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnselAlloc\AnselAlloc.vcxproj">
+      <Project>{0ceb8725-54a9-4489-aec8-fef61dc4aeb3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\AnselECS\AnselECS.vcxproj">
+      <Project>{4e4eed3b-f1fc-46e6-ab51-409992b69166}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

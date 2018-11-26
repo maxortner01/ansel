@@ -9,14 +9,10 @@ layout (location = 5) in vec4 scale;
 
 layout (location = 6) in vec2 tex_coords0;
 
-uniform vec4 light_position[8];
-uniform int  light_state[8];
-
 out vData {
 	vec4 position;
     vec4 vertexColor;
-
-    vec3 toLight;
+	
     vec3 outNormal;
 
     mat4 modelMatrix;
@@ -96,8 +92,6 @@ void main(void)
 	// Create the model matrix
 	mat4 model = makeModel(location, rotation, scale);
 
-	// Make the toLight vector
-	VertexIn.toLight   = vec3(light_position[0]);
 	// Create the rotation matrix for rotating the normals
 	VertexIn.rotationMatrix = makeRotationMatrix(rotation);
 	// Pass the model matrix

@@ -20,8 +20,11 @@ namespace Ansel
 		// Generate a buffer at the Color location
 		if (!vao->bufferExists(Buffer::COLOR))
 			vao->genBuffer(Buffer::COLOR);
+
+		bool multi_colors = !(colors.size() == size);
+
 		// Bind the color information to the buffer
-		vao->bindBufferData(colors, Buffer::COLOR);
+		vao->bindBufferData(colors, Buffer::COLOR, multi_colors, true);
 		// Unbind VAO
 		vao->unbind();
 
@@ -52,9 +55,8 @@ namespace Ansel
 		return getTextureSize() - 1;
 	}
 
-	void RawModel::updateTexture(Texture* texture, const unsigned int index) {
-		delete textures.at(index);
-		textures.at(index) = texture;
+	void RawModel::loadMaterial(Material* material) {
+		_material = material;
 	}
 
 	void RawModel::bindTexures() {
@@ -109,12 +111,29 @@ namespace Ansel
 		return textures.at(index);
 	}
 
+	Material* RawModel::getMaterial() const {
+		return _material;
+	}
+
 	VAO *RawModel::getVAO() const { return vao; }
 	unsigned int RawModel::getVertexCount() const { return size; }
 	unsigned int RawModel::getIndex() const { return index; }
+
 	int RawModel::colorsOn() const { return use_colors; }
 	int RawModel::normalsOn() const { return use_normals; }
 	int RawModel::texturesOn() const { return use_textures; }
+
+	void RawModel::setColorsOn(bool isOn) {
+		use_colors = isOn;
+	}
+
+	void RawModel::setNormalsOn(bool isOn) {
+		use_normals = isOn;
+	}
+
+	void RawModel::setTexturesOn(bool isOn) {
+		use_textures = isOn;
+	}
 
 	RawModel::~RawModel() {
 		vao->destroy();

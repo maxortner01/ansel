@@ -2,62 +2,125 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 
 namespace Game
 {
 	LightTest::LightTest(Window* w) : Screen(w) {}
 
 	void LightTest::onCreate() {
-		// Generate cube model
-		std::vector<vec3f> vertices = {
-			{ -1.f, -1.f, -1.f },
-			{  1.f,  1.f, -1.f },
-			{  1.f, -1.f, -1.f },
-			{ -1.f,  1.f, -1.f },
+		/* <---------- TREE ----------> */
 
-			{ -1.f, -1.f,  1.f },
-			{  1.f,  1.f,  1.f },
-			{  1.f, -1.f,  1.f },
-			{ -1.f,  1.f,  1.f },
+		cylinder = Loader::makeRawModel("assets/models/cylinder.obj", false);
+
+		Material* material = new Material;
+		material->loadTexture(Material::ALBEDO, new Texture("assets/textures/bark/albedo.png"));
+		material->loadTexture(Material::NORMAL, new Texture("assets/textures/bark/normal.png"));
+		material->loadTexture(Material::OCCLUSION, new Texture("assets/textures/bark/ao.png"));
+
+		cylinder->loadMaterial(material);
+
+		tree = new Model(cylinder);
+		tree->setLocation({ 3.f, 1.f, 0 });
+
+		/* <---------- CUBE ----------> */
+
+		rawStone = Loader::makeRawModel("assets/models/cube.obj", false);
+
+		material = new Material;
+		material->loadTexture(Material::ALBEDO, new Texture("assets/textures/rock/albedo.png"));
+		material->loadTexture(Material::NORMAL, new Texture("assets/textures/rock/normal.png"));
+		material->loadTexture(Material::OCCLUSION, new Texture("assets/textures/rock/ao.png"));
+
+		rawStone->loadMaterial(material);
+
+		box = new Model(rawStone);
+		box->setLocation({-3.f, .5f, 0});
+
+		/* <---------- FLOOR ----------> */
+
+		std::vector<vec3f> vertices = {
+			{ -1.f,  0.f,  1.f },
+			{  1.f,  0.f,  1.f },
+			{  1.f,  0.f, -1.f },
+			{ -1.f,  0.f, -1.f }
 		};
 
 		std::vector<unsigned int> indices = {
-			// Back face
-			0, 1, 2, 0, 3, 1,
-			// Front face
-			4, 5, 6, 4, 7, 5,
-			// Bottom face
-			0, 6, 2, 0, 4, 6
+			0, 1, 2,
+			2, 3, 0
 		};
 
-		std::vector<vec4f> colors;
-		for (int i = 0; i < vertices.size(); i++)
-			colors.push_back({ 1, 1, 1, 1 });
+		std::vector<vec2f> tex = {
+			{ 0.f, 1.f },
+			{ 1.f, 1.f },
+			{ 1.f, 0.f },
+			{ 0.f, 0.f }
+		};
 
-		cube = Loader::makeRawModel(vertices, indices);
-		cube->loadColors(colors);
+		rawFloor = Loader::makeRawModel(vertices, indices);
+		rawFloor->loadTextureCoordinates(tex);
+		
+		material = new Material;
+		material->loadTexture(Material::ALBEDO, new Texture("assets/textures/dirt/albedo.png"));
+		material->loadTexture(Material::NORMAL, new Texture("assets/textures/dirt/normal.png"));
+		material->loadTexture(Material::OCCLUSION, new Texture("assets/textures/dirt/ao.png"));
 
-		float space = 4.f;
-		for (int x = -1; x < 2; x++) {
-			for (int y = -1; y < 2; y++) {
-				for (int z = -1; z < 2; z++) {
-					Model* c = new Model(cube);
+		rawFloor->loadMaterial(material);
 
-					c->setLocation({ x * space, y * space, z * space });
+		int l = 5;
+		for (int z = -1 - l; z < 2 + l; z++) {
+			for (int x = -1 - l; x < 2 + l; x++) {
+				Model* model = new Model(rawFloor);
 
-					cubes.push_back(c);
-				}
+				model->setLocation({ (float)x * 2, 0, (float)z * 2 });
+
+				floor.push_back(model);
 			}
 		}
 
-		Renderer::setLighting(false);
-		camera.setSpeed(.5f);
+		/* <---------- EVERYTHING ELSE ----------> */
+
+		//Renderer::setLighting(false);
+		camera.setSpeed(.1f);
+
+		Light light;
+
+		light.on = true;
+		//light.location = { 1, .65f, 1 };
+		light.location = { 1, 1, 0 };
+		light.type = light.DIRECTIONAL;
+		light.color = { 1, 1, 1 };
+
+		Renderer::makeLight(light);
+
+		PSys::ParticleProperties partProp;
+		partProp.gravity = .1f;
+		partProp.life = .45f;
+		partProp.rate = 25;
+		//partProp.birth_color = { .1f, .25f, .8f, 1 };
+		partProp.birth_color = { 1, .25f, 0, 1 };
+		partProp.death_color = { 0, 0, 0, 0 };
+		partProp.initial_velocity = .01f;
+		
+		part = new ParticleSystem({ 0, 0, 0 });
+		part->setProperties(partProp);
+		part->setEmitterType(ParticleSystem::BOX);
+		part->setPlane({ 0, 0, .5f, .5f });
+		part->setHeight(.9f);
 	}
 
 	void LightTest::onUpdate() {
 		if (Keyboard::isKeyPressed(KEY::ESCAPE))
 			window->close();
 
+		if (Keyboard::isKeyPressed(KEY::LEFT))
+			update = false;
+
+		if (Keyboard::isKeyPressed(KEY::RIGHT))
+			update = true;
+
+		camera.setSpeed(5.f * (1.f / getFPS()));
 		camera.pollEvents();
 
 		float rotation_speed = .1f * 3.14159f / 180.f;
@@ -66,11 +129,24 @@ namespace Game
 
 		vec2f change = { newMouse.x - ScreenSize.x / 2.f, newMouse.y - ScreenSize.y / 2.f };
 
+		//Light* l = Renderer::getLight(0);
+		//l->location = { cosf((float)Engine::getTime()), 0, sinf((float)Engine::getTime()) };
+
 		camera.rotate(0, -rotation_speed * change.x, 0);
 		camera.rotate(rotation_speed * change.y, 0, 0);
 
+		part->setLocation({ 5.f * sinf((float)Engine::getTime() * 25.0), 5.f * cosf((float)Engine::getTime() * 25.0), 0 });
+		
+		if (update)
+			part->update();
 
+		//Renderer::Render(part, camera);
+		Renderer::Render(floor, camera);
+		Renderer::Render(tree, camera);
+		Renderer::Render(box, camera);
 
-		Renderer::Render(cubes, camera);
+		//system("CLS");
+		std::cout << getFPS() << std::endl;
+		//std::cout << part->getParticleSize() << std::endl;
 	}
 }

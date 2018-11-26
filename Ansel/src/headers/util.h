@@ -150,6 +150,17 @@ namespace Ansel
 			return v;
 		}
 
+		template<typename B>
+		vec3<T> operator*(const B &f) const {
+			vec3<T> v;
+
+			v.x = x * f;
+			v.y = y * f;
+			v.z = z * f;
+
+			return v;
+		}
+
 		// Subtraction Operator
 		template<typename B>
 		vec3<T> operator-(const vec3<B> &v1) const {
@@ -200,7 +211,24 @@ namespace Ansel
 			};
 		};
 
-		// Addition Operator
+		// Addition Operators
+		template<typename B>
+		vec4<B> operator+(const vec4<B> v) {
+			return { x + v.x, y + v.y, z + v.z, w + v.w };
+		}
+
+		// Multplication Operators
+		template<typename B>
+		vec4<B> operator*(const float k) {
+			return { x * k, y * k, z * k, w * k };
+		}
+
+		void operator*=(const float k) {
+			x *= k;
+			y *= k;
+			z *= k;
+			w *= k;
+		}
 
 		// Casting Operator
 		template<typename B>

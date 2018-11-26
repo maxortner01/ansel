@@ -50,6 +50,7 @@ namespace Ansel
 
 		virtual void onUpdate() = 0;
 
+		virtual void renderUI();
 		virtual void onCreate();
 		virtual void onDestroy();
 

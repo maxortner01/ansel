@@ -1,22 +1,8 @@
-﻿  LightTest.cpp
+﻿  main.cpp
 c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-c:\users\maxo_\desktop\ansel-master\game\src\source\lighttest.cpp(67): warning C4838: conversion from 'T' to 'T' requires a narrowing conversion
-          with
-          [
-              T=double
-          ]
-          and
-          [
-              T=float
-          ]
-c:\users\maxo_\desktop\ansel-master\game\src\source\lighttest.cpp(67): warning C4244: 'initializing': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=double
-          ]
-          and
-          [
-              T=float
-          ]
+c:\users\maxo_\desktop\ansel-master\game\src\main.cpp(118): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  c:\users\maxo_\desktop\ansel-master\game\src\main.cpp(117): note: while compiling class template member function 'void MemoryManager<main::Person>::free(void *)'
+  c:\users\maxo_\desktop\ansel-master\game\src\main.cpp(199): note: see reference to function template instantiation 'void MemoryManager<main::Person>::free(void *)' being compiled
+  c:\users\maxo_\desktop\ansel-master\game\src\main.cpp(190): note: see reference to class template instantiation 'MemoryManager<main::Person>' being compiled
   Game.vcxproj -> C:\Users\maxo_\Desktop\ansel-master\bin\Debug-x64\Game\Game.exe

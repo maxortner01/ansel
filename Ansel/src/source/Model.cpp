@@ -15,6 +15,7 @@ namespace Ansel
 
 	Model::Model() {
 		_location = { 0, 0, 0, 1 };
+		_color    = { 2, 2, 2, 2 };
 		_rotation = { 0, 0, 0 };
 		_scale    = { 1, 1, 1 };
 	}
@@ -23,8 +24,9 @@ namespace Ansel
 		_ref = modelRef;
 
 		_location = { 0, 0, 0, 1 };
+		_color    = { 2, 2, 2, 2 };
 		_rotation = { 0, 0, 0 };
-		_scale = { 1, 1, 1 };
+		_scale    = { 1, 1, 1 };
 	}
 
 	void Model::setLocation(vec4f location) {
@@ -57,6 +59,10 @@ namespace Ansel
 
 	void Model::addRotation(float x, float y, float z) {
 		_rotation = { _rotation.x + x, _rotation.y + y, _rotation.z + z };
+	}
+
+	void Model::setColor(vec4f color) {
+		_color = color;
 	}
 
 	void Model::setScale(vec3f scale) {
@@ -130,14 +136,14 @@ namespace Ansel
 		VBOS.at(type) = buffer;
 	}
 
-	void VAO::bindBufferData(const std::vector<vec2f> data, const Buffer::BUFFER_TYPE type) {
+	void VAO::bindBufferData(const std::vector<vec2f> data, const Buffer::BUFFER_TYPE type, bool dynamic) {
 		Buffer* buffer = &VBOS.at(type);
 		buffer->bind();
 
 		buffer->count = (unsigned int)data.size();
 		buffer->data_size = 2;
 
-		glBufferData(getType(type), data.size() * sizeof(vec2f), &data.front(), GL_STATIC_DRAW);
+		glBufferData(getType(type), data.size() * sizeof(vec2f), &data.front(), (dynamic)?GL_DYNAMIC_DRAW:GL_STATIC_DRAW);
 		glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		glEnableVertexAttribArray(type);
@@ -145,14 +151,14 @@ namespace Ansel
 		buffer->unbind();
 	}
 
-	void VAO::bindBufferData(const std::vector<vec3f> data, const Buffer::BUFFER_TYPE type) {
+	void VAO::bindBufferData(const std::vector<vec3f> data, const Buffer::BUFFER_TYPE type, bool dynamic) {
 		Buffer* buffer = &VBOS.at(type);
 		buffer->bind();
 
 		buffer->count = (unsigned int)data.size();
 		buffer->data_size = 3;
 
-		glBufferData(getType(type), data.size() * sizeof(vec3f), &data.front(), GL_STATIC_DRAW);
+		glBufferData(getType(type), data.size() * sizeof(vec3f), &data.front(), (dynamic) ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 		glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		glEnableVertexAttribArray(type);
@@ -160,7 +166,7 @@ namespace Ansel
 		buffer->unbind();
 	}
 
-	void VAO::bindBufferData(const std::vector<vec4f> data, Buffer::BUFFER_TYPE type) {
+	void VAO::bindBufferData(const std::vector<vec4f> data, Buffer::BUFFER_TYPE type, bool divisor, bool dynamic) {
 		Buffer* buffer = &VBOS.at(type);
 		buffer->bind();
 
@@ -176,23 +182,25 @@ namespace Ansel
 			glVertexAttribDivisor(type, 1);
 		}
 		else {
-			glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), GL_STATIC_DRAW);
+			glBufferData(getType(type), data.size() * sizeof(vec4f), &data.front(), (dynamic) ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 			glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 			glEnableVertexAttribArray(type);
+
+			if (divisor) { glVertexAttribDivisor(type, 1); }
 		}
 
 		buffer->unbind();
 	}
 
-	void VAO::bindBufferData(const std::vector<int> data, const unsigned int size, const Buffer::BUFFER_TYPE type) {
+	void VAO::bindBufferData(const std::vector<int> data, const unsigned int size, const Buffer::BUFFER_TYPE type, bool dynamic) {
 		Buffer* buffer = &VBOS.at(type);
 		buffer->bind();
 
 		buffer->count = (unsigned int)data.size();
 		buffer->data_size = size;
 
-		glBufferData(getType(type), data.size() * sizeof(int), &data.front(), GL_STATIC_DRAW);
+		glBufferData(getType(type), data.size() * sizeof(int), &data.front(), (dynamic) ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 
 		if (type != Buffer::INDICES)
 			glVertexAttribPointer(type, buffer->data_size, GL_INT, GL_FALSE, 0, (void*)0);
@@ -202,14 +210,14 @@ namespace Ansel
 		buffer->unbind();
 	}
 
-	void VAO::bindBufferData(const std::vector<unsigned int> data, const unsigned int size, const Buffer::BUFFER_TYPE type) {
+	void VAO::bindBufferData(const std::vector<unsigned int> data, const unsigned int size, const Buffer::BUFFER_TYPE type, bool dynamic) {
 		Buffer* buffer = &VBOS.at(type);
 		buffer->bind();
 
 		buffer->count = (unsigned int)data.size();
 		buffer->data_size = size;
 
-		glBufferData(getType(type), data.size() * sizeof(unsigned int), &data.front(), GL_STATIC_DRAW);
+		glBufferData(getType(type), data.size() * sizeof(unsigned int), &data.front(), (dynamic) ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 
 		if (type != Buffer::INDICES)
 			glVertexAttribPointer(type, buffer->data_size, GL_UNSIGNED_INT, GL_FALSE, 0, (void*)0);

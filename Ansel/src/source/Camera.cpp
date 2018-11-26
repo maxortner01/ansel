@@ -10,27 +10,27 @@ namespace Ansel
 	}
 
 	void Camera::pollEvents() {
-
+		float s = speed;
 		if (Keyboard::isKeyPressed(KEY::L_SHIFT))
-			speed *= 2;
+			s *= 2;
 
 		if (Keyboard::isKeyPressed(KEY::W))
-			move(Camera::FORWARDS, speed);
+			move(Camera::FORWARDS, s);
 
 		if (Keyboard::isKeyPressed(KEY::S))
-			move(Camera::BACKWARDS, speed);
+			move(Camera::BACKWARDS, s);
 
 		if (Keyboard::isKeyPressed(KEY::D))
-			move(Camera::RIGHT, speed);
+			move(Camera::RIGHT, s);
 
 		if (Keyboard::isKeyPressed(KEY::A))
-			move(Camera::LEFT, speed);
+			move(Camera::LEFT, s);
 
 		if (Keyboard::isKeyPressed(KEY::SPACE))
-			translate(0, speed, 0);
+			translate(0, s, 0);
 
 		if (Keyboard::isKeyPressed(KEY::L_CTRL))
-			translate(0, -speed, 0);
+			translate(0, -s, 0);
 	}
 
 	void Camera::setSpeed(float s) {

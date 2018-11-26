@@ -3,6 +3,7 @@
 #include "Def.h"
 #include "util.h"
 #include "Texture.h"
+#include "Material.h"
 
 #include <vector>
 
@@ -48,13 +49,13 @@ namespace Ansel
 		static int getType(Buffer::BUFFER_TYPE type);
 
 		void genBuffer(const Buffer::BUFFER_TYPE type);
-		void bindBufferData(const std::vector<vec2f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
-		void bindBufferData(const std::vector<vec3f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
-		void bindBufferData(const std::vector<vec4f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
+		void bindBufferData(const std::vector<vec2f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
+		void bindBufferData(const std::vector<vec3f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
+		void bindBufferData(const std::vector<vec4f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool divisor = false, bool dynamic = false);
 		void bindBufferData(const std::vector<int> data, 
-			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
+			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
 		void bindBufferData(const std::vector<unsigned int> data,
-			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX);
+			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
 
 		Buffer getBuffer(Buffer::BUFFER_TYPE type);
 		bool   bufferExists(int type);
@@ -81,6 +82,7 @@ namespace Ansel
 		bool use_normals = false;
 
 		std::vector<Texture*> textures;
+		Material* _material;
 
 	public:
 		/**
@@ -116,7 +118,7 @@ namespace Ansel
 		  */
 		int ANSEL_API loadTexture(Texture* texture);
 
-		void ANSEL_API updateTexture(Texture* texture, const unsigned int index);
+		void ANSEL_API loadMaterial(Material* material);
 
 		/**
 		  * Binds textures.
@@ -154,13 +156,18 @@ namespace Ansel
 		  */
 		unsigned int ANSEL_API getIndex() const;
 
-		int colorsOn() const;
-		int normalsOn() const;
-		int texturesOn() const;
+		int  ANSEL_API colorsOn() const;
+		int  ANSEL_API normalsOn() const;
+		int  ANSEL_API texturesOn() const;
+
+		void ANSEL_API setColorsOn(bool isOn);
+		void ANSEL_API setNormalsOn(bool isOn);
+		void ANSEL_API setTexturesOn(bool isOn);
 
 		int ANSEL_API getTextureSize() const;
 
-		Texture ANSEL_API * getTexture(int index) const;
+		Texture  ANSEL_API * getTexture(int index) const;
+		Material ANSEL_API * getMaterial( ) const;
 
 		ANSEL_API ~RawModel();
 	};
@@ -175,6 +182,7 @@ namespace Ansel
 		vec4f _location;	///< (x, y, z, w) location.
 		vec3f _scale;		///< (x, y, z) scale factor.
 		vec3f _rotation;	///< Pitch, yaw, and roll.
+		vec4f _color;
 
 		RawModel* _ref;		///< Pointer to RawModel instance that holds all vertex information.
 
@@ -205,6 +213,8 @@ namespace Ansel
 		void ANSEL_API setRotation(float x, float y, float z);
 		void ANSEL_API addRotation(float x, float y, float z);
 
+		void ANSEL_API setColor(vec4f color);
+
 		void ANSEL_API setScale(vec3f scale);
 
 		vec4f	  ANSEL_API getLocation( )   const;
@@ -230,7 +240,7 @@ namespace Ansel
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals);
-		static RawModel ANSEL_API * makeRawModel(const char* filename);
+		static RawModel ANSEL_API * makeRawModel(const char* filename, bool smooth_shading = true);
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
 

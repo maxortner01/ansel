@@ -9,10 +9,21 @@ namespace Game
 {
 	class LightTest : public Screen
 	{
-		RawModel* cube;
-		std::vector<Model*> cubes;
+		RawModel* rawFloor;
+		RawModel* cylinder;
+		RawModel* rawStone;
+		RawModel* treemodel;
+		
+		Model* box;
+		Model* tree;
+		Model* realTree;
+		std::vector<Model*> floor;
 
-		Camera    camera;
+		StaticModelArray sma;
+		ParticleSystem* part;
+
+		bool   update = true;
+		Camera camera;
 
 	public:
 		LightTest(Window* w);

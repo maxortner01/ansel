@@ -48,96 +48,114 @@
     <ClInclude Include="src\Ansel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\Mouse.h">
-      <Filter>Header Files\event</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Keyboard.h">
-      <Filter>Header Files\event</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Screen.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Model.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Window.h">
-      <Filter>Header Files\processors</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Engine.h">
-      <Filter>Header Files\processors</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\util.h">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Def.h">
-      <Filter>Header Files\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Renderer.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\Shader.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\camera.h">
-      <Filter>Header Files\entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\vendor\SimplexNoise.h">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\stb_image.h">
       <Filter>Header Files\utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\Texture.h">
-      <Filter>Header Files\rendering</Filter>
+    <ClInclude Include="src\headers\camera.h">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Def.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Engine.h">
+      <Filter>Header Files\processors</Filter>
     </ClInclude>
     <ClInclude Include="src\headers\FrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\headers\Keyboard.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Model.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Mouse.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Renderer.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Screen.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Shader.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\StaticModelArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Texture.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\util.h">
+      <Filter>Header Files\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Window.h">
+      <Filter>Header Files\processors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\ParticleSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\source\Mouse.cpp">
-      <Filter>Source Files\event</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Keyboard.cpp">
-      <Filter>Source Files\event</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Engine.cpp">
-      <Filter>Source Files\processors</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Window.cpp">
-      <Filter>Source Files\processors</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Screen.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Model.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Renderer.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Shader.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Camera.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\Loader.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\source\RawModel.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\vendor\SimplexNoise.cpp">
       <Filter>Source Files\utility</Filter>
     </ClCompile>
     <ClCompile Include="src\vendor\stb_image.cpp">
       <Filter>Source Files\utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\source\Camera.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Engine.cpp">
+      <Filter>Source Files\processors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Keyboard.cpp">
+      <Filter>Source Files\event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Loader.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Model.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Mouse.cpp">
+      <Filter>Source Files\event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\RawModel.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Renderer.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Screen.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Shader.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\StaticModelArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\source\Texture.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\FrameBuffer.cpp">
+    <ClCompile Include="src\source\Window.cpp">
+      <Filter>Source Files\processors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

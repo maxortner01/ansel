@@ -5,9 +5,30 @@
 #include "Shader.h"
 #include "camera.h"
 #include "FrameBuffer.h"
+#include "ParticleSystem.h"
+#include "StaticModelArray.h"
 
 namespace Ansel
 {
+	/**
+	  * Object that represents a light in 3D space.
+	  */
+	struct Light
+	{
+		typedef enum {
+			AMBIENT,
+			POINT,
+			DIRECTIONAL,
+			NONE
+		} LIGHT_TYPE;
+
+		bool       on = false;
+		LIGHT_TYPE type = NONE;
+
+		vec3f color = { 1, 1, 1 };
+		vec4f location = { 0, 0, 0, 1 };
+	};
+
 	/**
 	  * \brief Controller for all things rendering. 
 	  *
@@ -29,21 +50,13 @@ namespace Ansel
 			bool wireframe = false; ///< Render with wireframe if true.
 			bool lighting  = true;	///< Controls whether or not the normals effect the fragment color.
 		};
-
-		/**
-		  * Object that represents a light in 3D space.
-		  */
-		struct Light
-		{
-			vec4f location;
-			vec3f color;
-			bool  on;
-		};
+		
+		static Light  lights[LIGHT_COUNT];	///< List of lights to render with.
+		static unsigned int light_index;
 
 		static mat4x4 projection;			///< Projection matrix for projecting 3D objects
 
 		static RenderSettings settings;		///< Instance of the RenderSettings for different options.
-		static std::vector<Light> lights;	///< List of lights to render with.
 
 		static FrameBuffer* frame;			///< Framebuffer object that contains depth and color textures.
 		static RawModel*    frameModel;		///< Simple square model for drawing frame to the screen.
@@ -64,7 +77,7 @@ namespace Ansel
 		  */
 		static void renderFrame();	
 
-	public:				
+	public:
 		/**
 		  * Initialize the renderer. (maybe make this private)
 		  * @params dimensions (w, h) dimensions of the screen
@@ -93,6 +106,11 @@ namespace Ansel
 		  * @param s      Shader to render the models with (uses Renderer's by default)
 		  */
 		static void ANSEL_API Render(std::vector<Model*> models, Camera camera = Camera(), Shader* s = NULL);
+
+		static void ANSEL_API Render(ParticleSystem* particleSystem, Camera camera = Camera(), Shader* s = NULL);
+
+		static void ANSEL_API Render(StaticModelArray staticModelArray, Camera camera = Camera(), Shader* s = NULL);
+
 		/**
 		  * Render to the screen. Manually inputted translation, rotation, and scale information.
 		  * Ideally, the size of locations, scales, and rotations is the same as models.
@@ -105,6 +123,9 @@ namespace Ansel
 
 		static void ANSEL_API loadShader(Shader* shader);
 		static void ANSEL_API loadFrameShader(Shader* shader);
+
+		static int   ANSEL_API   makeLight(Light light);
+		static Light ANSEL_API * getLight (const unsigned int index);
 
 		static void ANSEL_API genProjection(float zNear, float zFar, float FOV, float aspectRatio);
 

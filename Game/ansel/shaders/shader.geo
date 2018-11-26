@@ -7,7 +7,6 @@ in vData {
 	vec4 position;
     vec4 vertexColor;
 
-    vec3 toLight;
     vec3 outNormal;
 
     mat4 modelMatrix;
@@ -20,7 +19,6 @@ out fData {
 	vec4 position;
     vec4 vertexColor;
 
-    vec3 toLight;
     vec3 outNormal;
 
     mat4 modelMatrix;
@@ -66,14 +64,14 @@ void main(void)
         }
 
         // Pass all useful information to the fragment shader
-        frag.vertexColor = VertexIn[i].vertexColor;
-        frag.toLight = VertexIn[i].toLight;
-        frag.outNormal = calcNormal;
         frag.modelMatrix = VertexIn[i].modelMatrix;
+		frag.position = gl_in[i].gl_Position * VertexIn[i].modelMatrix * view * projection;
+        frag.vertexColor = VertexIn[i].vertexColor;
+        frag.outNormal = calcNormal;
         frag.tex = VertexIn[i].tex;
 
         // Transform the vertex once and for all in 3D space
-        gl_Position = gl_in[i].gl_Position * VertexIn[i].modelMatrix * view * projection;
+        gl_Position = frag.position;
 
         EmitVertex();
     }

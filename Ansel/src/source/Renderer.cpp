@@ -6,10 +6,12 @@ namespace Ansel
 {
 	/* <----------  PRIVATE  ---------->*/
 
+	Light Renderer::lights[LIGHT_COUNT];
+	unsigned int Renderer::light_index = 0;
+
 	mat4x4 Renderer::projection;
 
 	Renderer::RenderSettings Renderer::settings;
-	std::vector<Renderer::Light> Renderer::lights;
 
 	FrameBuffer* Renderer::frame;
 	RawModel*    Renderer::frameModel;
@@ -117,9 +119,6 @@ namespace Ansel
 
 		// Generate projection matrix
 		genProjection(.005f, 1000.f, 65.f, (float)w->getHeight() / (float)w->getWidth());
-
-		// Allocate the memory for all the lights
-		lights.resize(LIGHT_COUNT);
 	}
 
 	/* Rendering */
@@ -164,6 +163,40 @@ namespace Ansel
 		Renderer::Render(models, locations, scales, rotations, camera, s);
 	}
 
+	void Renderer::Render(ParticleSystem* particleSystem, Camera camera, Shader* s) {
+		std::vector<vec4f> locations, rotations, scales, colors;
+
+		locations.resize(particleSystem->getParticleSize());
+		rotations.resize(particleSystem->getParticleSize());
+		scales   .resize(particleSystem->getParticleSize());
+		colors   .resize(particleSystem->getParticleSize());
+
+		for (int i = 0; i < particleSystem->getParticleSize(); i++) {
+			PSys::Particle* p = particleSystem->getParticle(i);
+
+			locations.at(i) = { p->location.x, p->location.y, p->location.z, 1.f };
+			rotations.at(i) = { 0, 0, 0 };
+			scales   .at(i) = { .01f, .01f, .01f };
+			colors   .at(i) = p->c_color;
+		}
+
+		particleSystem->getModel()->loadColors(colors);
+
+		Model* model = new Model(particleSystem->getModel());
+
+		std::vector<Model*> models;
+		models.push_back(model);
+
+		Renderer::Render(models, locations, scales, rotations, camera);
+
+		delete model;
+	}
+
+	void Renderer::Render(StaticModelArray SMA, Camera camera, Shader* s) {
+		Render(SMA.getModels(), SMA.getTransformation(SMA.LOCATIONS), SMA.getTransformation(SMA.SCALES),
+			SMA.getTransformation(SMA.ROTATION), camera, s);
+	}
+
 	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations,
 		Camera camera, Shader* s) {
 
@@ -171,20 +204,7 @@ namespace Ansel
 		// otherwise fill in the polygons
 		if (settings.wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		// Crappy temporary light stuff isn't going to be here much longer
-		std::vector<int> light_states;
-		std::vector<vec4f> lights;
-
-		lights.push_back({ 0, 0, 1, 1 });
-		light_states.push_back(1);
-
-		//TEMPORARY
-		for (int i = 0; i < LIGHT_COUNT - 1; i++) {
-			lights.push_back({ 0, 0, 0, 1 });
-			light_states.push_back(0);
-		}
-
+		
 		// If the shader passed to this function is null, use the 
 		// default shader, otherwise use s
 		Shader* current_shader = (s == NULL) ? shader : s;
@@ -208,17 +228,43 @@ namespace Ansel
 		current_shader->setUniform(projection      , "projection");
 		current_shader->setUniform(camera.getView(), "view"      );
 
-		// For passing arrays to the shader, you need to specify the length
-		current_shader->setUniform(light_states, "light_state"   , LIGHT_COUNT);
-		current_shader->setUniform(lights      , "light_position", LIGHT_COUNT);
+		current_shader->setUniform(camera.getLocation(), "camera_position");
+
+		// Pass the lights to the uniform
+		for (int i = 0; i < LIGHT_COUNT; i++) {
+			Light light = lights[i];
+
+			current_shader->setUniform(light.on      , "lights[" + std::to_string(i) + "].on"      );
+			current_shader->setUniform(light.type    , "lights[" + std::to_string(i) + "].type"    );
+			current_shader->setUniform(light.color   , "lights[" + std::to_string(i) + "].color"   );
+			current_shader->setUniform(light.location, "lights[" + std::to_string(i) + "].location");
+		}
+
+		unsigned int material_amount = 0;
+		for (int i = 0; i < Material::AMOUNT; i++) {
+			std::string strings[Material::AMOUNT] = {
+				"tex_albedo",
+				"tex_normal",
+				"tex_occlusion"
+			};
+
+			if (rawModel->getMaterial() != nullptr && rawModel->getMaterial()->getTexture(i) != nullptr) {
+				glActiveTexture(GL_TEXTURE0 + i);
+
+				unsigned int texID = rawModel->getMaterial()->getTexture(i)->getID();
+				glBindTexture(GL_TEXTURE_2D, texID);
+				current_shader->setUniform(i, strings[i]);
+				material_amount++;
+			}
+		}
 
 		// Loop through the rawModel's textures and bind them to the shader 
 		for (int i = 0; i < rawModel->getTextureSize(); i++) {
-			glActiveTexture(GL_TEXTURE0 + i);
+			glActiveTexture(GL_TEXTURE0 + i + material_amount + 1);
 
 			unsigned int texID = rawModel->getTexture(i)->getID();
 			glBindTexture(GL_TEXTURE_2D, texID);
-			current_shader->setUniform(i, "texture" + std::to_string(i));
+			current_shader->setUniform(i + (int)material_amount + 1, "texture" + std::to_string(i));
 		}
 
 		// Finally, load the transformation information to the shader
@@ -230,7 +276,7 @@ namespace Ansel
 		// Bind the Framebuffer so the rendering goes to that rather than
 		// the window
 		frame->bind();
-		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, models.size());
+		glDrawElementsInstanced(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0, locations.size());
 		frame->unbind();
 
 		// Unbind everything once and for all
@@ -247,6 +293,18 @@ namespace Ansel
 
 	void Renderer::loadFrameShader(Shader* s) {
 		frameShader = s;
+	}
+
+	int Renderer::makeLight(Light light) {
+		int i = light_index;
+
+		lights[light_index++] = light;
+
+		return i;
+	}
+
+	Light* Renderer::getLight(const unsigned int index) {
+		return &lights[index];
 	}
 
 	void Renderer::genProjection(float zNear, float zFar, float FOV, float aspectRatio) {

@@ -10,6 +10,7 @@ namespace Ansel
 	}
 
 	void Screen::onCreate() {}
+	void Screen::renderUI() {}
 	void Screen::onDestroy() {}
 
 	void Screen::setNextScreen(Screen* screen) {

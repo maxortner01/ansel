@@ -30,6 +30,7 @@ namespace Ansel
 		bool ANSEL_API setUniform(int value, std::string name);
 		bool ANSEL_API setUniform(float value, std::string name);
 		bool ANSEL_API setUniform(vec2f value, std::string name);
+		bool ANSEL_API setUniform(vec3f value, std::string name);
 		bool ANSEL_API setUniform(vec4f value, std::string name);
 		bool ANSEL_API setUniform(mat4x4 value, std::string name);
 		bool ANSEL_API setUniform(std::vector<int> value, std::string name, unsigned int size);

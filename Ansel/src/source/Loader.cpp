@@ -142,7 +142,7 @@ namespace Ansel
 		return rawModel;
 	}
 
-	RawModel* Loader::makeRawModel(const char* filename) {
+	RawModel* Loader::makeRawModel(const char* filename, bool smooth_shading) {
 		
 		std::ifstream reader;
 		reader.open(filename);
@@ -152,7 +152,8 @@ namespace Ansel
 		if (!reader.is_open())
 			return NULL;
 
-		std::vector<vec3f> vertices, normals, realnormals;
+		std::vector<vec3f> vertices, normals, realnormals, realvertices;
+		std::vector<vec2f> tex_coords, tex;
 		std::vector<unsigned int> indices;
 
 		// Read through the file
@@ -184,6 +185,19 @@ namespace Ansel
 				vertices.push_back(loc);
 				reader >> word;
 			}
+			else if (strWord == "vt") {
+				vec2f t;
+
+				reader >> word;
+				strWord = word;
+				t.x = std::stof(word);
+
+				reader >> word;
+				strWord = word;
+				t.y = std::stof(word);
+
+				tex.push_back(t);
+			}
 			else if (strWord == "vn") {
 				vec3f norm;
 
@@ -208,8 +222,9 @@ namespace Ansel
 			else if (strWord == "f") {
 				// If all the normals and vertices are finished loading
 				// make the size of the real normal list the same as the vertices
-				if (realnormals.size() == 0)
+				if (realnormals.size() == 0 && smooth_shading)
 					realnormals.resize(vertices.size());
+
 
 				// Data struct for storing each face info
 				typedef struct {
@@ -277,9 +292,26 @@ namespace Ansel
 					};
 				}
 
-				for (Vertex v : newFaces) {
-					realnormals.at(v.v) += normals.at(v.n);
-					indices.push_back(v.v);
+				if (smooth_shading) {
+					for (Vertex v : newFaces) {
+						realnormals.at(v.v) += normals.at(v.n);
+						indices.push_back(v.v);
+					}
+				}
+				else {
+					for (Vertex v : newFaces) {
+						realvertices.push_back(vertices.at(v.v));
+						realnormals.push_back(normals.at(v.n));
+
+						if (tex.size() > 0) {
+							vec2f t = tex.at(v.t);
+							t = { abs(t.x), abs(t.y) };
+
+							tex_coords.push_back(t);
+						}
+
+						indices.push_back(index++);
+					}
 				}
 			}
 			else {
@@ -292,7 +324,17 @@ namespace Ansel
 			normal = normalize(normal);
 		}
 
-		return makeRawModel(vertices, indices, realnormals);
+		RawModel* r;
+
+		if (smooth_shading)
+			r = makeRawModel(vertices, indices, realnormals);
+		else
+			r = makeRawModel(realvertices, indices, realnormals);
+
+		if (tex_coords.size() > 0)
+			r->loadTextureCoordinates(tex_coords);
+
+		return r;
 	}
 
 	std::vector<std::string> Loader::splitString(const char delimiter, std::string str) {
