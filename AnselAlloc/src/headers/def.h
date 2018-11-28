@@ -1,8 +1,10 @@
 #pragma once
 
-#ifndef ALLOC_EXPORT
-#	 define ALLOC_API __declspec(dllimport)
+#define X64
+
+#ifndef X64
+#	 define BITS 32
 #else
-#	 define ALLOC_API __declspec(dllexport)
+#	 define BITS 64
 #endif
 

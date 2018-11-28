@@ -193,6 +193,12 @@ namespace Ansel
 			z += v.z;
 		}
 
+		// Comparison Operator
+		template<typename B>
+		bool operator==(const vec3<B> &v) {
+			return (v.x == x && v.y == y && v.z == z);
+		}
+
 		// Casting Operator
 		template<typename B>
 		operator vec3<B>() const { return { (B)x, (B)y, (B)z }; }

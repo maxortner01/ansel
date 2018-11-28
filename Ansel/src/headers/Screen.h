@@ -4,6 +4,8 @@
 #include "util.h"
 #include "Window.h"
 
+#include "rendering/Texture.h"
+
 #include <vector>
 
 namespace Ansel
@@ -21,6 +23,8 @@ namespace Ansel
 		Window* window;
 
 		struct ANSEL_API Draw {
+			float aspectRatio = 1.f;
+
 			Draw();
 
 			void line(Ansel::vec2f startpoint, Ansel::vec2f endpoint, Ansel::vec4f color = { 1, 1, 1, 1 }) const;
@@ -35,6 +39,8 @@ namespace Ansel
 			void rectangle(Ansel::FloatRect rect, Ansel::vec4f color = { 1, 1, 1, 1 }, bool filled = true);
 
 			void circle(Ansel::vec2f location, float radius, unsigned int nodes = 10, Ansel::vec4f color = { 1, 1, 1, 1 }, bool filled = true) const;
+
+			void texture(Ansel::FloatRect rect, Texture* texture) const;
 		};
 
 		Draw draw;
@@ -50,7 +56,7 @@ namespace Ansel
 
 		virtual void onUpdate() = 0;
 
-		virtual void renderUI();
+		virtual void renderUI(float aspectRatio);
 		virtual void onCreate();
 		virtual void onDestroy();
 

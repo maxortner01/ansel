@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer.h"
+#include "rendering/Renderer.h"
 #include "Window.h"
 #include "Screen.h"
 
@@ -33,5 +33,7 @@ namespace Ansel
 		void ANSEL_API run();
 
 		static ANSEL_API float getTime();
+
+		static ANSEL_API void runTest();
 	};
 }

@@ -95,19 +95,30 @@ namespace Game
 		Renderer::makeLight(light);
 
 		PSys::ParticleProperties partProp;
-		partProp.gravity = .1f;
-		partProp.life = .45f;
-		partProp.rate = 25;
+		partProp.gravity = -.01f;
+		partProp.life = 4.f;
+		partProp.rate = 100;
 		//partProp.birth_color = { .1f, .25f, .8f, 1 };
 		partProp.birth_color = { 1, .25f, 0, 1 };
 		partProp.death_color = { 0, 0, 0, 0 };
-		partProp.initial_velocity = .01f;
+		partProp.initial_velocity = .0005f;
 		
 		part = new ParticleSystem({ 0, 0, 0 });
 		part->setProperties(partProp);
-		part->setEmitterType(ParticleSystem::BOX);
+		part->setEmitterType(ParticleSystem::POINT);
 		part->setPlane({ 0, 0, .5f, .5f });
 		part->setHeight(.9f);
+
+		part->setLocation({ 0, 2.f, 0 });
+		part->set();
+
+		Mouse::hideCursor();
+
+		healthbar = new Texture("assets/textures/health.png");
+
+		font = new Font("assets/fonts/Arial.ttf");
+		text = new Text(font);
+		text->setString("what up");
 	}
 
 	void LightTest::onUpdate() {
@@ -135,18 +146,29 @@ namespace Game
 		camera.rotate(0, -rotation_speed * change.x, 0);
 		camera.rotate(rotation_speed * change.y, 0, 0);
 
-		part->setLocation({ 5.f * sinf((float)Engine::getTime() * 25.0), 5.f * cosf((float)Engine::getTime() * 25.0), 0 });
+		//part->setLocation({ 5.f * sinf((float)Engine::getTime() * 25.0), 5.f * cosf((float)Engine::getTime() * 25.0), 0 });
+		part->setLocation({ 2.f * sinf((float)Engine::getTime() * 2.0), 3.f, 0 });
 		
 		if (update)
 			part->update();
 
-		//Renderer::Render(part, camera);
 		Renderer::Render(floor, camera);
 		Renderer::Render(tree, camera);
 		Renderer::Render(box, camera);
 
-		//system("CLS");
-		std::cout << getFPS() << std::endl;
+		//Renderer::Render(text, camera);
+		Renderer::Render(part, camera);
+
 		//std::cout << part->getParticleSize() << std::endl;
+		std::cout << getFPS() << std::endl;
+	}
+
+	void LightTest::renderUI(float aspectRatio) {
+		draw.aspectRatio = aspectRatio;
+		draw.circle({ 0, 0 }, .005f, 25);
+
+		//Renderer::Render(text, Camera(), Renderer::getFrameShader());
+
+		//draw.texture({ 1.f - .5f, -1.f + .25f, 1.f / 1.5f, .6f / 1.5f }, healthbar);
 	}
 }

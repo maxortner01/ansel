@@ -13,6 +13,9 @@ namespace Game
 		RawModel* cylinder;
 		RawModel* rawStone;
 		RawModel* treemodel;
+
+		Font* font;
+		Text* text;
 		
 		Model* box;
 		Model* tree;
@@ -25,11 +28,14 @@ namespace Game
 		bool   update = true;
 		Camera camera;
 
+		Texture* healthbar;
+
 	public:
 		LightTest(Window* w);
 
 		void onCreate() override;
 		void onUpdate() override;
+		void renderUI(float aspectRatio) override;
 	};
 
 
