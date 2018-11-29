@@ -1,5 +1,8 @@
 #include "../headers/Screen.h"
 
+#include "../headers/entities/Model.h"
+#include "../headers/rendering/Renderer.h"
+
 #include <GL/glew.h>
 
 namespace Ansel
@@ -8,10 +11,10 @@ namespace Ansel
 		window = w;
 
 	}
-
+	
 	void Screen::onCreate() {}
-	void Screen::renderUI() {}
 	void Screen::onDestroy() {}
+	void Screen::renderUI(float aspectRatio) {}
 
 	void Screen::setNextScreen(Screen* screen) {
 		nextScreen = screen;
@@ -154,13 +157,49 @@ namespace Ansel
 		else {
 			std::vector<Ansel::vec2f> newPoints;
 			for (int i = 0; i < points.size() / 2; i++) {
-				newPoints.push_back(points.at(i * 2));
-				newPoints.push_back(points.at(i * 2 + 1));
-				newPoints.push_back({ location.x, location.y });
-			} 
+
+				vec2f p = points.at(i * 2);
+				p.x *= aspectRatio;
+				newPoints.push_back(p);
+
+				p = points.at(i * 2 + 1);
+				p.x *= aspectRatio;
+				newPoints.push_back(p);
+
+				newPoints.push_back({ location.x * aspectRatio, location.y });
+			}
 
 			triangles(newPoints, color);
 		}
 	}
 
+	void Screen::Draw::texture(Ansel::FloatRect rect, Texture* texture) const {
+		std::vector<vec3f> square = {
+			{ rect.x                       , rect.y, 0.f },
+			{ rect.x + rect.w * aspectRatio, rect.y, 0.f },
+			{ rect.x                       , rect.y + rect.h, 0.f },
+
+			{ rect.x + rect.w * aspectRatio, rect.y + rect.h, 0.f },
+			{ rect.x + rect.w * aspectRatio, rect.y, 0.f },
+			{ rect.x                       , rect.y + rect.h, 0.f }
+		};
+
+		std::vector<vec2f> tex = {
+			{ 0, 0 },
+			{ 1, 0 },
+			{ 0, 1 },
+			
+			{ 1, 1 },
+			{ 1, 0 },
+			{ 0, 1 }
+		};
+
+		RawModel* r = Loader::makeRawModel(square);
+		r->loadTextureCoordinates(tex);
+		r->loadTexture(texture);
+
+		Renderer::Render(r, Camera(), Renderer::getFrameShader());
+
+		delete r;
+	}
 }

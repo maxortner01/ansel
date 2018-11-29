@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <AnselAlloc.h>
+
 namespace Ansel
 {
 	Engine::Engine(Window* w, Screen *s, Settings set) {
@@ -21,10 +23,12 @@ namespace Ansel
 
 
 		// Enable Transparency
+		Renderer::frame->bind();
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
+		Renderer::frame->unbind();
 
 		// Run the current screen's create function and set the window dimensions
 		// within the screen
@@ -55,14 +59,13 @@ namespace Ansel
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Bind the framebuffer and clear it
-			Renderer::frame->bind();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			glEnable(GL_DEPTH_TEST);
-			Renderer::frame->unbind();
+			Renderer::frame->clear();
 
 			// Render the screen
 			render();
+
+			Renderer::frameShader->unbind();
+			screen->renderUI((float)window->getHeight() / (float)window->getWidth());
 
 			// Finally, when everything is rendered, render the frame to the window
 			Renderer::renderFrame();
@@ -90,4 +93,8 @@ namespace Ansel
 		return glfwGetTime();
 	}
 
+	void Engine::runTest() {
+		//Alloc::getType();
+		//Alloc::MemoryManager<int>::init();
+	}
 }

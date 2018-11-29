@@ -1,26 +1,54 @@
 ﻿  Engine.cpp
-c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+d:\dev\ansel\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-c:\users\maxo_\desktop\ansel-master\extern\glfw-3.2.1\include\glfw\glfw3.h(789): warning C4099: 'GLFWwindow': type name first seen using 'class' now seen using 'struct'
-  c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(5): note: see declaration of 'GLFWwindow'
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\engine.cpp(90): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Loader.cpp
-  Material.cpp
-  Model.cpp
+d:\dev\ansel\extern\glfw-3.2.1\include\glfw\glfw3.h(789): warning C4099: 'GLFWwindow': type name first seen using 'class' now seen using 'struct'
+  d:\dev\ansel\ansel\src\headers\window.h(5): note: see declaration of 'GLFWwindow'
+d:\dev\ansel\ansel\src\source\engine.cpp(93): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   ParticleSystem.cpp
-c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
+d:\dev\ansel\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\particlesystem.cpp(24): warning C4018: '<': signed/unsigned mismatch
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\particlesystem.cpp(154): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
-  RawModel.cpp
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\rawmodel.cpp(108): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  Renderer.cpp
-c:\users\maxo_\desktop\ansel-master\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\renderer.cpp(174): warning C4018: '<': signed/unsigned mismatch
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\renderer.cpp(279): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  StaticModelArray.cpp
+d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(25): warning C4018: '<': signed/unsigned mismatch
+d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(119): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(165): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(59): warning C4244: '=': conversion from 'unsigned __int64' to 'char', possible loss of data
+  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(41): note: while compiling class template member function 'void *Alloc::IndexedManager<T>::getBlock(const unsigned int)'
+          with
+          [
+              T=Ansel::PSys::Particle
+          ]
+  d:\dev\ansel\anselalloc\src\headers\indexedallocator.h(21): note: see reference to function template instantiation 'void *Alloc::IndexedManager<T>::getBlock(const unsigned int)' being compiled
+          with
+          [
+              T=Ansel::PSys::Particle
+          ]
+  d:\dev\ansel\anselalloc\src\headers\indexedallocator.h(21): note: see reference to class template instantiation 'Alloc::IndexedManager<T>' being compiled
+          with
+          [
+              T=Ansel::PSys::Particle
+          ]
+  d:\dev\ansel\anselalloc\src\headers\indexedallocator.h(20): note: while compiling class template member function 'void Alloc::IndexedAllocator<Ansel::PSys::Particle>::makeNew(const unsigned int)'
+  d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(119): note: see reference to function template instantiation 'void Alloc::IndexedAllocator<Ansel::PSys::Particle>::makeNew(const unsigned int)' being compiled
+  d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(119): note: see reference to class template instantiation 'Alloc::IndexedAllocator<Ansel::PSys::Particle>' being compiled
+d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(29): warning C4244: '=': conversion from 'unsigned __int64' to 'char', possible loss of data
+  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(20): note: while compiling class template member function 'void Alloc::IndexedManager<T>::make(void)'
+          with
+          [
+              T=Ansel::PSys::Particle
+          ]
+  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(42): note: see reference to function template instantiation 'void Alloc::IndexedManager<T>::make(void)' being compiled
+          with
+          [
+              T=Ansel::PSys::Particle
+          ]
+d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(86): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(86): note: while compiling class template static data member 'const int Alloc::IndexedManager<T>::indexSize'
+          with
+          [
+              T=Ansel::PSys::Particle
+          ]
+d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(86): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
   Generating Code...
-c:\users\maxo_\desktop\ansel-master\ansel\src\source\staticmodelarray.cpp(43): warning C4715: 'Ansel::StaticModelArray::getTransformation': not all control paths return a value
-  Ansel.vcxproj -> C:\Users\maxo_\Desktop\ansel-master\bin\Debug-x64\Ansel\Ansel.dll
+  Ansel.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.dll
+          1 file(s) copied.
+          1 file(s) copied.
           1 file(s) copied.
