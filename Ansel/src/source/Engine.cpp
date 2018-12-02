@@ -1,4 +1,5 @@
 #include "../headers/Engine.h"
+#include "../headers/systems/Directory.h"
 
 #include <iostream>
 
@@ -15,6 +16,23 @@ namespace Ansel
 
 		if (!settings.normalizedCoords)
 			glOrtho( 0.f, window->getWidth(), window->getHeight(), 0.f, 0.f, 1.f );
+
+		// Check if directories exist
+		std::vector<std::pair<std::vector<std::string>, std::string>> dir;
+		dir.push_back(std::pair<std::vector<std::string>, std::string>({"shaders"}, "ansel"));
+
+		for (int i = 0; i < dir.size(); i++) {
+			std::string base_dir = dir.at(i).second;
+			if (Directory::checkFolder(base_dir.c_str()) != 0) Directory::makeFolder(base_dir.c_str());
+
+			for (int f = 0; f < dir.at(i).first.size(); f++) {
+				std::string div_name = dir.at(i).first.at(f);
+
+				if (Directory::checkFolder(div_name.c_str()) != 0) Directory::makeFolder((base_dir + "/" + div_name).c_str());
+			}
+
+		}
+
 	}
 
 	void Engine::run() {
@@ -23,7 +41,6 @@ namespace Ansel
 
 		// Initialize the fps clock
 		double previousTime = glfwGetTime();
-
 
 		// Enable Transparency
 		Renderer::frame->bind();

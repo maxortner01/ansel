@@ -1,49 +1,9 @@
-﻿  ParticleSystem.cpp
+﻿  Engine.cpp
 d:\dev\ansel\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(26): warning C4018: '<': signed/unsigned mismatch
-d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(122): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(168): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(59): warning C4244: '=': conversion from 'unsigned __int64' to 'char', possible loss of data
-  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(41): note: while compiling class template member function 'void *Alloc::IndexedManager<T>::makeBlock(const unsigned int)'
-          with
-          [
-              T=Ansel::PSys::Particle
-          ]
-  d:\dev\ansel\anselalloc\src\headers\indexedallocator.h(21): note: see reference to function template instantiation 'void *Alloc::IndexedManager<T>::makeBlock(const unsigned int)' being compiled
-          with
-          [
-              T=Ansel::PSys::Particle
-          ]
-  d:\dev\ansel\anselalloc\src\headers\indexedallocator.h(21): note: see reference to class template instantiation 'Alloc::IndexedManager<T>' being compiled
-          with
-          [
-              T=Ansel::PSys::Particle
-          ]
-  d:\dev\ansel\anselalloc\src\headers\indexedallocator.h(20): note: while compiling class template member function 'void Alloc::IndexedAllocator<Ansel::PSys::Particle>::makeNew(const unsigned int)'
-  d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(122): note: see reference to function template instantiation 'void Alloc::IndexedAllocator<Ansel::PSys::Particle>::makeNew(const unsigned int)' being compiled
-  d:\dev\ansel\ansel\src\source\entities\particlesystem.cpp(122): note: see reference to class template instantiation 'Alloc::IndexedAllocator<Ansel::PSys::Particle>' being compiled
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(72): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(72): warning C4302: 'type cast': truncation from 'int *' to 'int'
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(74): warning C4312: 'type cast': conversion from 'int' to 'void *' of greater size
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(29): warning C4244: '=': conversion from 'unsigned __int64' to 'char', possible loss of data
-  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(20): note: while compiling class template member function 'void Alloc::IndexedManager<T>::make(void)'
-          with
-          [
-              T=Ansel::PSys::Particle
-          ]
-  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(42): note: see reference to function template instantiation 'void Alloc::IndexedManager<T>::make(void)' being compiled
-          with
-          [
-              T=Ansel::PSys::Particle
-          ]
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(88): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(88): note: while compiling class template static data member 'const int Alloc::IndexedManager<T>::indexSize'
-          with
-          [
-              T=Ansel::PSys::Particle
-          ]
-d:\dev\ansel\anselalloc\src\headers\indexedmanager.h(88): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+d:\dev\ansel\extern\glfw-3.2.1\include\glfw\glfw3.h(789): warning C4099: 'GLFWwindow': type name first seen using 'class' now seen using 'struct'
+  d:\dev\ansel\ansel\src\headers\window.h(5): note: see declaration of 'GLFWwindow'
+d:\dev\ansel\ansel\src\source\engine.cpp(113): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   Ansel.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Ansel\Ansel.dll
           1 file(s) copied.
           1 file(s) copied.
