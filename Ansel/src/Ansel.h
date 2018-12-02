@@ -19,3 +19,8 @@
 #include "headers/rendering/Shader.h"
 #include "headers/rendering/Font.h"
 #include "headers/rendering/Text.h"
+
+#ifdef __CLIENT_ECS
+#	 include <ECS.h>
+#endif // __CLIENT_ECS
+

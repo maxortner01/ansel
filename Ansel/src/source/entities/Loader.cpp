@@ -9,6 +9,10 @@
 #include <fbxsdk.h>
 #include <iostream>
 
+#include <ECS.h>
+
+using namespace ECS;
+
 namespace Ansel
 {
 
@@ -364,6 +368,14 @@ namespace Ansel
 		manager->Destroy();
 
 		return Loader::makeRawModel(vertices, indices);
+	}
+
+	ECS::Entity* Loader::makeEntity(std::string name) {
+		return ECS::EntityManager::makeEntity(name.c_str());
+	}
+
+	ECS::Entity* Loader::getEntity(std::string name) {
+		return ECS::EntityManager::getEntity(name.c_str());
 	}
 
 	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices) {

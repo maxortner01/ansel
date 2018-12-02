@@ -50,15 +50,15 @@ namespace Ansel
 		void setNextScreen(Screen* screen);
 		float getFPS() const;
 
-	public:
-
-		Screen(Window* w);
-
-		virtual void onUpdate() = 0;
+		virtual void onUpdate(float timeDelta) = 0;
 
 		virtual void renderUI(float aspectRatio);
 		virtual void onCreate();
 		virtual void onDestroy();
+
+	public:
+
+		Screen(Window* w);
 
 		Screen* getNextScreen();
 	};

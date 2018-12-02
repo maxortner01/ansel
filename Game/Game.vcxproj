@@ -83,7 +83,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Ansel\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Ansel\src;$(SolutionDir)AnselECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;__CLIENT_ECS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -116,7 +117,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Ansel\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Ansel\src;$(SolutionDir)AnselECS\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;__CLIENT_ECS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -124,24 +126,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnselECS\AnselECS.vcxproj">
+      <Project>{4e4eed3b-f1fc-46e6-ab51-409992b69166}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Ansel\Ansel.vcxproj">
       <Project>{9fbb9890-3fd3-4080-a595-995598a5cd94}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\source\FPS.cpp" />
-    <ClCompile Include="src\source\LightTest.cpp" />
-    <ClCompile Include="src\source\Textures.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\source\MainScreen.cpp" />
-    <ClCompile Include="src\source\Terrain.cpp" />
+    <ClCompile Include="src\source\GameScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\headers\FPS.h" />
-    <ClInclude Include="src\headers\LightTest.h" />
-    <ClInclude Include="src\headers\MainScreen.h" />
-    <ClInclude Include="src\headers\Terrain.h" />
-    <ClInclude Include="src\headers\Textures.h" />
+    <ClInclude Include="src\headers\GameScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,10 +9,11 @@ namespace ECS
 {
 	class EntityManager
 	{
+		static std::vector<std::string> names;
 		static std::vector<EntityInstance> entities;
 
 	public:
-
-		static EntityInstance ECS_API makeEntity();
+		static EntityInstance ECS_API getEntity(const char* name);
+		static EntityInstance ECS_API makeEntity(const char* name = "");
 	};
 }

@@ -8,6 +8,14 @@
 
 #include <vector>
 
+#ifndef __CLIENT_ECS
+	namespace ECS {
+		class Entity;
+	}
+#else
+#	include <ECS.h>
+#endif
+
 namespace Ansel
 {
 	/**
@@ -240,6 +248,9 @@ namespace Ansel
 		static RawModel* readFBX(const char* filename, bool smooth_shading = true);
 
 	public:
+
+		static ECS::Entity ANSEL_API * makeEntity(std::string name = "");
+		static ECS::Entity ANSEL_API * getEntity (std::string name);
 
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices);
 		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices);

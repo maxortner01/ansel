@@ -106,7 +106,7 @@ namespace Ansel
 	}
 
 	void Engine::render() {
-		screen->onUpdate();
+		screen->onUpdate(1.f / screen->getFPS());
 	}
 
 	float Engine::getTime() {
