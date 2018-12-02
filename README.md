@@ -7,7 +7,7 @@ Alternatively, you can create your own project with or without Visual Studio. In
 
 ## Utilizing the Component System
 
-The only file you need to include is `Ansel.h` even if you are using the Component System. However, a preprocessor definition must be defined. This can be found in Visual Studio by going to your project's properties and navigating to `C/C++ -> Preprocessor`. (This is already done in the repository's project.)
+The only file you need to include is `Ansel.h` even if you are using the Component System. However, a preprocessor definition must be defined. This can be found in Visual Studio by going to your project's properties and navigating to `C/C++ -> Preprocessor`. (This is already done in the repository's game project.)
 
 ## Future Plans
 At the moment I am really working on integrating and developing the Component system the most. However, right now you can write your own shaders, but it will not utilize any of the code/functions that run things like lighting calculations and matrix generation because yours will be used in the default's place. However, this will be changed to allow the user to utilize these things as well as use their own shader. 

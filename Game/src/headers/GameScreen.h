@@ -4,6 +4,14 @@
 
 namespace Game
 {
+	class Object : public ECS::Script
+	{
+	public:
+		void update() {
+
+		}
+	};
+
 	class GameScreen : public Ansel::Screen
 	{
 	protected:
