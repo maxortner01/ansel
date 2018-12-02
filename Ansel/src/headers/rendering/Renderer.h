@@ -10,6 +10,15 @@
 #include "Shader.h"
 #include "Text.h"
 
+#ifndef __CLIENT_ECS
+	namespace ECS
+	{
+	}
+#else
+#	include <ECS.h>
+#endif // __CLIENT_ECS
+
+
 namespace Ansel
 {
 	/**
@@ -90,6 +99,9 @@ namespace Ansel
 		  * @params dimensions (w, h) dimensions of the screen
 		  */
 		static void ANSEL_API init(Window* w);
+
+		/// Component System rendering
+		
 
 		static void ANSEL_API Render(Text* text, Camera camera = Camera(), Shader* s = nullptr);
 

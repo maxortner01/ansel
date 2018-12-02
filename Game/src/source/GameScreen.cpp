@@ -9,8 +9,10 @@ namespace Game
 	GameScreen::GameScreen(Window *w) : Screen(w) {}
 
 	void GameScreen::onCreate() {
+		Loader::makeRawModel("assets/models/cube.obj", "cube");
+
 		Loader::makeEntity("cool_beans");
-		Loader::getEntity("cool_beans")->addComponent(new Object);
+		Loader::getEntity("cool_beans")->addComponent(Loader::makeModel(Loader::getRawModel("cube")));
 	}
 
 	void GameScreen::onUpdate(float timeDelta) {

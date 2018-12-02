@@ -186,7 +186,10 @@ namespace Ansel
 	  * All models of a specific RawModel are grouped together and rendered at once
 	  * with all transformation data being uploaded to the VAO every frame.
 	  */
-	class Model
+	class Model 
+#ifdef __CLIENT_ECS
+		: public ECS::Renderable
+#endif
 	{
 		vec4f _location;	///< (x, y, z, w) location.
 		vec3f _scale;		///< (x, y, z) scale factor.
@@ -237,27 +240,33 @@ namespace Ansel
 		friend class Engine;
 
 		static std::vector<VAO*> vaos;
+
+		static std::vector<std::string> names;
 		static std::vector<RawModel*> rawModels;
+		static std::vector<Model*> models;
+
 		static std::vector<std::string> splitString(const char delimiter, std::string str);
 
 		static int createVAO();
 
 		static unsigned int nextModelIndex;
 
-		static RawModel* readOBJ(const char* filename, bool smooth_shading = true);
-		static RawModel* readFBX(const char* filename, bool smooth_shading = true);
+		static RawModel* readOBJ(const char* filename, const char* storage_name = "", bool smooth_shading = true);
+		static RawModel* readFBX(const char* filename, const char* storage_name = "", bool smooth_shading = true);
 
 	public:
 
 		static ECS::Entity ANSEL_API * makeEntity(std::string name = "");
 		static ECS::Entity ANSEL_API * getEntity (std::string name);
 
-		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices);
-		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices);
-		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices);
-		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices);
-		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals);
-		static RawModel ANSEL_API * makeRawModel(const char* filename, bool smooth_shading = true);
+		static RawModel ANSEL_API * getRawModel(const char* storage_name);
+
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, const char* storage_name = "");
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, const char* storage_name = "");
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices, const char* storage_name = "");
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, const char* storage_name = "");
+		static RawModel ANSEL_API * makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals, const char* storage_name = "");
+		static RawModel ANSEL_API * makeRawModel(const char* filename, const char* storage_name = "", bool smooth_shading = true);
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
 
