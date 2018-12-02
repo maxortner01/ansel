@@ -18,7 +18,7 @@ namespace Alloc
 
 	public:
 		static inline void makeNew(const unsigned int amount) {
-			_ptr = IndexedManager<T>::getBlock(amount);
+			_ptr = IndexedManager<T>::makeBlock(amount);
 			
 			made = true;
 		}

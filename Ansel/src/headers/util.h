@@ -3,6 +3,7 @@
 #include "Def.h"
 
 #include <math.h>
+#include <vector>
 
 namespace Ansel
 {

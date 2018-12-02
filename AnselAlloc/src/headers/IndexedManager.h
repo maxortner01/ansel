@@ -19,7 +19,7 @@ namespace Alloc
 
 		static inline void make() {
 			// Allocate 8 * 1000 bytes for a thousand pointers
-			_ptr = std::malloc(sizeof(int) * 1000 + indexSize);
+			_ptr = std::malloc(sizeof(int*) * 1000 + indexSize);
 
 			// Iterate through the first bits
 			// size = ceil(1000 / 64)
@@ -38,7 +38,7 @@ namespace Alloc
 		}
 
 	public:
-		static inline void* getBlock(const unsigned int amount) {
+		static inline void* makeBlock(const unsigned int amount) {
 			if (!made) make(); 
 
 			int index = -1;
@@ -69,7 +69,9 @@ namespace Alloc
 
 			if (index == -1) return nullptr;
 
-			return _indexPtr + index;
+			*(_indexPtr + index) = (int)(int*)std::malloc(sizeof(T) * amount);
+
+			return (void*)*(_indexPtr + index);
 		}
 	};
 

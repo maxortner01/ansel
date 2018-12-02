@@ -7,9 +7,12 @@
 #include "headers/Terrain.h"
 #include "headers/Textures.h"
 #include "headers/LightTest.h"
+#include "headers/FPS.h"
 
 int main()
 {
+	//Engine::runTest();
+	//std::getchar();
 
 	// Window
 	Ansel::Window window(1920, 1080);

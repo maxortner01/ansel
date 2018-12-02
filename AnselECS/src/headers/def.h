@@ -5,5 +5,3 @@
 #else
 #	 define ECS_API __declspec(dllexport)
 #endif
-
-typedef size_t EntityInt;

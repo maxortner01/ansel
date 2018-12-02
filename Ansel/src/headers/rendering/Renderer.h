@@ -14,6 +14,10 @@ namespace Ansel
 {
 	/**
 	  * Object that represents a light in 3D space.
+	  * @param on=false        whether the light is on or off
+	  * @param type=NONE       the type of light
+	  * @param color=white     the color of the light
+	  * @param location=0,0,0  the location of the light
 	  */
 	struct Light
 	{
@@ -24,8 +28,9 @@ namespace Ansel
 			NONE
 		} LIGHT_TYPE;
 
-		bool       on = false;
+		bool       on   = false;
 		LIGHT_TYPE type = NONE;
+		float intensity = -1.f;
 
 		vec3f color = { 1, 1, 1 };
 		vec4f location = { 0, 0, 0, 1 };

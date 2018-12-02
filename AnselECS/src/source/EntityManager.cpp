@@ -2,22 +2,12 @@
 
 namespace ECS
 {
-	std::vector<IEntity*> EntityManager::entities;
+	std::vector<EntityInstance> EntityManager::entities;
 
-	template<typename T, typename... Args>
-	EntityInt EntityManager::CreateEntity(Args... args) {
-		IEntity* address = new Entity<T>(args);
+	EntityInstance EntityManager::makeEntity() {
+		EntityInstance e = new Entity();
+		entities.push_back(e);
 
-		entities.push_back(address);
-
-		return address->getEntityID();
-	}
-
-	void EntityManager::DestroyEntity(EntityInt ID) {
-		delete entities.at(ID);
-	}
-
-	IEntity* EntityManager::getEntity(EntityInt ID) {
-		return entities.at(ID);
+		return e;
 	}
 }

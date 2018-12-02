@@ -133,15 +133,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS.h" />
+    <ClInclude Include="src\headers\Baseless.h" />
+    <ClInclude Include="src\headers\Component.h" />
+    <ClInclude Include="src\headers\Controller.h" />
     <ClInclude Include="src\headers\def.h" />
     <ClInclude Include="src\headers\Entity.h" />
     <ClInclude Include="src\headers\EntityManager.h" />
-    <ClInclude Include="src\headers\Types.h" />
+    <ClInclude Include="src\headers\Renderable.h" />
+    <ClInclude Include="src\headers\Script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\Entity.cpp" />
     <ClCompile Include="src\source\EntityManager.cpp" />
-    <ClCompile Include="src\source\Types.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

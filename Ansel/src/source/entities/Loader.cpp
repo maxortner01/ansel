@@ -548,4 +548,48 @@ namespace Ansel
 		for (VAO *vao : vaos)
 			vao->destroy();
 	}
+
+	RawModel* Loader::makeSquare() {
+		std::vector<vec3f> square = {
+			{ -1.f, -1.f, 0.f },
+			{  1.f, -1.f, 0.f },
+			{ -1.f,  1.f, 0.f },
+			{  1.f,  1.f, 0.f }
+		};
+
+		std::vector<vec3f> normals = {
+			{ 0, 0, 1 },
+			{ 0, 0, 1 },
+			{ 0, 0, 1 },
+			{ 0, 0, 1 }
+		};
+
+		std::vector<vec4f> colors = {
+			{ 1.f, 0.f, 0.f, 1.f },
+			{ 1.f, 0.f, 0.f, 1.f },
+			{ 1.f, 0.f, 0.f, 1.f },
+			{ 1.f, 0.f, 0.f, 1.f },
+			{ 1.f, 0.f, 0.f, 1.f },
+			{ 1.f, 0.f, 0.f, 1.f }
+		};
+
+		std::vector<unsigned int> indices =	{
+			1, 2, 0,
+			1, 3, 2
+		};
+
+		std::vector<vec2f> tex = {
+			{ 0, 0 },
+			{ 1, 0 },
+			{ 0, 1 },
+			{ 1, 1 }
+		};
+
+		RawModel* model = makeRawModel(square, indices);
+		model->loadNormals(normals);
+		model->loadTextureCoordinates(tex);
+		model->loadColors(colors);
+
+		return model;
+	}
 }

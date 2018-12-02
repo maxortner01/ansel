@@ -2,6 +2,7 @@
 
 #include "../../headers/Engine.h"
 
+#include <ECS.h>
 #include <AnselAlloc.h>
 
 namespace Ansel
@@ -116,6 +117,8 @@ namespace Ansel
 	}
 
 	void ParticleSystem::set() {
+		// When we set the system, we allocate all the space for the maximum amount of 
+		// particles
 		Alloc::IndexedAllocator<PSys::Particle>::makeNew(properties.rate * 10 * properties.life);
 
 		baked = true;

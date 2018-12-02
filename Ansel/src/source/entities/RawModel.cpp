@@ -43,7 +43,7 @@ namespace Ansel
 
 		vao->unbind();
 
-		use_textures = true;
+		//use_textures = true;
 	}
 	
 	int RawModel::loadTexture(std::string filename) {
@@ -51,6 +51,8 @@ namespace Ansel
 	}
 
 	int RawModel::loadTexture(Texture* texture) {
+
+		use_textures = true;
 		textures.push_back(texture);
 		return getTextureSize() - 1;
 	}

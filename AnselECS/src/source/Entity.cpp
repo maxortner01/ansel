@@ -1,25 +1,13 @@
 #include "../headers/Entity.h"
+#include "../headers/EntityManager.h"
 
 namespace ECS
 {
-	const EntityInt IEntity::getEntityID() const { return ID; }
+	//void* Entity::operator new(size_t size) {
+	//	return EntityManager::makeEntity();
+	//}
 
-	IEntity::IEntity() {
-		ID++;
-	}
-
-	IEntity::~IEntity() {}
-
-	template<typename T>
-	Entity<T>::Entity() {
-		typeID = EntityID::value<T>();
-	}
-
-	template<typename T>
-	Entity<T>::~Entity() { }
-
-	template<typename T>
-	const EntityInt Entity<T>::getTypeID() const {
-		return typeID;
+	void Entity::addComponent(ComponentInstance comp) {
+		components.push_back(comp);
 	}
 }

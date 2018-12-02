@@ -129,6 +129,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\source\FPS.cpp" />
     <ClCompile Include="src\source\LightTest.cpp" />
     <ClCompile Include="src\source\Textures.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="src\source\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\headers\FPS.h" />
     <ClInclude Include="src\headers\LightTest.h" />
     <ClInclude Include="src\headers\MainScreen.h" />
     <ClInclude Include="src\headers\Terrain.h" />

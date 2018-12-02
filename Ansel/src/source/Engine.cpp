@@ -1,8 +1,11 @@
 #include "../headers/Engine.h"
 
+#include <iostream>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <ECS.h>
 #include <AnselAlloc.h>
 
 namespace Ansel
@@ -94,7 +97,35 @@ namespace Ansel
 	}
 
 	void Engine::runTest() {
-		//Alloc::getType();
-		//Alloc::MemoryManager<int>::init();
+		class Object : public ECS::Script
+		{
+			unsigned int ID = 0;
+
+		public:
+			void update() {
+				ID = 25;
+			}
+
+			void* getData() {
+				return &ID;
+			}
+		};
+
+		ECS::EntityInstance entity = new ECS::Entity();
+		entity->addComponent(new Object);
+
+		for (int i = 0; i < entity->getComponents().size(); i++) {
+			std::cout << entity->getComponents().at(i)->getType() << std::endl;
+
+			ECS::ComponentInstance component = entity->getComponents().at(i);
+			switch (component->getType()) {
+			case ECS::Component::SCRIPT:
+				ECS::Script* s = static_cast<ECS::Script*>(component);
+				s->update();
+			}
+
+			std::cout << *(unsigned int*)(component->getData()) << std::endl;
+		}
+
 	}
 }

@@ -82,7 +82,7 @@ namespace Game
 		/* <---------- EVERYTHING ELSE ----------> */
 
 		//Renderer::setLighting(false);
-		camera.setSpeed(.1f);
+		camera.setSpeed(2.f);
 
 		Light light;
 
@@ -95,7 +95,7 @@ namespace Game
 		Renderer::makeLight(light);
 
 		PSys::ParticleProperties partProp;
-		partProp.gravity = -.01f;
+		partProp.gravity = .2f;
 		partProp.life = 4.f;
 		partProp.rate = 100;
 		//partProp.birth_color = { .1f, .25f, .8f, 1 };
@@ -131,7 +131,7 @@ namespace Game
 		if (Keyboard::isKeyPressed(KEY::RIGHT))
 			update = true;
 
-		camera.setSpeed(5.f * (1.f / getFPS()));
+		camera.setSpeed(5.f);
 		camera.pollEvents();
 
 		float rotation_speed = .1f * 3.14159f / 180.f;
@@ -147,7 +147,7 @@ namespace Game
 		camera.rotate(rotation_speed * change.y, 0, 0);
 
 		//part->setLocation({ 5.f * sinf((float)Engine::getTime() * 25.0), 5.f * cosf((float)Engine::getTime() * 25.0), 0 });
-		part->setLocation({ 2.f * sinf((float)Engine::getTime() * 2.0), 3.f, 0 });
+		part->setLocation({ 1.f * sinf((float)Engine::getTime() * 5.0), 3.f, 1.f * cosf((float)Engine::getTime() * 5.0) });
 		
 		if (update)
 			part->update();

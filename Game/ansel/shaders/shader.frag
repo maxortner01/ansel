@@ -22,6 +22,7 @@ in fData {
 
 uniform int lighting;
 uniform int use_textures;
+uniform int use_colors;
 
 uniform mat4 view;
 uniform vec3 camera_position;
@@ -63,7 +64,7 @@ void main()
 	vec3 specular = spec_strength * spec * lights[0].color;
 
 	// Indentify the color
-	vec4 color = (use_textures == 1)?texture(tex_albedo, frag.tex):frag.vertexColor;
+	vec4 color = (use_colors == 0)?texture(tex_albedo, frag.tex):frag.vertexColor;
 
 	// Obtain the normal from texture
 	vec3 normal_tex = texture(tex_normal, frag.tex).rgb;

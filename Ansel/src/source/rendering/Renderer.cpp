@@ -254,7 +254,7 @@ namespace Ansel
 
 		// Set all the uniforms that can be used in the shader
 		current_shader->setUniform((float)uFrame    , "frame"   );
-		current_shader->setUniform(settings.lighting, "lighting");
+		current_shader->setUniform((int)settings.lighting, "lighting");
 
 		current_shader->setUniform((int)rawModel->colorsOn( )  , "use_colors"  );
 		current_shader->setUniform((int)rawModel->normalsOn( ) , "use_normals" );
@@ -269,10 +269,11 @@ namespace Ansel
 		for (int i = 0; i < LIGHT_COUNT; i++) {
 			Light light = lights[i];
 
-			current_shader->setUniform(light.on      , "lights[" + std::to_string(i) + "].on"      );
-			current_shader->setUniform(light.type    , "lights[" + std::to_string(i) + "].type"    );
-			current_shader->setUniform(light.color   , "lights[" + std::to_string(i) + "].color"   );
-			current_shader->setUniform(light.location, "lights[" + std::to_string(i) + "].location");
+			current_shader->setUniform(light.on       , "lights[" + std::to_string(i) + "].on"       );
+			current_shader->setUniform(light.type     , "lights[" + std::to_string(i) + "].type"     );
+			current_shader->setUniform(light.color    , "lights[" + std::to_string(i) + "].color"    );
+			current_shader->setUniform(light.location , "lights[" + std::to_string(i) + "].location" );
+			current_shader->setUniform(light.intensity, "lights[" + std::to_string(i) + "].intensity");
 		}
 
 		unsigned int material_amount = 0;

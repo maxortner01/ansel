@@ -1,6 +1,7 @@
 #include "../../headers/entities/camera.h"
 
 #include "../../headers/event/Keyboard.h"
+#include "../../headers/Engine.h"
 
 namespace Ansel
 {
@@ -10,7 +11,7 @@ namespace Ansel
 	}
 
 	void Camera::pollEvents() {
-		float s = speed;
+		float s = speed * (Engine::getTime() - last_time);
 		if (Keyboard::isKeyPressed(KEY::L_SHIFT))
 			s *= 2;
 
@@ -31,6 +32,8 @@ namespace Ansel
 
 		if (Keyboard::isKeyPressed(KEY::L_CTRL))
 			translate(0, -s, 0);
+
+		last_time = Engine::getTime();
 	}
 
 	void Camera::setSpeed(float s) {

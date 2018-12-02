@@ -11,6 +11,7 @@ namespace Ansel
 		vec3f rotation;
 
 		float speed;
+		float last_time = 0;
 
 	public:
 		enum DIRECTION {

@@ -250,6 +250,8 @@ namespace Ansel
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
 
+		static RawModel ANSEL_API * makeSquare();
+
 		static RawModel* getRawModel(const unsigned int index);
 		static void destroyRawModel (const unsigned int index);
 	};

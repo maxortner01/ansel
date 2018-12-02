@@ -1,21 +1,18 @@
 #pragma once
 
+#include <vector>
+
 #include "def.h"
 #include "Entity.h"
-
-#include <vector>
 
 namespace ECS
 {
 	class EntityManager
 	{
-		static std::vector<IEntity*> entities;
+		static std::vector<EntityInstance> entities;
 
 	public:
-		template<typename T, typename... Args>
-		static EntityInt CreateEntity(Args... args);
 
-		static void DestroyEntity(EntityInt ID);
-		static IEntity* getEntity(EntityInt ID);
+		static EntityInstance ECS_API makeEntity();
 	};
 }

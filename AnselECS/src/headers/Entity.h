@@ -1,34 +1,25 @@
 #pragma once
 
+#include <vector>
+
 #include "def.h"
-#include "Types.h"
+#include "Component.h"
 
 namespace ECS
 {
-	class IEntity
+	typedef std::vector<ComponentInstance> Components;
+
+	class Entity
 	{
-		EntityInt ID;
+		Components components;
 
 	public:
-		IEntity();
-		virtual ~IEntity();
+		//void ECS_API * operator new(size_t size);
 
-		const EntityInt getEntityID() const;
-		virtual const EntityInt getTypeID() const = 0;
+		void ECS_API addComponent(ComponentInstance comp);
+
+		Components getComponents() { return components; }
 	};
 
-	template<typename T>
-	class Entity : public IEntity
-	{
-		const EntityID typeID;
-
-		//void operator delete(void*) = delete;
-		//void operator delete[](void*) = delete;
-
-	public:
-		ECS_API Entity();
-		virtual ECS_API ~Entity();
-
-		const EntityInt ECS_API getTypeID() const;
-	};
+	using EntityInstance = Entity * ;
 }

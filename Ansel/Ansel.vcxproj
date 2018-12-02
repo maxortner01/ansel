@@ -188,6 +188,11 @@ copy /Y "$(SolutionDir)extern\freetype-2.9.1\objs\$(Platform)\$(Configuration)\f
     <ClCompile Include="src\vendor\stb_image.cpp" />
     <ClCompile Include="src\source\Window.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnselECS\AnselECS.vcxproj">
+      <Project>{4e4eed3b-f1fc-46e6-ab51-409992b69166}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

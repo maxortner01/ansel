@@ -38,8 +38,8 @@ namespace Ansel
 		}
 
 		glTexImage2D(GL_TEXTURE_2D, 0, i, width, height, 0, t, GL_UNSIGNED_BYTE, buffer);
-			
-		unBind();
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	Texture::Texture(const std::string &path) {
@@ -77,7 +77,7 @@ namespace Ansel
 			/* error loading image */
 		}
 
-		unBind();
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	Texture::~Texture() {
