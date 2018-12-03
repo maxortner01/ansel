@@ -13,8 +13,8 @@ namespace ECS
 			CONTROLLER
 		} typedef type;
 
-		virtual void* getData() { return nullptr; }
 		virtual type getType() = 0;
+		virtual void* getData() { return nullptr; }
 	};
 
 	using ComponentInstance = Component * ;

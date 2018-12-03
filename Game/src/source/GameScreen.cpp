@@ -11,13 +11,18 @@ namespace Game
 	void GameScreen::onCreate() {
 		Loader::makeRawModel("assets/models/cube.obj", "cube");
 
-		Loader::makeEntity("cool_beans");
-		Loader::getEntity("cool_beans")->addComponent(Loader::makeModel(Loader::getRawModel("cube")));
+		Loader::makeEntity("player");
+		Loader::getEntity("player")->addComponent(Loader::makeModel(Loader::getRawModel("cube")), "model");
+		Loader::getEntity("player")->addComponent(new Object, "health");
 	}
 
 	void GameScreen::onUpdate(float timeDelta) {
-		ECS::EntityInstance a = Loader::getEntity("cool_beans");
-		std::cout << a->getComponents().size() << std::endl;
+		ECS::EntityInstance a = Loader::getEntity("player");
+
+		Object* health = static_cast<Object*>(a->getComponent("health"));
+		std::cout << health->getValue() << std::endl;
+
+		Renderer::Render(a);
 
 		//std::cout << 1.f / timeDelta << std::endl;
 	}

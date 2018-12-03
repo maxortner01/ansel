@@ -1,6 +1,9 @@
 #include "../../headers/rendering/Renderer.h"
 
 #include <GL/glew.h>
+#include <ECS.h>
+
+using namespace ECS;
 
 namespace Ansel
 {
@@ -122,6 +125,31 @@ namespace Ansel
 	}
 
 	/* Rendering */
+	void Renderer::Render(EntityInstance entity, Camera camera, Shader* s) {
+		auto components = entity->getComponents();
+
+		for (int i = 0; i < components.size(); i++) {
+			ComponentInstance component = components.at(i);
+			
+			switch (component->getType()) {
+			case Component::SCRIPT:
+			{
+				Script* s = (Script*)component;
+				if (s->updateable()) {
+					s->update();
+				}
+			}
+			case Component::RENDERABLE:
+			{
+
+			}
+
+			default:
+				break;
+			}
+
+		}
+	}
 
 	void Renderer::Render(Text* text, Camera camera, Shader* s) {
 		Shader* current_shader = (s == nullptr) ? shader : s;

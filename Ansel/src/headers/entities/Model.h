@@ -186,7 +186,7 @@ namespace Ansel
 	  * All models of a specific RawModel are grouped together and rendered at once
 	  * with all transformation data being uploaded to the VAO every frame.
 	  */
-	class Model 
+	class Model  
 #ifdef __CLIENT_ECS
 		: public ECS::Renderable
 #endif
@@ -233,6 +233,13 @@ namespace Ansel
 		vec3f	  ANSEL_API getScale( )      const;
 		vec3f	  ANSEL_API getRotation( )   const;
 		RawModel  ANSEL_API * getRawModel( ) const;
+
+#ifndef __CLIENT_ECS
+		int ANSEL_API getType() {
+			return 0;
+		}
+#endif
+
 	};
 
 	class Loader

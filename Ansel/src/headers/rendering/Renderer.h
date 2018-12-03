@@ -13,6 +13,8 @@
 #ifndef __CLIENT_ECS
 	namespace ECS
 	{
+		class Entity;
+		class Component;
 	}
 #else
 #	include <ECS.h>
@@ -101,7 +103,7 @@ namespace Ansel
 		static void ANSEL_API init(Window* w);
 
 		/// Component System rendering
-		
+		static void ANSEL_API Render(ECS::Entity* entity, Camera camera = Camera(), Shader* s = nullptr);
 
 		static void ANSEL_API Render(Text* text, Camera camera = Camera(), Shader* s = nullptr);
 
