@@ -35,6 +35,6 @@ namespace Game
 
 		Renderer::Render(a);
 
-		//std::cout << 1.f / timeDelta << std::endl;
+		std::cout << 1.f / timeDelta << std::endl;
 	}
 }
