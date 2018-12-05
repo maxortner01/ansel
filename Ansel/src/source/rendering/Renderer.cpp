@@ -131,17 +131,24 @@ namespace Ansel
 		for (int i = 0; i < components.size(); i++) {
 			ComponentInstance component = components.at(i);
 			
-			switch (component->getType()) {
+			int type = component->getType();
+			if (component->getDerivative() != -1)
+				type = component->getDerivative();
+
+			switch (type) {
 			case Component::SCRIPT:
 			{
 				Script* s = (Script*)component;
 				if (s->updateable()) {
 					s->update();
 				}
+				break;
 			}
 			case Component::RENDERABLE:
 			{
-
+				Model* model = component->cast<Model*>();
+				Render(model, camera, s);
+				break;
 			}
 
 			default:

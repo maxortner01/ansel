@@ -4,6 +4,8 @@ namespace ECS
 {
 	class Component
 	{
+	protected:
+		int __derivative = -1;
 
 	public:
 		enum TYPES {
@@ -11,10 +13,19 @@ namespace ECS
 			BASELESS,
 			SCRIPT,
 			CONTROLLER
-		} typedef type;
+		};
 
-		virtual type getType() = 0;
+		virtual int getType() = 0;
 		virtual void* getData() { return nullptr; }
+		
+		int getDerivative() {
+			return __derivative;
+		}
+
+		template<typename T>
+		T cast() {
+			return (T)this;
+		}
 	};
 
 	using ComponentInstance = Component * ;

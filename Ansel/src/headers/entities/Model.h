@@ -191,6 +191,12 @@ namespace Ansel
 		: public ECS::Renderable
 #endif
 	{
+
+#ifdef __CLIENT_ECS
+		int __derivative = 0;
+#endif // __CLIENT_ECS
+
+
 		vec4f _location;	///< (x, y, z, w) location.
 		vec3f _scale;		///< (x, y, z) scale factor.
 		vec3f _rotation;	///< Pitch, yaw, and roll.
@@ -233,13 +239,6 @@ namespace Ansel
 		vec3f	  ANSEL_API getScale( )      const;
 		vec3f	  ANSEL_API getRotation( )   const;
 		RawModel  ANSEL_API * getRawModel( ) const;
-
-#ifndef __CLIENT_ECS
-		int ANSEL_API getType() {
-			return 0;
-		}
-#endif
-
 	};
 
 	class Loader

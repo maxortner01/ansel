@@ -8,7 +8,7 @@ namespace ECS
 	{
 	public:
 
-		virtual type getType() {
+		virtual int getType() {
 			return RENDERABLE;
 		}
 	};

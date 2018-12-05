@@ -14,7 +14,7 @@ namespace ECS
 	public:
 		virtual void update() = 0;
 
-		virtual type getType() {
+		virtual int getType() {
 			return SCRIPT;
 		}
 

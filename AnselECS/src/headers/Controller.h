@@ -10,7 +10,7 @@ namespace ECS
 
 		virtual void getEntity() {}
 
-		virtual type getType() {
+		virtual int getType() {
 			return CONTROLLER;
 		}
 	};
