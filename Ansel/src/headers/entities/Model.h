@@ -83,6 +83,9 @@ namespace Ansel
 	  */
 	class RawModel
 	{
+		static unsigned int count;
+		unsigned int ID;
+
 		VAO *vao;			///< Pointer to the VAO object that defines this model
 		unsigned int size;	///< Amount of vertices/indices
 		unsigned int index;	///< Respective index inside the vector of RawModels

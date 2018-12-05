@@ -128,7 +128,7 @@ namespace Ansel
 		  * @param camera Camera to render the models with
 		  * @param s      Shader to render the models with (uses Renderer's by default)
 		  */
-		static void ANSEL_API Render(std::vector<Model*> models, Camera camera = Camera(), Shader* s = nullptr);
+		static void ANSEL_API Render(std::vector<Model*> models, Camera camera = Camera(), Shader* s = nullptr, int layer = 1);
 
 		static void ANSEL_API Render(ParticleSystem* particleSystem, Camera camera = Camera(), Shader* s = nullptr);
 

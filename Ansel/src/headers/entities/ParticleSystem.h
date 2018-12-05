@@ -32,8 +32,6 @@ namespace Ansel
 
 	class ParticleSystem
 	{
-		void* system;
-
 		std::vector<PSys::Particle*> particles;
 
 		RawModel* particleModel;

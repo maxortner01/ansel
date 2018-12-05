@@ -2,6 +2,8 @@
 
 namespace Ansel
 {
+	unsigned int RawModel::count = 0;
+
 	/*! \brief Initializer for the model class, empty so it can be uninitialized */
 	RawModel::RawModel() {}
 
@@ -12,6 +14,7 @@ namespace Ansel
 	 */
 	RawModel::RawModel(VAO *v, unsigned int s, unsigned int i) {
 		vao = v; size = s; index = i;
+		ID = count++;
 	}
 
 	void RawModel::loadColors(std::vector<vec4f> colors) {

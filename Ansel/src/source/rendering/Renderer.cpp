@@ -209,7 +209,14 @@ namespace Ansel
 		Render(models, camera, s);
 	}
 
-	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
+	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s, int layer) {
+
+		if (layer == 0) {
+
+
+			return;
+		}
+
 		// Make vectors of the models lcoations, scales, and rotations
 		std::vector<vec4f> locations, scales, rotations;
 
