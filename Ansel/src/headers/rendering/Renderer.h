@@ -144,15 +144,49 @@ namespace Ansel
 		  */
 		static void ANSEL_API Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, Camera camera = Camera(), Shader* s = nullptr);
 
+		/**
+		  * Sets the default rendering shader.
+		  * @param shader Shader instance to make default
+		  */
 		static void ANSEL_API loadShader(Shader* shader);
+		
+		/**
+		  * Sets the default frame rendering shader.
+		  * @param shader Shader instance to make the default frame shader
+		  */
 		static void ANSEL_API loadFrameShader(Shader* shader);
+		
+		/**
+		  * Gets the current default frame shader.
+		  */
 		static Shader ANSEL_API * getFrameShader();
-
+		
+		/**
+		  * Pushes light to the renderer. 
+		  * @param  light Light to pass to the renderer
+		  * @return Index of the passed light.
+		  */
 		static int   ANSEL_API   makeLight(Light light);
+		
+		/**
+		  * Gets the light instance at a given index.
+		  * @param index Index where the desired light is located.
+		  */
 		static Light ANSEL_API * getLight (const unsigned int index);
 
+		/**
+		  * Generates the default projection matrix with the given parameters.
+		  * @param zNear       Close clipping plane.
+		  * @param zFar        Far clipping plane.
+		  * @param FOV         Field-of-view
+		  * @param aspectRatio Height of the window / width of the window
+		  */
 		static void ANSEL_API genProjection(float zNear, float zFar, float FOV, float aspectRatio);
 
+		/**
+		  * Sets the wireframe setting.
+		  * @param 
+		  */
 		static void ANSEL_API setWireFrame(bool isOn);
 		static void ANSEL_API setLighting(bool isOn);
 		static void ANSEL_API toggleWireFrame();
