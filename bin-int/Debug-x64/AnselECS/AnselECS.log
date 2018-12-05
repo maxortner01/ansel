@@ -1,6 +1,5 @@
 ﻿  Entity.cpp
   EntityManager.cpp
   Generating Code...
-     Creating library D:\dev\Ansel\bin\Debug-x64\AnselECS\AnselECS.lib and object D:\dev\Ansel\bin\Debug-x64\AnselECS\AnselECS.exp
   AnselECS.vcxproj -> D:\dev\Ansel\bin\Debug-x64\AnselECS\AnselECS.dll
           1 file(s) copied.

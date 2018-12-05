@@ -6,9 +6,15 @@ namespace Game
 {
 	class Object : public ECS::Script
 	{
+		float health = 1.f;
+
 	public:
 		void update() {
+			health -= .00001f;
+		}
 
+		float getValue() {
+			return health;
 		}
 	};
 

@@ -9,11 +9,15 @@ namespace ECS
 	  */
 	class Script : public Baseless
 	{
+		bool _update = false;
+
 	public:
 		virtual void update() = 0;
 
-		virtual type getType() {
+		virtual int getType() {
 			return SCRIPT;
 		}
+
+		bool updateable() { return _update; }
 	};
 }

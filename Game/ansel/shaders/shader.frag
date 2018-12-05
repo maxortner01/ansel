@@ -79,5 +79,8 @@ void main()
 
 	color = (vec4(diffuse, 1.0) + vec4(specular, 1.0)) * color;
 
+	if (lighting != 1)
+		color = frag.vertexColor;
+
 	FragColor = color;
 }

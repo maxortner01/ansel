@@ -1,6 +1,9 @@
 #include "../../headers/rendering/Renderer.h"
 
 #include <GL/glew.h>
+#include <ECS.h>
+
+using namespace ECS;
 
 namespace Ansel
 {
@@ -122,6 +125,38 @@ namespace Ansel
 	}
 
 	/* Rendering */
+	void Renderer::Render(EntityInstance entity, Camera camera, Shader* s) {
+		auto components = entity->getComponents();
+
+		for (int i = 0; i < components.size(); i++) {
+			ComponentInstance component = components.at(i);
+			
+			int type = component->getType();
+			if (component->getDerivative() != -1)
+				type = component->getDerivative();
+
+			switch (type) {
+			case Component::SCRIPT:
+			{
+				Script* s = (Script*)component;
+				if (s->updateable()) {
+					s->update();
+				}
+				break;
+			}
+			case Component::RENDERABLE:
+			{
+				Model* model = component->cast<Model*>();
+				Render(model, camera, s);
+				break;
+			}
+
+			default:
+				break;
+			}
+
+		}
+	}
 
 	void Renderer::Render(Text* text, Camera camera, Shader* s) {
 		Shader* current_shader = (s == nullptr) ? shader : s;
@@ -174,7 +209,14 @@ namespace Ansel
 		Render(models, camera, s);
 	}
 
-	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s) {
+	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s, int layer) {
+
+		if (layer == 0) {
+
+
+			return;
+		}
+
 		// Make vectors of the models lcoations, scales, and rotations
 		std::vector<vec4f> locations, scales, rotations;
 

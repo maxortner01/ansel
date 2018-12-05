@@ -19,11 +19,14 @@ namespace Ansel
 	/*! \brief Initializer for list of VAO pointers in the loader class */
 	std::vector<VAO*> Loader::vaos;
 
+	std::vector<std::string> Loader::names;
+
 	/*! \brief Initializer for list of pointers to RawModel classes */
 	std::vector<RawModel*> Loader::rawModels;
+	std::vector<Model*> Loader::models;
 	unsigned int Loader::nextModelIndex = 0;
 
-	RawModel* Loader::readOBJ(const char* filename, bool smooth_shading) {
+	RawModel* Loader::readOBJ(const char* filename, const char* storage_name, bool smooth_shading) {
 		std::ifstream reader;
 		reader.open(filename);
 
@@ -229,7 +232,7 @@ namespace Ansel
 		}
 	}
 
-	RawModel* Loader::readFBX(const char* filename, bool smooth_shading) {
+	RawModel* Loader::readFBX(const char* filename, const char* storage_name, bool smooth_shading) {
 		FbxManager*  manager  = FbxManager::Create();
 		FbxIOSettings*   ios  = FbxIOSettings::Create(manager, IOSROOT);
 		FbxImporter* importer = FbxImporter::Create(manager, "");
@@ -378,7 +381,20 @@ namespace Ansel
 		return ECS::EntityManager::getEntity(name.c_str());
 	}
 
-	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices) {
+	RawModel* Loader::getRawModel(const char* storage_name) {
+		if (storage_name == "") return nullptr;
+
+		int index = -1;
+		for (int i = 0; i < names.size(); i++)
+			if (names.at(i) == storage_name) {
+				index = i; break;
+			}
+
+		if (index == -1) return nullptr;
+		return rawModels.at(index);
+	}
+
+	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices, const char* storage_name) {
 		VAO *vao = new VAO;
 
 		// Create a VAO object and bind it
@@ -399,19 +415,20 @@ namespace Ansel
 		// Create the final RawModel object with the VAO
 		RawModel* rawModel = new RawModel(vao, (unsigned int)vertices.size(), nextModelIndex++);
 		rawModels.push_back(rawModel);
+		names.push_back(storage_name);
 
 		// Return the RawModel
 		return rawModel;
 	}
 
-	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices) {
+	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices, const char* storage_name) {
 		std::vector<unsigned int> indices;
 		for (unsigned int i = 0; i < vertices.size(); i++)
 			indices.push_back(i);
 		return makeRawModel(vertices, indices);
 	}
 
-	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices) {
+	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices, const char* storage_name) {
 		VAO *vao = new VAO;
 
 		// Create a VAO object and bind it
@@ -441,7 +458,7 @@ namespace Ansel
 		return rawModel;
 	}
 
-	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices) {
+	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, const char* storage_name) {
 		VAO *vao = new VAO;
 
 		// Create a VAO object and bind it
@@ -466,12 +483,13 @@ namespace Ansel
 		// Create final RawModel object with the VAO
 		RawModel* rawModel = new RawModel(vao, (unsigned int)indices.size(), nextModelIndex++);
 		rawModels.push_back(rawModel);
+		names.push_back(storage_name);
 
 		// Return RawModel
 		return rawModel;
 	}
 
-	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals) {
+	RawModel* Loader::makeRawModel(std::vector<vec3f> vertices, std::vector<unsigned int> indices, std::vector<vec3f> normals, const char* storage_name) {
 		VAO* vao = new VAO;
 
 		// Create a VAO object and bind it
@@ -498,18 +516,25 @@ namespace Ansel
 		rawModel->loadNormals(normals);
 
 		rawModels.push_back(rawModel);
+		names.push_back(storage_name);
 
 		// Return RawModel
 		return rawModel;
 	}
 
-	RawModel* Loader::makeRawModel(const char* filename, bool smooth_shading) {
+	RawModel* Loader::makeRawModel(const char* filename, const char* storage_name, bool smooth_shading) {
 		std::string str(filename); 
 		std::string type = str.substr(str.length() - 4, str.length() - 1);
 		std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 
-		/**/ if (type == ".obj") return readOBJ(filename, smooth_shading);
-		else if (type == ".fbx") return readFBX(filename, smooth_shading);
+		RawModel* r;
+		/**/ if (type == ".obj") r = readOBJ(filename, storage_name, smooth_shading);
+		else if (type == ".fbx") r = readFBX(filename, storage_name, smooth_shading);
+
+		rawModels.push_back(r);
+		names.push_back(storage_name);
+
+		return r;
 	}
 
 	std::vector<std::string> Loader::splitString(const char delimiter, std::string str) {
@@ -544,7 +569,11 @@ namespace Ansel
 	}
 
 	Model* Loader::makeModel(RawModel* rawModel) {
-		return new Model(rawModel);
+		Model* m = new Model(rawModel);
+
+		models.push_back(m);
+
+		return m;
 	}
 
 	int Loader::createVAO() {
