@@ -3,11 +3,11 @@
 ## Installation
 Installing Ansel is super easy, all you have to do is clone the git repository and start programming in the **Game** project. 
 
-Alternatively, you can create your own project with or without Visual Studio. In order to do this you must set `Ansel/src` as an include directory as well as AnselECS/src if you wish to take advantage of the Component System. Both `Ansel.dll` and `AnselECS.dll` must be in your executable directory, and their corresponding `*.lib` files found in `bin/'Your Configuration'/Ansel.lib` and `bin/'Your Configuration'/AnselECS.lib` respectively. 
+Alternatively, you can create your own project with or without Visual Studio. In order to do this you must set `Ansel/src` as an include directory as well as AnselECS/src if you wish to take advantage of the Component System. Both `Ansel.dll` and `AnselECS.dll` must be in your executable directory, and their corresponding `*.lib` files found in `bin/'Your Configuration'/Ansel.lib` and `bin/'Your Configuration'/AnselECS.lib` respectively. Also the include directories which are `Ansel/src` and `AnselECS/src`.
 
 ## Utilizing the Component System
 
-The only file you need to include is `Ansel.h` even if you are using the Component System. However, a preprocessor definition must be defined. This can be found in Visual Studio by going to your project's properties and navigating to `C/C++ -> Preprocessor` and defining `__CLIENT_ECS`. (This is already done in the repository's game project.) I promise I'll change this so that you can define a variable if you **don't** want to use the ECS, not the other way around.
+The only file you need to include is `Ansel.h` even if you are using the Component System. At the moment, the `AnselECS.dll` and `AnselECS.lib` files are required in order to run Ansel. I'll find a way around this in the future once I understand how I want them to be implemented. **No preprocessor definitions are needed!**
 
 ## How to Get Started 
 
