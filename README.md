@@ -7,29 +7,31 @@ Alternatively, you can create your own project with or without Visual Studio. In
 
 ## Utilizing the Component System
 
-The only file you need to include is `Ansel.h` even if you are using the Component System. However, a preprocessor definition must be defined. This can be found in Visual Studio by going to your project's properties and navigating to `C/C++ -> Preprocessor` and defining `__CLIENT_ECS`. (This is already done in the repository's game project.) I promise I'll change this so that you can define a variable if you **don't** want to use the ECS.
+The only file you need to include is `Ansel.h` even if you are using the Component System. However, a preprocessor definition must be defined. This can be found in Visual Studio by going to your project's properties and navigating to `C/C++ -> Preprocessor` and defining `__CLIENT_ECS`. (This is already done in the repository's game project.) I promise I'll change this so that you can define a variable if you **don't** want to use the ECS, not the other way around.
 
 ## How to Get Started 
 
 For a detailed description of how to get started, read `Getting Started.pdf` (which is continually getting updated so there may be mistakes).
 
-## Future Plans
-At the moment I am really working on integrating and developing the Component system the most. However, right now you can write your own shaders, but it will not utilize any of the code/functions that run things like lighting calculations and matrix generation because yours will be used in the default's place. However, this will be changed to allow the user to utilize these things as well as use their own shader. 
-
-Perhaps, in the distant future, this will allow for an easy implementation of a user-friendly shader generator.
-
 ### Roadmap
 
 ---
 
-| <span style="color:blue">~~Completed~~</span> | <span style="color:red">In Progress</span> | <span style="color:black">Planned</span> | <span style="color:green">***Long Term***</span> |
+*(Started on first component system implementation) 12/5/18*
+
+| ~~Completed~~ | In Progress | *Planned* (just italics) | ***Long Term*** |
 |-|-|-|-|
 
-+ <span style="color:blue">~~Basic component system implementation~~</span>
-+ <span style="color:red">Batch rendering</span>
-+ <span style="color:red">Font and text rendering</span>
-+ Support for custom shaders with built in functionality
-+ <span style="color:green">***Physically Based Rendering***</span>
++ ~~Basic component system implementation~~
++ Batch rendering
++ Font and text rendering
++ *Support for custom shaders with built in functionality*
++ *Built in memory manager*
++ *Threaded processor/manager (to allow client to use threads to run custom own functions)*
++ *Lua implementation*
++ ***Physically Based Rendering***
++ ***Deferred Rendering***
++ ***Sound Engine***
 
 ---
 
