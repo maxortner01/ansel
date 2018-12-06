@@ -19,7 +19,11 @@ For a detailed description of how to get started, read `Getting Started.pdf` (wh
 
 *(Started on first component system implementation) 12/5/18*
 
+<<<<<<< HEAD
 | ~~Completed~~ | In Progress | *Planned* (just italics) | ***Long Term*** |
+=======
+| ~~Completed~~ | In Progress | *Planned* | ***Long Term*** |
+>>>>>>> master
 |-|-|-|-|
 
 + ~~Basic component system implementation~~
