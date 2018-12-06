@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#ifndef __CLIENT_ECS
+#ifdef NO_ECS
 	namespace ECS {
 		class Entity;
 	}

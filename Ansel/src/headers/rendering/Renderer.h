@@ -10,15 +10,15 @@
 #include "Shader.h"
 #include "Text.h"
 
-#ifndef __CLIENT_ECS
-	namespace ECS
-	{
-		class Entity;
-		class Component;
-	}
-#else
+//#ifndef __CLIENT_ECS
+//	namespace ECS
+//	{
+//		class Entity;
+//		class Component;
+//	}
+//#else
 #	include <ECS.h>
-#endif // __CLIENT_ECS
+//#endif // __CLIENT_ECS
 
 
 namespace Ansel

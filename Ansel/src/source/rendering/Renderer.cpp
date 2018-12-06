@@ -1,7 +1,7 @@
 #include "../../headers/rendering/Renderer.h"
 
 #include <GL/glew.h>
-#include <ECS.h>
+//#include <ECS.h>
 
 using namespace ECS;
 

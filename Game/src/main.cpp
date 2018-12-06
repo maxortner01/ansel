@@ -5,7 +5,7 @@
 #include <string>
 
 #include "headers/GameScreen.h"
-#include "headers/Dad.h"
+#include "headers/Test2.h"
 
 int main()
 {
@@ -15,7 +15,7 @@ int main()
 	// Window
 	Ansel::Window window(1920, 1080);
 	// Screen instance
-	Game::Dad screen(&window);
+	Game::Test2 screen(&window);
 	// Settings for engine
 	Ansel::Settings settings;
 
