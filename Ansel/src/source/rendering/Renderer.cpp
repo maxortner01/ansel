@@ -1,5 +1,7 @@
 #include "../../headers/rendering/Renderer.h"
 
+#include <algorithm>
+
 #include <GL/glew.h>
 //#include <ECS.h>
 
@@ -138,9 +140,17 @@ namespace Ansel
 			switch (type) {
 			case Component::SCRIPT:
 			{
-				Script* s = (Script*)component;
-				if (s->updateable()) {
-					s->update();
+				Script* c = (Script*)component;
+				if (c->updateable()) {
+					c->update();
+				}
+				break;
+			}
+			case Component::CONTROLLER:
+			{
+				Controller* c = (Controller*)component;
+				if (c->updateable()) {
+					c->update(entity);
 				}
 				break;
 			}
@@ -156,6 +166,54 @@ namespace Ansel
 			}
 
 		}
+	}
+
+	void Renderer::Render(std::vector<ECS::Entity*> entities, Camera camera, Shader* s) {
+		std::vector<Model*> models;
+		// Go through the list and update each entities components
+		// as well as collect the models for rendering
+		for (int i = 0; i < entities.size(); i++) {
+			ECS::Entity* entity = entities.at(i);
+			auto components = entity->getComponents();
+
+			for (int i = 0; i < components.size(); i++) {
+				ComponentInstance component = components.at(i);
+
+				int type = component->getType();
+				if (component->getDerivative() != -1)
+					type = component->getDerivative();
+
+				switch (type) {
+				case Component::SCRIPT:
+				{
+					Script* c = (Script*)component;
+					if (c->updateable()) {
+						c->update();
+					}
+					break;
+				}
+				case Component::CONTROLLER:
+				{
+					Controller* c = (Controller*)component;
+					if (c->updateable()) {
+						c->update(entity);
+					}
+					break;
+				}
+				case Component::RENDERABLE:
+				{
+					models.push_back(component->cast<Model*>());
+					break;
+				}
+
+				default:
+					break;
+				}
+
+			}
+		}
+
+		Render(models, camera, s, 0);
 	}
 
 	void Renderer::Render(Text* text, Camera camera, Shader* s) {
@@ -211,8 +269,30 @@ namespace Ansel
 
 	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s, int layer) {
 
+		// If the layer is 0 (which has to be specified) then
+		// Sort the list based off the RawModel IDs and recursivly
+		// render
 		if (layer == 0) {
 
+			//std::sort(models.begin(), models.end(), [](Model* m1, Model* m2) {
+			//	if (m1->getRawModel()->getID() > m2->getRawModel()->getID())
+			//		return true;
+			//
+			//	return false;
+			//});
+
+			std::vector<std::vector<Model*>> temp_list(Loader::getRawModelSize());
+			int current_id = -1;
+			for (int i = 0; i < models.size(); i++) {
+				current_id = models.at(i)->getRawModel()->getID();
+
+				temp_list.at(current_id).push_back(models.at(i));
+			}
+
+			for (int i = 0; i < temp_list.size(); i++) {
+				if (temp_list.at(i).size() > 0)
+					Render(temp_list.at(i), camera, s);
+			}
 
 			return;
 		}

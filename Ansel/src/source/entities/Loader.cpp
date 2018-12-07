@@ -210,9 +210,9 @@ namespace Ansel
 		RawModel* r;
 
 		if (smooth_shading)
-			r = makeRawModel(vertices, indices, realnormals);
+			r = makeRawModel(vertices, indices, realnormals, storage_name);
 		else
-			r = makeRawModel(realvertices, indices, realnormals);
+			r = makeRawModel(realvertices, indices, realnormals, storage_name);
 
 		if (tex_coords.size() > 0)
 			r->loadTextureCoordinates(tex_coords);
@@ -370,7 +370,7 @@ namespace Ansel
 
 		manager->Destroy();
 
-		return Loader::makeRawModel(vertices, indices);
+		return Loader::makeRawModel(vertices, indices, storage_name);
 	}
 
 	ECS::Entity* Loader::makeEntity(std::string name) {
@@ -379,6 +379,10 @@ namespace Ansel
 
 	ECS::Entity* Loader::getEntity(std::string name) {
 		return ECS::EntityManager::getEntity(name.c_str());
+	}
+
+	std::vector<ECS::EntityInstance> Loader::getEntities() {
+		return ECS::EntityManager::getEntities();
 	}
 
 	RawModel* Loader::getRawModel(const char* storage_name) {
@@ -425,7 +429,7 @@ namespace Ansel
 		std::vector<unsigned int> indices;
 		for (unsigned int i = 0; i < vertices.size(); i++)
 			indices.push_back(i);
-		return makeRawModel(vertices, indices);
+		return makeRawModel(vertices, indices, storage_name);
 	}
 
 	RawModel* Loader::makeRawModel(std::vector<vec2f> vertices, std::vector<unsigned int> indices, const char* storage_name) {
@@ -453,6 +457,7 @@ namespace Ansel
 		// Create final RawModel object with the VAO
 		RawModel* rawModel = new RawModel(vao, (unsigned int)indices.size(), nextModelIndex++);
 		rawModels.push_back(rawModel);
+		names.push_back(storage_name);
 
 		// Return RawModel
 		return rawModel;
@@ -527,12 +532,9 @@ namespace Ansel
 		std::string type = str.substr(str.length() - 4, str.length() - 1);
 		std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 
-		RawModel* r;
-		/**/ if (type == ".obj") r = readOBJ(filename, storage_name, smooth_shading);
-		else if (type == ".fbx") r = readFBX(filename, storage_name, smooth_shading);
-
-		rawModels.push_back(r);
-		names.push_back(storage_name);
+		RawModel* r = nullptr;
+		/**/ if (type == ".obj") { r = readOBJ(filename, storage_name, smooth_shading); }
+		else if (type == ".fbx") { r = readFBX(filename, storage_name, smooth_shading); }
 
 		return r;
 	}

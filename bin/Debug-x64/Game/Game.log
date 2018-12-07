@@ -1,4 +1,6 @@
-﻿  main.cpp
+﻿  Test2.cpp
+d:\dev\ansel\ansel\src\headers\entities\model.h(277): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
 d:\dev\ansel\ansel\src\headers\window.h(15): warning C4251: 'Ansel::Window::sTitle': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Ansel::Window'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+d:\dev\ansel\game\src\source\test2.cpp(26): warning C4018: '<': signed/unsigned mismatch
   Game.vcxproj -> D:\dev\Ansel\bin\Debug-x64\Game\Game.exe

@@ -25,4 +25,8 @@ namespace ECS
 
 		return e;
 	}
+
+	std::vector<EntityInstance> EntityManager::getEntities() {
+		return entities;
+	}
 }

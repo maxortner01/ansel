@@ -18,6 +18,8 @@ namespace Ansel
 		_color    = { 2, 2, 2, 2 };
 		_rotation = { 0, 0, 0 };
 		_scale    = { 1, 1, 1 };
+
+		__derivative = 0;
 	}
 
 	Model::Model(RawModel* modelRef) {
@@ -27,6 +29,8 @@ namespace Ansel
 		_color    = { 2, 2, 2, 2 };
 		_rotation = { 0, 0, 0 };
 		_scale    = { 1, 1, 1 };
+
+		__derivative = 0;
 	}
 
 	void Model::setLocation(vec4f location) {
