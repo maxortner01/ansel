@@ -19,7 +19,7 @@ namespace Game
 
 	void Test2::onCreate() {
 		Loader::makeRawModel("assets/models/asteroid.obj", "asteroid");
-		Loader::makeRawModel("assets/models/cube.obj", "cube");
+		Loader::makeRawModel("assets/models/cube.obj", "cube", false);
 
 		std::vector<vec4f> colors;
 		RawModel* rawModel = Loader::getRawModel("asteroid");
@@ -28,17 +28,21 @@ namespace Game
 
 		rawModel->loadColors(colors);
 
+		float space = 5.f;
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 10; x++) {
 				for (int z = 0; z < 10; z++) {
+					//if (x % 2 == 0) continue;
 					ECS::EntityInstance entity = Loader::makeEntity("cube" + std::to_string(y) + "-" + std::to_string(x) + "-" + std::to_string(z));
 
-					RawModel* rawModel = (x % 2 == 0) ? (Loader::getRawModel("asteroid")) : (Loader::getRawModel(""));
+					RawModel* rawModel = (x % 2 == 0) ? (Loader::getRawModel("asteroid")) : (Loader::getRawModel("cube"));
+
 					entity->addComponent(Loader::makeModel(rawModel), "cube_component");
 					Model* model = entity->getComponent("cube_component")->cast<Model*>();
 
-					model->setLocation({ (float)y / 2.f, (float)x / 2.f, 5 + (float)z / 2.f, 1 });
-					model->setScale({ .005f, .005f, .005f });
+					model->setLocation({ (float)x / 2.f * space, (float)y / 2.f * space, 5 + ((float)z / 2.f * space), 1 });
+					if (x % 2 == 0) model->setScale({ .005f * space, .005f * space, .005f * space});
+					else model->setScale({ .07f * space, .07f * space, .07f * space});
 				}
 			}
 		}
@@ -50,7 +54,7 @@ namespace Game
 		Light light;
 		light.on = true;
 		light.type = light.DIRECTIONAL;
-		light.location = { 1, 0, 0 };
+		light.location = { 0, 1, -1 };
 
 		Renderer::makeLight(light);
 	}

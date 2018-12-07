@@ -273,7 +273,9 @@ namespace Ansel
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
 
-		static unsigned int getRawModelSize() { return rawModels.size(); }
+		static unsigned int getRawModelSize() { 
+			return rawModels.size(); 
+		}
 
 		static RawModel ANSEL_API * makeSquare();
 
