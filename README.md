@@ -23,7 +23,7 @@ For a detailed description of how to get started, read `Getting Started.pdf` (wh
 |-|-|-|-|
 
 + ~~Basic component system implementation~~
-+ Batch rendering
++ ~~Batch rendering~~
 + Font and text rendering
 + *Support for custom shaders with built in functionality*
 + *Built in memory manager*
