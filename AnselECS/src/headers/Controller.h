@@ -8,7 +8,7 @@ namespace ECS
 	{
 	public:
 
-		virtual void getEntity() {}
+		virtual void update(ECS::Entity* entity) {}
 
 		virtual int getType() {
 			return CONTROLLER;

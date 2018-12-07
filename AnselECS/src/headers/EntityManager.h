@@ -15,5 +15,6 @@ namespace ECS
 	public:
 		static EntityInstance ECS_API getEntity(const char* name);
 		static EntityInstance ECS_API makeEntity(const char* name = "");
+		static std::vector<EntityInstance> ECS_API getEntities();
 	};
 }

@@ -10,6 +10,8 @@
 #include "Shader.h"
 #include "Text.h"
 
+#include <vector>
+
 //#ifndef __CLIENT_ECS
 //	namespace ECS
 //	{
@@ -104,6 +106,8 @@ namespace Ansel
 
 		/// Component System rendering
 		static void ANSEL_API Render(ECS::Entity* entity, Camera camera = Camera(), Shader* s = nullptr);
+
+		static void ANSEL_API Render(std::vector<ECS::Entity*> entities, Camera camera = Camera(), Shader* s = nullptr);
 
 		static void ANSEL_API Render(Text* text, Camera camera = Camera(), Shader* s = nullptr);
 

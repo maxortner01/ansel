@@ -109,6 +109,8 @@ namespace Ansel
 		  */
 		ANSEL_API RawModel(VAO *v, unsigned int s, unsigned int i);
 
+		unsigned int ANSEL_API getID();
+
 		/**
 		  * Loads specified colors into the corresponding color buffer.
 		  * @param colors List of colors to add
@@ -189,17 +191,8 @@ namespace Ansel
 	  * All models of a specific RawModel are grouped together and rendered at once
 	  * with all transformation data being uploaded to the VAO every frame.
 	  */
-	class Model  
-#ifdef __CLIENT_ECS
-		: public ECS::Renderable
-#endif
+	class Model : public ECS::Renderable
 	{
-
-#ifdef __CLIENT_ECS
-		int __derivative = 0;
-#endif // __CLIENT_ECS
-
-
 		vec4f _location;	///< (x, y, z, w) location.
 		vec3f _scale;		///< (x, y, z) scale factor.
 		vec3f _rotation;	///< Pitch, yaw, and roll.
@@ -267,6 +260,7 @@ namespace Ansel
 
 		static ECS::Entity ANSEL_API * makeEntity(std::string name = "");
 		static ECS::Entity ANSEL_API * getEntity (std::string name);
+		static std::vector<ECS::EntityInstance> ANSEL_API getEntities();
 
 		static RawModel ANSEL_API * getRawModel(const char* storage_name);
 
@@ -278,6 +272,8 @@ namespace Ansel
 		static RawModel ANSEL_API * makeRawModel(const char* filename, const char* storage_name = "", bool smooth_shading = true);
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
+
+		static unsigned int getRawModelSize() { return rawModels.size(); }
 
 		static RawModel ANSEL_API * makeSquare();
 

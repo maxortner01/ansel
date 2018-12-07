@@ -17,6 +17,10 @@ namespace Ansel
 		ID = count++;
 	}
 
+	unsigned int RawModel::getID() {
+		return ID;
+	}
+
 	void RawModel::loadColors(std::vector<vec4f> colors) {
 		// Bind the VAO
 		vao->bind();

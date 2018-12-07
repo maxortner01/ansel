@@ -381,6 +381,10 @@ namespace Ansel
 		return ECS::EntityManager::getEntity(name.c_str());
 	}
 
+	std::vector<ECS::EntityInstance> Loader::getEntities() {
+		return ECS::EntityManager::getEntities();
+	}
+
 	RawModel* Loader::getRawModel(const char* storage_name) {
 		if (storage_name == "") return nullptr;
 
