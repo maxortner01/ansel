@@ -11,6 +11,7 @@ namespace Ansel
 		COLOR,
 		STENCIL,
 		DEPTH,
+		FONT,
 		NONE
 	} typedef FrameBufferType;
 

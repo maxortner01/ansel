@@ -20,6 +20,8 @@
 #include "headers/rendering/Font.h"
 #include "headers/rendering/Text.h"
 
+#include "headers/systems/ASync.h"
+
 #ifdef __CLIENT_ECS
 #	 include <ECS.h>
 #endif // __CLIENT_ECS

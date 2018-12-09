@@ -5,6 +5,7 @@
 
 #include "../rendering/Texture.h"
 #include "../rendering/Material.h"
+#include "../rendering/Font.h"
 
 #include <vector>
 
@@ -244,8 +245,11 @@ namespace Ansel
 		static std::vector<VAO*> vaos;
 
 		static std::vector<std::string> names;
+		static std::vector<std::string> fontNames;
+
 		static std::vector<RawModel*> rawModels;
 		static std::vector<Model*> models;
+		static std::vector<Font*> fonts;
 
 		static std::vector<std::string> splitString(const char delimiter, std::string str);
 
@@ -272,6 +276,9 @@ namespace Ansel
 		static RawModel ANSEL_API * makeRawModel(const char* filename, const char* storage_name = "", bool smooth_shading = true);
 		static Model    ANSEL_API * makeModel(RawModel* rawModel);
 		static void  ANSEL_API destroy();
+
+		static Font ANSEL_API * makeFont(const char* filename, const char* name = "", unsigned int size = 24);
+		static Font ANSEL_API * getFont(const char* name);
 
 		static unsigned int getRawModelSize() { 
 			return rawModels.size(); 

@@ -29,6 +29,8 @@ namespace Ansel
 		ANSEL_API Text();
 		ANSEL_API Text(Font* fnt);
 
+		ANSEL_API ~Text();
+
 		void ANSEL_API setFont(Font* fnt);
 		void ANSEL_API setString(std::string s);
 

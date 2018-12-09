@@ -25,6 +25,7 @@ namespace Ansel
 	Shader* Renderer::frameShader;
 
 	unsigned int Renderer::uFrame = 0;
+	vec2u Renderer::dimensions;
 
 	void Renderer::renderFrame() {
 		// Always draw the quad as filled, the rendered scene, however
@@ -65,6 +66,8 @@ namespace Ansel
 	/* <-----------  PUBLIC  ---------->*/
 
 	void Renderer::init(Window* w) {
+		dimensions = { w->getWidth(), w->getHeight() };
+
 		/* Shaders */
 
 		// Manually go through the steps of creating the default shader
@@ -87,6 +90,15 @@ namespace Ansel
 
 		frameShader->link();
 		frameShader->unbind();
+
+		// Generate the font's default shader
+		Font::shader = new Shader();
+
+		Font::shader->makeShader("ansel/shaders/frame.vert", VERTEX);
+		Font::shader->makeShader("ansel/shaders/font.frag", FRAGMENT);
+
+		Font::shader->link();
+		Font::shader->unbind();
 
 		/* Framebuffer */
 
@@ -217,31 +229,64 @@ namespace Ansel
 	}
 
 	void Renderer::Render(Text* text, Camera camera, Shader* s) {
-		Shader* current_shader = (s == nullptr) ? shader : s;
+		Shader* current_shader = (s == nullptr) ? Font::shader : s;
 
 		current_shader->bind();
 
 		VAO* vao = text->getRawModel()->getVAO();
 
+		float x = text->getModel()->getLocation().x;
+		float y = text->getModel()->getLocation().y;
+
+		int index = 0;
 		std::string str = text->getString();
 		for (char c : str) {
+			if (c == ' ') {
+				index++;
+				x += 1.5f;
+				continue;
+			}
+
+
 			Character ch = text->getFont()->getCharacters()[c];
+			
+			vec4f location;
 
-			float xpos = text->getLocation().x + ch.Bearing.x /* * get_scale() */;
-			float ypos = text->getLocation().y - (ch.Size.y - ch.Bearing.y) /* * get_scale() */;
+			vec4f rotation = {
+				text->getModel()->getRotation().x,
+				text->getModel()->getRotation().y,
+				text->getModel()->getRotation().z,
+				1.f
+			};
 
-			float w = ch.Size.x /* * get_scale() */;
-			float h = ch.Size.y /* * get_scale() */;
+			vec4f scale = {
+				ch.Size.x * text->getModel()->getScale().x / 8.f,
+				ch.Size.y * text->getModel()->getScale().y / 8.f,
+				text->getModel()->getScale().z,
+				1.f
+			};
+
+			location.x = x + (ch.Bearing.x * scale.x);
+			location.y = y - ((ch.Size.y - ch.Bearing.y) * scale.y);
+
+			text->getRawModel()->loadTransformations(
+				{ location },
+				{ rotation },
+				{ scale }
+			);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 			
 			vao->bind();
 
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, 1);
 
 			vao->unbind();
-			
+
+			x += 1.5f;
+			index++;
+
 		}
 
 		current_shader->unbind();

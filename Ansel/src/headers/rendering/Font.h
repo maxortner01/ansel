@@ -3,6 +3,8 @@
 #include "../Def.h"
 #include "../util.h"
 
+#include "../rendering/Shader.h"
+
 #include <map>
 
 namespace Ansel
@@ -17,6 +19,10 @@ namespace Ansel
 
 	class Font
 	{
+		friend class Renderer;
+
+		static Shader* shader;
+
 		std::map<char, Character> Characters;
 
 		// size of the characters

@@ -16,10 +16,10 @@ namespace Ansel
 	Text::Text() {
 		if (!initialized) {
 			const std::vector<vec2f> tex = {
-				{ 0, 0 },
 				{ 0, 1 },
-				{ 1, 1 },
-				{ 1, 0 }
+				{ 0, 0 },
+				{ 1, 0 },
+				{ 1, 1 }
 			};
 
 			rawModel = Loader::makeRawModel(Text::vertices, { 0, 1, 2, 2, 3, 0 });
@@ -38,6 +38,10 @@ namespace Ansel
 		font = fnt;
 		
 		Text();
+	}
+
+	Text::~Text() {
+		delete model;
 	}
 
 	void Text::setFont(Font* fnt) {

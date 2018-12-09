@@ -77,7 +77,7 @@ void main()
 	float diff = max(dot(normal, toLight), 0.0);
 	vec3 diffuse = diff * lights[0].color;
 
-	color = (vec4(diffuse, 1.0) + vec4(specular, 1.0)) * color;
+	color = (vec4(diffuse, 1.0)) * color;
 
 	if (lighting != 1)
 		color = frag.vertexColor;

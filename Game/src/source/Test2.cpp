@@ -11,22 +11,26 @@ namespace Game
 	void Mover::update(ECS::EntityInstance entity) {
 		Model* model = entity->getComponent("cube_component")->cast<Model*>();
 
-		model->setLocation({ 0, sinf(Engine::getTime()), 5, 1 });
-		model->setRotation({ 0, sinf(Engine::getTime()), 5 });
+		//model->setLocation({ 0, sinf(Engine::getTime()), 5, 1 });
+		//model->setRotation({ 0, sinf(Engine::getTime() + model->getLocation().z), 5 });
 	}
 
 	Test2::Test2(Window* w) : Screen(w) {}
 
 	void Test2::onCreate() {
 		Loader::makeRawModel("assets/models/asteroid.obj", "asteroid");
-		Loader::makeRawModel("assets/models/cube.obj", "cube", false);
+		Loader::makeRawModel("assets/models/cube.obj", "cube", true);
 
-		std::vector<vec4f> colors;
-		RawModel* rawModel = Loader::getRawModel("asteroid");
-		for (int i = 0; i < rawModel->getVertexCount(); i++)
-			colors.push_back({ 1, 1, 1, 1 });
+		std::vector<std::string> names = { "asteroid", "cube" };
+		
+		for (int i = 0; i < names.size(); i++) {
+			std::vector<vec4f> colors;
+			RawModel* rawModel = Loader::getRawModel(names.at(i).c_str());
+			for (int i = 0; i < rawModel->getVertexCount(); i++)
+				colors.push_back({ 1, 1, 1, 1 });
 
-		rawModel->loadColors(colors);
+			rawModel->loadColors(colors);
+		}
 
 		float space = 5.f;
 		for (int y = 0; y < 10; y++) {
@@ -37,6 +41,7 @@ namespace Game
 
 					RawModel* rawModel = (x % 2 == 0) ? (Loader::getRawModel("asteroid")) : (Loader::getRawModel("cube"));
 
+					entity->addComponent(new Mover, "mover");
 					entity->addComponent(Loader::makeModel(rawModel), "cube_component");
 					Model* model = entity->getComponent("cube_component")->cast<Model*>();
 
@@ -60,7 +65,7 @@ namespace Game
 	}
 
 	void Test2::onUpdate(float timeDelta) {
-		camera.setSpeed(.15f);
+		camera.setSpeed(.25f);
 		camera.pollEvents();
 
 		Renderer::Render(Loader::getEntities(), camera);

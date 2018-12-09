@@ -135,10 +135,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\source\Terrain.cpp" />
     <ClCompile Include="src\source\Test2.cpp" />
     <ClCompile Include="src\source\GameScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\headers\Terrain.h" />
     <ClInclude Include="src\headers\Test2.h" />
     <ClInclude Include="src\headers\GameScreen.h" />
   </ItemGroup>

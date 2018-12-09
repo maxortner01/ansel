@@ -17,13 +17,7 @@ namespace Ansel
 
 		// Create texture in OpenGL
 		glGenTextures(1, &ID);
-		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, ID);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		GLenum i = GL_RGB;
 		GLenum t = GL_RGB;
@@ -33,11 +27,20 @@ namespace Ansel
 				i = GL_DEPTH_COMPONENT24;
 				t = GL_DEPTH_COMPONENT;
 
+			case FONT:
+				i = GL_R8;
+				t = GL_RED;
+
 			default:
 				break;
 		}
 
 		glTexImage2D(GL_TEXTURE_2D, 0, i, width, height, 0, t, GL_UNSIGNED_BYTE, buffer);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}

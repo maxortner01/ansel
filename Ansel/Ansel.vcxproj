@@ -161,6 +161,8 @@ copy /Y "$(SolutionDir)extern\freetype-2.9.1\objs\$(Platform)\$(Configuration)\f
     <ClInclude Include="src\headers\rendering\Shader.h" />
     <ClInclude Include="src\headers\entities\StaticModelArray.h" />
     <ClInclude Include="src\headers\rendering\Texture.h" />
+    <ClInclude Include="src\headers\StringList.h" />
+    <ClInclude Include="src\headers\systems\ASync.h" />
     <ClInclude Include="src\headers\systems\Directory.h" />
     <ClInclude Include="src\vendor\SimplexNoise.h" />
     <ClInclude Include="src\vendor\stb_image.h" />
@@ -185,6 +187,7 @@ copy /Y "$(SolutionDir)extern\freetype-2.9.1\objs\$(Platform)\$(Configuration)\f
     <ClCompile Include="src\source\rendering\Shader.cpp" />
     <ClCompile Include="src\source\entities\StaticModelArray.cpp" />
     <ClCompile Include="src\source\rendering\Texture.cpp" />
+    <ClCompile Include="src\source\systems\ASync.cpp" />
     <ClCompile Include="src\source\systems\Directory.cpp" />
     <ClCompile Include="src\vendor\SimplexNoise.cpp" />
     <ClCompile Include="src\vendor\stb_image.cpp" />

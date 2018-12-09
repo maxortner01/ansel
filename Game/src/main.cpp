@@ -3,9 +3,11 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include <vector>
 
 #include "headers/GameScreen.h"
 #include "headers/Test2.h"
+#include "headers/Terrain.h"
 
 int main()
 {
@@ -18,6 +20,7 @@ int main()
 	Game::Test2 screen(&window);
 	// Settings for engine
 	Ansel::Settings settings;
+	//settings.normalizedCoords = false;
 
 	Ansel::Engine engine(&window, &screen, settings);
 	engine.run();

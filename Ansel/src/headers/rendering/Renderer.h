@@ -85,6 +85,7 @@ namespace Ansel
 		static Shader* frameShader;			///< Shader for drawing frame.
 
 		static unsigned int uFrame;			///< Ticker that counts frames.
+		static vec2u dimensions;
 
 		/**
 		  * \brief Renders the framebuffer to the screen.

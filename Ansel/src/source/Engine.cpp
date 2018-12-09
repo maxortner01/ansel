@@ -2,6 +2,7 @@
 #include "../headers/systems/Directory.h"
 
 #include <iostream>
+#include <thread>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -81,7 +82,6 @@ namespace Ansel
 			// Bind the framebuffer and clear it
 			Renderer::frame->clear();
 
-			// Render the screen
 			render();
 
 			Renderer::frameShader->unbind();

@@ -20,10 +20,13 @@ namespace Ansel
 	std::vector<VAO*> Loader::vaos;
 
 	std::vector<std::string> Loader::names;
+	std::vector<std::string> Loader::fontNames;
 
 	/*! \brief Initializer for list of pointers to RawModel classes */
 	std::vector<RawModel*> Loader::rawModels;
 	std::vector<Model*> Loader::models;
+	std::vector<Font*> Loader::fonts;
+
 	unsigned int Loader::nextModelIndex = 0;
 
 	RawModel* Loader::readOBJ(const char* filename, const char* storage_name, bool smooth_shading) {
@@ -539,6 +542,28 @@ namespace Ansel
 		return r;
 	}
 
+	Font* Loader::makeFont(const char* filename, const char* name, unsigned int size) {
+		Font* font = new Font(filename, size);
+		
+		fontNames.push_back(name);
+		fonts.push_back(font);
+
+		return font;
+	}
+
+	Font* Loader::getFont(const char* name) {
+		if (name == "") return nullptr;
+
+		int index = -1;
+		for (int i = 0; i < fontNames.size(); i++)
+			if (fontNames.at(i) == name) {
+				index = i; break;
+			}
+
+		if (index == -1) return nullptr;
+		return fonts.at(index);
+	}
+
 	std::vector<std::string> Loader::splitString(const char delimiter, std::string str) {
 		std::vector<std::string> f;
 		str += delimiter;
@@ -591,6 +616,7 @@ namespace Ansel
 		for (VAO *vao : vaos)
 			vao->destroy();
 	}
+
 
 	RawModel* Loader::makeSquare() {
 		std::vector<vec3f> square = {

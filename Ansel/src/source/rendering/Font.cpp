@@ -10,6 +10,8 @@
 
 namespace Ansel
 {
+	Shader* Font::shader = nullptr;
+
 	Font::Font() {
 
 	}
@@ -47,7 +49,7 @@ namespace Ansel
 			}
 
 			// Generate texture
-			Texture* texture = new Texture(face->glyph->bitmap.width, face->glyph->bitmap.rows, face->glyph->bitmap.buffer);
+			Texture* texture = new Texture(face->glyph->bitmap.width, face->glyph->bitmap.rows, face->glyph->bitmap.buffer, FONT);
 			Character character = {
 				texture->getID(),
 				{ face->glyph->bitmap.width, face->glyph->bitmap.rows },

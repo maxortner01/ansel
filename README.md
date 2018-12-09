@@ -37,6 +37,11 @@ For a detailed description of how to get started, read `Getting Started.pdf` (wh
 
 # Images
 
+## Batch Rendering and Component System
+Using the new component system along with a single call to `Render()` in order to produce this scene.
+
+![alt text](Images/example4.png)
+
 ## Instancing
 
 2,500 cubes being rendered with unique rotation, scale, and translation at 60 FPS. This image was taken with 3D was first implemented. 
