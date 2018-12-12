@@ -65,13 +65,13 @@ void main(void)
 
         // Pass all useful information to the fragment shader
         frag.modelMatrix = VertexIn[i].modelMatrix;
-		frag.position = gl_in[i].gl_Position * VertexIn[i].modelMatrix * view * projection;
+		frag.position = gl_in[i].gl_Position * VertexIn[i].modelMatrix;
         frag.vertexColor = VertexIn[i].vertexColor;
         frag.outNormal = calcNormal;
         frag.tex = VertexIn[i].tex;
 
         // Transform the vertex once and for all in 3D space
-        gl_Position = frag.position;
+        gl_Position = frag.position * view * projection;
 
         EmitVertex();
     }

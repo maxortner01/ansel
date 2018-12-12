@@ -27,9 +27,16 @@ uniform int use_colors;
 uniform mat4 view;
 uniform vec3 camera_position;
 
+uniform vec4 mat_ambient;
+uniform float mat_spec;
+
+uniform vec4 mat_emissionColor;
+uniform float mat_emissionStrength;
+
 uniform sampler2D tex_albedo;
 uniform sampler2D tex_normal;
 uniform sampler2D tex_occlusion;
+uniform sampler2D tex_emission;
 
 uniform struct {
 	int on;
@@ -39,8 +46,61 @@ uniform struct {
 	vec3 color;
 } lights[LIGHT_COUNT];
 
+vec3 getLightDir(int index) {
+	if (lights[index].type == POINT) {
+		return normalize(lights[index].location - frag.position).xyz;
+	}
+	else if (lights[index].type == DIRECTIONAL) {
+		return normalize(lights[index].location).xyz;
+	}
+}
+
+vec3 getLightDiffuse(int index) {
+	vec3 lightDir = getLightDir(index);
+	float diff = max(dot(frag.outNormal, lightDir), 0.0);
+	return diff * lights[index].color;
+}
+
+float getLightSpecular(int index) {
+	float spec = 0.8;
+
+	vec3 lightDir = getLightDir(index);
+	vec4 viewDir = frag.rotationMatrix * vec4(normalize(camera_position - frag.position.xyz), 1.0);
+	vec3 reflectDir = reflect(-lightDir, frag.outNormal);
+
+	float specVal = pow(max(dot(viewDir.xyz, reflectDir), 0.0), mat_spec);
+	return spec * specVal;
+}
+
+vec3 getLightMatAmbient(int index) {
+	return lights[index].color * mat_ambient.xyz;
+}
+
+vec3 getMatEmission() {
+	return texture(tex_emission, frag.tex).r * mat_emissionColor.xyz * mat_emissionStrength;
+}
+
 void main()
 {
+	vec4 color = frag.vertexColor;
+	if (use_textures == 1) {
+		color = color * texture(tex_albedo, frag.tex);
+	}
+
+	// ambient
+	vec3 ambient = getLightMatAmbient(0);
+
+	// diffuse
+	vec3 diffuse = color.xyz * getLightDiffuse(0);
+
+	// specular
+	float specular = getLightSpecular(0);
+
+	//color = vec3(1, 1, 1);
+	FragColor = vec4(ambient + diffuse + specular + getMatEmission(), color.w);
+}
+
+void crap() {
 	vec3 toLight;
 	vec3 normal = normalize(frag.outNormal);
 	vec3 vertexWorldSpace = (frag.position * frag.modelMatrix).xyz;
@@ -67,10 +127,10 @@ void main()
 	vec4 color = (use_colors == 0)?texture(tex_albedo, frag.tex):frag.vertexColor;
 
 	// Obtain the normal from texture
-	vec3 normal_tex = texture(tex_normal, frag.tex).rgb;
-	normal_tex = normalize(normal_tex * 2.0 - 1.0) / 1.5;
+	//vec3 normal_tex = texture(tex_normal, frag.tex).rgb;
+	//normal_tex = normalize(normal_tex * 2.0 - 1.0) / 1.5;
 
-	normal = normalize(normal_tex + normal);
+	//normal = normalize(normal_tex + normal);
 
 	// Calculate the dot-product between the normal and the
 	// toLight vector

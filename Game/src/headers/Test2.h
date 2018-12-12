@@ -8,10 +8,12 @@ namespace Game
 {
 	class Mover : public ECS::Controller
 	{
+		bool moving = false;
 		unsigned int ID = 0;
+		Camera* player;
 
 	public:
-		Mover();
+		Mover(Camera* camera);
 
 		void update(ECS::EntityInstance entity);
 	};

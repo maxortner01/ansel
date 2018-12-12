@@ -32,6 +32,7 @@ namespace Ansel
 			ROTATION,
 			SCALE,
 			TEX_COORDS0,
+			EMISSION_COLOR,
 			INDICES = 16
 		} typedef BUFFER_TYPE;
 
@@ -62,6 +63,7 @@ namespace Ansel
 		void bindBufferData(const std::vector<vec2f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
 		void bindBufferData(const std::vector<vec3f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
 		void bindBufferData(const std::vector<vec4f> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool divisor = false, bool dynamic = false);
+		void bindBufferData(const std::vector<float> data, Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool divisor = false, bool dynamic = false);
 		void bindBufferData(const std::vector<int> data, 
 			const unsigned int size = 2, const Buffer::BUFFER_TYPE type = Buffer::BUFFER_TYPE::VERTEX, bool dynamic = false);
 		void bindBufferData(const std::vector<unsigned int> data,
@@ -117,6 +119,8 @@ namespace Ansel
 		  * @param colors List of colors to add
 		  */
 		void ANSEL_API loadColors(std::vector<vec4f> colors);
+
+		void ANSEL_API loadEmissionColors(std::vector<float> colors);
 
 		/**
 		  * Loads texture coordinates into the buffer.
@@ -228,7 +232,8 @@ namespace Ansel
 		void ANSEL_API setRotation(float x, float y, float z);
 		void ANSEL_API addRotation(float x, float y, float z);
 
-		void ANSEL_API setColor(vec4f color);
+		void  ANSEL_API setColor(vec4f color);
+		vec4f ANSEL_API getColor() { return _color; }
 
 		void ANSEL_API setScale(vec3f scale);
 

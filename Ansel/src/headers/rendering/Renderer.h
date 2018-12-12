@@ -147,7 +147,7 @@ namespace Ansel
 		  * @param scales    Each model's scale
 		  * @param rotations Each model's rotation
 		  */
-		static void ANSEL_API Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, Camera camera = Camera(), Shader* s = nullptr);
+		static void ANSEL_API Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, std::vector<vec4f> colors, Camera camera = Camera(), Shader* s = nullptr);
 
 		/**
 		  * Sets the default rendering shader.

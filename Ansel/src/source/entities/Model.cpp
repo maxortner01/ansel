@@ -197,6 +197,23 @@ namespace Ansel
 		buffer->unbind();
 	}
 
+	void VAO::bindBufferData(const std::vector<float> data, Buffer::BUFFER_TYPE type, bool divisor, bool dynamic) {
+		Buffer* buffer = &VBOS.at(type);
+		buffer->bind();
+
+		buffer->count = (unsigned int)data.size();
+		buffer->data_size = 1;
+
+		glBufferData(getType(type), data.size() * sizeof(float), &data.front(), (dynamic) ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+		glVertexAttribPointer(type, buffer->data_size, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glEnableVertexAttribArray(type);
+
+		if (divisor) { glVertexAttribDivisor(type, 1); }
+
+		buffer->unbind();
+	}
+
 	void VAO::bindBufferData(const std::vector<int> data, const unsigned int size, const Buffer::BUFFER_TYPE type, bool dynamic) {
 		Buffer* buffer = &VBOS.at(type);
 		buffer->bind();

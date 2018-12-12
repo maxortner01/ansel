@@ -38,6 +38,21 @@ namespace Ansel
 		use_colors = true;
 	}
 
+	void RawModel::loadEmissionColors(std::vector<float> colors) {
+		// Bind the VAO
+		vao->bind();
+		// Generate a buffer at the Color location
+		if (!vao->bufferExists(Buffer::EMISSION_COLOR))
+			vao->genBuffer(Buffer::EMISSION_COLOR);
+
+		bool multi_colors = !(colors.size() == size);
+
+		// Bind the color information to the buffer
+		vao->bindBufferData(colors, Buffer::EMISSION_COLOR, multi_colors, true);
+		// Unbind VAO
+		vao->unbind();
+	}
+
 	void RawModel::loadTextureCoordinates(std::vector<vec2f> coords, unsigned int texture) {
 		vao->bind();
 

@@ -14,6 +14,14 @@ namespace Ansel
 		textures.clear();
 	}
 
+	void Material::loadShader(Shader* s) {
+		shader = s;
+	}
+
+	Shader* Material::getShader() const {
+		return shader;
+	}
+
 	void Material::loadTexture(int type, Texture* texture) {
 		textures.at(type) = texture;
 	}

@@ -343,7 +343,7 @@ namespace Ansel
 		}
 
 		// Make vectors of the models lcoations, scales, and rotations
-		std::vector<vec4f> locations, scales, rotations;
+		std::vector<vec4f> locations, scales, rotations, colors;
 
 		// Loop through the models to accumulate their information
 		for (int i = 0; i < models.size(); i++) {
@@ -355,10 +355,13 @@ namespace Ansel
 
 			vec3f r = models.at(i)->getRotation();
 			rotations.push_back({ r.x, r.y, r.z, 1 });
+
+			vec4f c = models.at(i)->getColor();
+			colors.push_back(c);
 		}
 
 		// Render the list of models with their respective transformation information
-		Renderer::Render(models, locations, scales, rotations, camera, s);
+		Renderer::Render(models, locations, scales, rotations, colors, camera, s);
 	}
 
 	void Renderer::Render(ParticleSystem* particleSystem, Camera camera, Shader* s) {
@@ -380,24 +383,22 @@ namespace Ansel
 			colors   .at(i) = p->c_color;
 		}
 
-		particleSystem->getModel()->loadColors(colors);
-
 		Model* model = new Model(particleSystem->getModel());
 
 		std::vector<Model*> models;
 		models.push_back(model);
 
-		Renderer::Render(models, locations, scales, rotations, camera);
+		Renderer::Render(models, locations, scales, rotations, colors, camera);
 
 		delete model;
 	}
 
 	void Renderer::Render(StaticModelArray SMA, Camera camera, Shader* s) {
-		Render(SMA.getModels(), SMA.getTransformation(SMA.LOCATIONS), SMA.getTransformation(SMA.SCALES),
-			SMA.getTransformation(SMA.ROTATION), camera, s);
+		//Render(SMA.getModels(), SMA.getTransformation(SMA.LOCATIONS), SMA.getTransformation(SMA.SCALES),
+		//	SMA.getTransformation(SMA.ROTATION), camera, s);
 	}
 
-	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations,
+	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, std::vector<vec4f> colors,
 		Camera camera, Shader* s) {
 
 		if (models.at(0) == nullptr) return;
@@ -414,7 +415,13 @@ namespace Ansel
 		// For my convienice make a pointer from the model's RawModel
 		RawModel* rawModel = models.at(0)->getRawModel();
 		// Do the same for the VAO
-		VAO *vao = rawModel->getVAO();
+		VAO *vao = rawModel->getVAO(); 
+		
+		rawModel->loadColors(colors);
+
+		// Use the material shader (if there is one) over all others
+		if (rawModel->getMaterial() != nullptr && rawModel->getMaterial()->getShader() != nullptr)
+			current_shader = rawModel->getMaterial()->getShader();
 
 		// Bind the shader
 		current_shader->bind();
@@ -432,6 +439,16 @@ namespace Ansel
 
 		current_shader->setUniform(camera.getLocation(), "camera_position");
 
+		if (rawModel->getMaterial() != nullptr) {
+			current_shader->setUniform(rawModel->getMaterial()->getSpecStrength(), "mat_spec");
+			current_shader->setUniform(rawModel->getMaterial()->getAmbientColor(), "mat_ambient");
+			current_shader->setUniform(rawModel->getMaterial()->getEmissionStrength(), "mat_emissionStrength");
+			current_shader->setUniform(rawModel->getMaterial()->getEmissionColor(), "mat_emissionColor");
+
+			if (rawModel->getMaterial()->getTextureSize() > 0)
+				current_shader->setUniform(1, "use_textures");
+		}
+
 		// Pass the lights to the uniform
 		for (int i = 0; i < LIGHT_COUNT; i++) {
 			Light light = lights[i];
@@ -448,7 +465,8 @@ namespace Ansel
 			std::string strings[Material::AMOUNT] = {
 				"tex_albedo",
 				"tex_normal",
-				"tex_occlusion"
+				"tex_occlusion",
+				"tex_emission"
 			};
 
 			if (rawModel->getMaterial() != nullptr && rawModel->getMaterial()->getTexture(i) != nullptr) {

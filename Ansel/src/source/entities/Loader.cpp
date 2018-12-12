@@ -187,7 +187,7 @@ namespace Ansel
 				else {
 					for (Vertex v : newFaces) {
 						realvertices.push_back(vertices.at(v.v));
-						realnormals.push_back(normals.at(v.n));
+						//realnormals.push_back(normals.at(v.n));
 
 						if (tex.size() > 0) {
 							vec2f t = tex.at(v.t);
@@ -215,7 +215,7 @@ namespace Ansel
 		if (smooth_shading)
 			r = makeRawModel(vertices, indices, realnormals, storage_name);
 		else
-			r = makeRawModel(realvertices, indices, realnormals, storage_name);
+			r = makeRawModel(realvertices, indices, storage_name);
 
 		if (tex_coords.size() > 0)
 			r->loadTextureCoordinates(tex_coords);
