@@ -18,7 +18,8 @@ namespace Game
 
 		//const float sin = sinf(Engine::getTime() / 1.2f + l.x);
 		//const float cos = abs(cosf((Engine::getTime() / 2.f) + l.z + l.x)) * 2 - 1;
-		const float noise = SimplexNoise::noise(l.x / 5.f, l.z / 5.f, Engine::getTime());
+		const float noise = abs(SimplexNoise::noise(l.x / 5.f, l.z / 5.f, Engine::getTime())) * 2 - 1;
+		//const float noise = SimplexNoise::noise(l.x / 5.f, l.z / 5.f, Engine::getTime());
 
 		model->setLocation(l.x, -s + noise / 5.f, l.z, 0);
 
@@ -60,11 +61,11 @@ namespace Game
 
 		Material* material = new Material;
 		material->loadTexture(Material::ALBEDO, new Texture("assets/textures/rock/albedo.png"));
-		material->loadTexture(Material::EMISSION, new Texture("assets/textures/emission.png"));
+		//material->loadTexture(Material::EMISSION, new Texture("assets/textures/emission.png"));
 		//material->loadTexture(Material::NORMAL, new Texture("assets/textures/rock/normal.png"));
 
-		material->setEmissionStrength(.25f);
-		material->setEmissionColor({ 1.f, 1.f, 1.f, 1.f });
+		//material->setEmissionStrength(.25f);
+		//material->setEmissionColor({ 1.f, 1.f, 1.f, 1.f });
 
 		material->setSpecStrength(32);
 		material->setAmbientColor({ .01f, .01f, .01f, 1 });
@@ -73,8 +74,8 @@ namespace Game
 		float width = .5f;
 		float space = .05f;
 		float height = 6.f;
-		for (int z = 0; z < 30; z++) {
-			for (int x = 0; x < 30; x++) {
+		for (int z = 0; z < 80; z++) {
+			for (int x = 0; x < 80; x++) {
 				ECS::EntityInstance entity = Loader::makeEntity("floor_" + std::to_string(x) + "-" + std::to_string(z));
 
 				Model* model = Loader::makeModel(Loader::getRawModel("cube"));

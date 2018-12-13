@@ -98,6 +98,8 @@ namespace Ansel
 		  */
 		static void renderFrame();	
 
+		static void processEntities(const std::vector<ECS::Entity*> &entities, std::vector<Model*> *models);
+
 	public:
 		/**
 		  * Initialize the renderer. (maybe make this private)
@@ -108,7 +110,7 @@ namespace Ansel
 		/// Component System rendering
 		static void ANSEL_API Render(ECS::Entity* entity, Camera camera = Camera(), Shader* s = nullptr);
 
-		static void ANSEL_API Render(std::vector<ECS::Entity*> entities, Camera camera = Camera(), Shader* s = nullptr);
+		static void ANSEL_API Render(const std::vector<ECS::Entity*> &entities, Camera camera = Camera(), Shader* s = nullptr);
 
 		static void ANSEL_API Render(Text* text, Camera camera = Camera(), Shader* s = nullptr);
 
@@ -133,7 +135,7 @@ namespace Ansel
 		  * @param camera Camera to render the models with
 		  * @param s      Shader to render the models with (uses Renderer's by default)
 		  */
-		static void ANSEL_API Render(std::vector<Model*> models, Camera camera = Camera(), Shader* s = nullptr, int layer = 1);
+		static void ANSEL_API Render(const std::vector<Model*> &models, Camera camera = Camera(), Shader* s = nullptr, int layer = 1);
 
 		static void ANSEL_API Render(ParticleSystem* particleSystem, Camera camera = Camera(), Shader* s = nullptr);
 
@@ -147,7 +149,13 @@ namespace Ansel
 		  * @param scales    Each model's scale
 		  * @param rotations Each model's rotation
 		  */
-		static void ANSEL_API Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, std::vector<vec4f> colors, Camera camera = Camera(), Shader* s = nullptr);
+		static void ANSEL_API Render(const std::vector<Model*> &models, 
+			const std::vector<vec4f> &locations, 
+			const std::vector<vec4f> &scales, 
+			const std::vector<vec4f> &rotations, 
+			const std::vector<vec4f> &colors, 
+			Camera camera = Camera(), 
+			Shader* s = nullptr);
 
 		/**
 		  * Sets the default rendering shader.

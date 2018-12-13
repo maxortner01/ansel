@@ -1,6 +1,7 @@
 #include "../../headers/rendering/Renderer.h"
 
 #include <algorithm>
+#include <thread>
 
 #include <GL/glew.h>
 //#include <ECS.h>
@@ -180,10 +181,7 @@ namespace Ansel
 		}
 	}
 
-	void Renderer::Render(std::vector<ECS::Entity*> entities, Camera camera, Shader* s) {
-		std::vector<Model*> models;
-		// Go through the list and update each entities components
-		// as well as collect the models for rendering
+	void Renderer::processEntities(const std::vector<ECS::Entity*> &entities, std::vector<Model*> *models) {
 		for (int i = 0; i < entities.size(); i++) {
 			ECS::Entity* entity = entities.at(i);
 			auto components = entity->getComponents();
@@ -214,7 +212,7 @@ namespace Ansel
 				}
 				case Component::RENDERABLE:
 				{
-					models.push_back(component->cast<Model*>());
+					models->push_back(component->cast<Model*>());
 					break;
 				}
 
@@ -224,8 +222,40 @@ namespace Ansel
 
 			}
 		}
+	}
 
-		Render(models, camera, s, 0);
+	void Renderer::Render(const std::vector<ECS::Entity*> &entities, Camera camera, Shader* s) {
+		const unsigned int max = 200;
+		std::vector<std::vector<Model*>*> models;
+
+		std::vector<std::thread*> threads;
+		std::vector<ECS::Entity*> subEntities;
+
+		// Go through the list and update each entities components
+		// as well as collect the models for rendering
+		unsigned int block_index = 0;
+		for (int i = 0; i < entities.size(); i++) {
+			if (i - block_index >= max || i == entities.size() - 1) {
+				std::vector<ECS::Entity*> subList(entities.begin() + block_index, entities.begin() + i + 1);
+				models.push_back(new std::vector<Model*>);
+
+				threads.push_back(new std::thread(Renderer::processEntities, subList, models.at(models.size() - 1)));
+				block_index = i;
+			}
+		}
+		
+		std::vector<Model*> finalModels;
+		for (int i = 0; i < threads.size(); i++) {
+			threads.at(i)->join();
+			finalModels.insert(finalModels.begin(), models.at(i)->begin(), models.at(i)->end());
+		}
+
+		Render(finalModels, camera, s, 0);
+
+		for (int i = 0; i < threads.size(); i++) {
+			delete models.at(i);
+			delete threads.at(i);
+		}
 	}
 
 	void Renderer::Render(Text* text, Camera camera, Shader* s) {
@@ -312,7 +342,7 @@ namespace Ansel
 		Render(models, camera, s);
 	}
 
-	void Renderer::Render(std::vector<Model*> models, Camera camera, Shader* s, int layer) {
+	void Renderer::Render(const std::vector<Model*> &models, Camera camera, Shader* s, int layer) {
 
 		// If the layer is 0 (which has to be specified) then
 		// Sort the list based off the RawModel IDs and recursivly
@@ -398,7 +428,7 @@ namespace Ansel
 		//	SMA.getTransformation(SMA.ROTATION), camera, s);
 	}
 
-	void Renderer::Render(std::vector<Model*> models, std::vector<vec4f> locations, std::vector<vec4f> scales, std::vector<vec4f> rotations, std::vector<vec4f> colors,
+	void Renderer::Render(const std::vector<Model*> &models, const std::vector<vec4f> &locations, const std::vector<vec4f> &scales, const std::vector<vec4f> &rotations, const std::vector<vec4f> &colors,
 		Camera camera, Shader* s) {
 
 		if (models.at(0) == nullptr) return;

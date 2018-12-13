@@ -1,0 +1,8 @@
+﻿  Entity.cpp
+  EntityManager.cpp
+     Creating library D:\dev\Ansel\bin\Release-x64\AnselECS\AnselECS.lib and object D:\dev\Ansel\bin\Release-x64\AnselECS\AnselECS.exp
+  Generating code
+  All 328 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  AnselECS.vcxproj -> D:\dev\Ansel\bin\Release-x64\AnselECS\AnselECS.dll
+          1 file(s) copied.
