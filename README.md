@@ -24,10 +24,10 @@ For a detailed description of how to get started, read `Getting Started.pdf` (wh
 
 + ~~Basic component system implementation~~
 + ~~Batch rendering~~
++ ~~Threaded processor/manager~~
 + Font and text rendering
 + *Support for custom shaders with built in functionality*
 + *Built in memory manager*
-+ *Threaded processor/manager (to allow client to use threads to run custom own functions)*
 + *Lua implementation*
 + ***Physically Based Rendering***
 + ***Deferred Rendering***
