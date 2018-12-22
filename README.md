@@ -13,10 +13,6 @@ The only file you need to include is `Ansel.h` even if you are using the Compone
 
 For a detailed description of how to get started, read `Getting Started.pdf` (which is continually getting updated so there may be mistakes).
 
-### Frame Problems
-
-If you are experiencing periodic drops in framerate (much like my analysis [here](https://docs.google.com/spreadsheets/d/1flWt7ezUMsPknehb6J-sKgNTAbwNfEomdkdzpv7ysSs/edit?usp=sharing)) then **turn off Threaded Optimization in the Nvidia Control Panel**. I have no idea why Nvidia's optimizer is more like a deoptimizer, as I am not the only one who has experienced this problem. Nonetheless, I will eventually find a fix for this so you don't have to. 
-
 ### Roadmap
 
 ---

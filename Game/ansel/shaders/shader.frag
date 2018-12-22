@@ -55,9 +55,13 @@ vec3 getLightDir(int index) {
 	}
 }
 
+vec3 getNormal() {
+	return frag.outNormal;
+}
+
 vec3 getLightDiffuse(int index) {
 	vec3 lightDir = getLightDir(index);
-	float diff = max(dot(frag.outNormal, lightDir), 0.0);
+	float diff = max(dot(getNormal(), lightDir), 0.0);
 	return diff * lights[index].color;
 }
 
@@ -66,7 +70,7 @@ float getLightSpecular(int index) {
 
 	vec3 lightDir = getLightDir(index);
 	vec4 viewDir = frag.rotationMatrix * vec4(normalize(camera_position - frag.position.xyz), 1.0);
-	vec3 reflectDir = reflect(-lightDir, frag.outNormal);
+	vec3 reflectDir = reflect(-lightDir, getNormal());
 
 	float specVal = pow(max(dot(viewDir.xyz, reflectDir), 0.0), mat_spec);
 	return spec * specVal;
@@ -97,7 +101,7 @@ void main()
 	float specular = getLightSpecular(0);
 
 	//color = vec3(1, 1, 1);
-	FragColor = vec4(ambient + diffuse + specular + getMatEmission(), color.w);
+	FragColor = vec4(diffuse, color.w);
 }
 
 void crap() {

@@ -14,6 +14,8 @@
 #include "headers/entities/camera.h"
 #include "headers/entities/StaticModelArray.h"
 #include "headers/entities/ParticleSystem.h"
+#include "headers/entities/Skybox.h"
+#include "headers/entities/ModelContainer.h"
 
 #include "headers/rendering/Renderer.h"
 #include "headers/rendering/Shader.h"

@@ -1,0 +1,81 @@
+#version 330 core
+
+#define LIGHT_COUNT 8
+
+#define AMBIENT     0
+#define POINT       1
+#define DIRECTIONAL 2
+
+out vec4 FragColor;
+
+in fData {
+	vec4 position;
+    vec4 vertexColor;
+
+    vec3 outNormal;
+
+    mat4 modelMatrix;
+	mat4 rotationMatrix;
+
+	vec2 tex;
+} frag;
+
+uniform int lighting;
+uniform int use_textures;
+uniform int use_colors;
+
+uniform mat4 view;
+uniform vec3 camera_position;
+
+uniform vec4 mat_ambient;
+uniform float mat_spec;
+
+uniform vec4 mat_emissionColor;
+uniform float mat_emissionStrength;
+
+uniform sampler2D tex_albedo;
+uniform sampler2D tex_normal;
+uniform sampler2D tex_occlusion;
+uniform sampler2D tex_emission;
+
+uniform struct {
+	int on;
+	int type;
+
+	vec4 location;
+	vec3 color;
+} lights[LIGHT_COUNT];
+
+vec3 getLightDir(int index) {
+	if (lights[index].type == POINT) {
+		return normalize(lights[index].location - frag.position).xyz;
+	}
+	else if (lights[index].type == DIRECTIONAL) {
+		return normalize(lights[index].location).xyz;
+	}
+}
+
+vec3 getLightDiffuse(int index) {
+	vec3 lightDir = getLightDir(index);
+	float diff = max(dot(frag.outNormal, lightDir), 0.0);
+	return diff * lights[index].color;
+}
+
+float getLightSpecular(int index) {
+	float spec = 0.8;
+
+	vec3 lightDir = getLightDir(index);
+	vec4 viewDir = frag.rotationMatrix * vec4(normalize(camera_position - frag.position.xyz), 1.0);
+	vec3 reflectDir = reflect(-lightDir, frag.outNormal);
+
+	float specVal = pow(max(dot(viewDir.xyz, reflectDir), 0.0), mat_spec);
+	return spec * specVal;
+}
+
+vec3 getLightMatAmbient(int index) {
+	return lights[index].color * mat_ambient.xyz;
+}
+
+vec3 getMatEmission() {
+	return texture(tex_emission, frag.tex).r * mat_emissionColor.xyz * mat_emissionStrength;
+}

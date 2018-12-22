@@ -148,6 +148,8 @@ copy /Y "$(SolutionDir)extern\freetype-2.9.1\objs\$(Platform)\$(Configuration)\f
     <ClInclude Include="src\headers\entities\camera.h" />
     <ClInclude Include="src\headers\Def.h" />
     <ClInclude Include="src\headers\Engine.h" />
+    <ClInclude Include="src\headers\entities\ModelContainer.h" />
+    <ClInclude Include="src\headers\entities\Skybox.h" />
     <ClInclude Include="src\headers\rendering\Font.h" />
     <ClInclude Include="src\headers\rendering\FrameBuffer.h" />
     <ClInclude Include="src\headers\rendering\Material.h" />
@@ -172,6 +174,7 @@ copy /Y "$(SolutionDir)extern\freetype-2.9.1\objs\$(Platform)\$(Configuration)\f
   <ItemGroup>
     <ClCompile Include="src\source\entities\Camera.cpp" />
     <ClCompile Include="src\source\Engine.cpp" />
+    <ClCompile Include="src\source\entities\Skybox.cpp" />
     <ClCompile Include="src\source\rendering\Font.cpp" />
     <ClCompile Include="src\source\rendering\FrameBuffer.cpp" />
     <ClCompile Include="src\source\event\Keyboard.cpp" />

@@ -5,9 +5,11 @@
 #include <string>
 #include <vector>
 
-#include "headers/GameScreen.h"
-#include "headers/Test2.h"
-#include "headers/Terrain.h"
+//#include "headers/GameScreen.h"
+//#include "headers/Test2.h"
+//#include "headers/Terrain.h"
+
+#include "demo1/demo1.h"
 
 int main()
 {
@@ -17,7 +19,7 @@ int main()
 	// Window
 	Ansel::Window window(1920, 1080);
 	// Screen instance
-	Game::Test2 screen(&window);
+	Demo1::DemoScreen screen(&window);
 	// Settings for engine
 	Ansel::Settings settings;
 	//settings.normalizedCoords = false;

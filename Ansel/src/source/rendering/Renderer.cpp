@@ -1,5 +1,7 @@
 #include "../../headers/rendering/Renderer.h"
 
+#include "../../headers/entities/Skybox.h"
+
 #include <algorithm>
 #include <thread>
 
@@ -67,6 +69,23 @@ namespace Ansel
 	/* <-----------  PUBLIC  ---------->*/
 
 	void Renderer::init(Window* w) {
+		// Initialize Skybox
+		Skybox::box = Loader::makeRawModel("assets/models/cube.obj", "_skybox", false);
+
+		Shader* skyshader = new Shader();
+
+		// First make and compile the three shaders
+		skyshader->makeShader("ansel/shaders/shader.vert", VERTEX);
+		skyshader->makeShader("ansel/shaders/skybox.frag", FRAGMENT);
+		skyshader->makeShader("ansel/shaders/shader.geo", GEOMETRY);
+
+		skyshader->link();
+
+		Material* material = new Material;
+		material->loadShader(skyshader);
+
+		Skybox::box->loadMaterial(material);
+
 		dimensions = { w->getWidth(), w->getHeight() };
 
 		/* Shaders */
@@ -356,7 +375,7 @@ namespace Ansel
 			//	return false;
 			//});
 
-			std::vector<std::vector<Model*>> temp_list(Loader::getRawModelSize());
+			std::vector<std::vector<Model*>> temp_list(RawModel::count);
 			int current_id = -1;
 			for (int i = 0; i < models.size(); i++) {
 				current_id = models.at(i)->getRawModel()->getID();

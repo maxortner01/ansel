@@ -17,6 +17,13 @@ namespace ECS
 		return entities.at(index);
 	}
 
+	EntityInstance EntityManager::makeEntity(ECS::EntityInstance entity, const char* name) {
+		entities.push_back(entity);
+		names.push_back(name);
+
+		return entity;
+	}
+
 	EntityInstance EntityManager::makeEntity(const char* name) {
 
 		EntityInstance e = new Entity();

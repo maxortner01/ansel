@@ -63,6 +63,7 @@ void main(void)
             calcNormal = vec3(vec4(normalize(calcNormal), 1.0) * VertexIn[i].rotationMatrix);
         }
 
+
         // Pass all useful information to the fragment shader
         frag.modelMatrix = VertexIn[i].modelMatrix;
 		frag.position = gl_in[i].gl_Position * VertexIn[i].modelMatrix;
